@@ -18,4 +18,3 @@ Deploy: Vercel, Framework preset "Other", no build command, output directory = r
 These pages are generated from the Figma frames (exported as SVG) by `_figma-reference/_build/gen2.py`:
 each page holds the 1440 / 991 / 430 layouts; shapes and photos come from `assets/svg/*.svg` + `assets/v2/`,
 and all text, links, form fields and buttons are real HTML on top (`css/v2.css`, `js/v2.js`).
-The Figma file has no desktop frame for the PILs guide, so that page shows its 991 layout centred on desktop.
