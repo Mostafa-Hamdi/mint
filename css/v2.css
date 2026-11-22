@@ -164,3 +164,37 @@ body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-re
 .bd.hero { --full: calc(var(--h) * var(--u)); --vis: clamp(calc(var(--full) * .62), calc(100svh - var(--fh-h, 84px) - var(--tb-h, 0px)), var(--full)); height: var(--vis); }
 .bd.hero > .bd-in { top: calc(var(--y0) * var(--u) * -1 - (var(--full) - var(--vis)) / 2); }
 .bd.hero .hero-c { position: absolute; inset: 0; transform: translateY(calc(var(--dy, 0) * var(--u))); }
+
+/* ---------- pricing: country picker over the drawn card ---------- */
+.fv .cty { position: absolute; z-index: 6; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w) * var(--u)); height: calc(var(--h) * var(--u)); }
+.fv .cty-b { position: absolute; inset: 0; width: 100%; padding: 0 0 0 calc(var(--tx) * var(--u)); border: 0; background: transparent; cursor: pointer; text-align: left;
+  font: 400 calc(var(--f) * var(--u))/1.4 Poppins, sans-serif; color: #3A495B; border-radius: calc(10 * var(--u)); transition: box-shadow .35s, background-color .35s; }
+.fv .cty-b:hover, .fv .cty.open .cty-b { box-shadow: 0 0 0 1.5px rgba(0, 164, 143, .55), 0 12px 26px -14px rgba(0, 164, 143, .6); background: rgba(255, 255, 255, .35); }
+.fv .cty-b:focus-visible { outline: 2px solid #00A48F; outline-offset: 3px; }
+.fv .cty.need .cty-b { animation: cty-need 1.2s cubic-bezier(.2,.8,.2,1) 2; }
+@keyframes cty-need { 0%, 100% { box-shadow: 0 0 0 1.5px rgba(0,164,143,.55); } 40% { box-shadow: 0 0 0 calc(8 * var(--u)) rgba(106,206,42,.35); } }
+.fv .cty-v { display: inline-flex; align-items: center; gap: calc(10 * var(--u)); }
+.fv .cty.has .cty-v { font-weight: 600; }
+.fv .cty-l { list-style: none; margin: 0; position: absolute; left: 0; right: 0; top: calc(100% + 10 * var(--u)); padding: calc(8 * var(--u));
+  border-radius: calc(18 * var(--u)); background: rgba(255, 255, 255, .96); backdrop-filter: blur(16px) saturate(1.6); -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  box-shadow: 0 0 0 1px rgba(0, 164, 143, .14), 0 28px 50px -18px rgba(58, 73, 91, .5);
+  opacity: 0; visibility: hidden; transform: translateY(-6px) scale(.98); transform-origin: 50% 0;
+  transition: opacity .25s, transform .4s cubic-bezier(.2,.8,.2,1), visibility 0s .4s; }
+.fv .cty-l:focus { outline: none; }
+.fv .cty-l::before { content: ""; position: absolute; left: 22px; right: 22px; top: 0; height: 2px; border-radius: 2px; background: linear-gradient(90deg, #00A48F, #6ACE2A); }
+.fv .cty.open .cty-l { opacity: 1; visibility: visible; transform: none; transition: opacity .25s, transform .4s cubic-bezier(.2,.8,.2,1); }
+.fv .cty-l li { display: flex; align-items: center; gap: calc(14 * var(--u)); padding: calc(12 * var(--u)) calc(14 * var(--u)); border-radius: calc(12 * var(--u)); cursor: pointer;
+  font: 500 calc(17 * var(--u))/1.3 Poppins, sans-serif; color: #3A495B; transition: background-color .3s, color .3s, padding-left .35s cubic-bezier(.2,.8,.2,1); }
+.fv .cty-l li:hover, .fv .cty-l li.act { background: linear-gradient(120deg, rgba(234,250,245,.95), rgba(215,236,233,.6)); color: #00A48F; padding-left: calc(18 * var(--u)); }
+.fv .cty-l li[aria-selected="true"] { color: #00A48F; }
+.fv .cty-l li[aria-selected="true"]::after { content: ""; margin-left: auto; width: calc(18 * var(--u)); height: calc(18 * var(--u));
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300A48F' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / contain no-repeat; }
+.fv .cty-f { flex: none; width: calc(30 * var(--u)); height: calc(20 * var(--u)); border-radius: calc(4 * var(--u)); background: center / cover no-repeat;
+  box-shadow: 0 0 0 1px rgba(58, 73, 91, .15), 0 2px 6px -2px rgba(58, 73, 91, .35); }
+.fv .f-eg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20'%3E%3Crect width='30' height='20' fill='%23000'/%3E%3Crect width='30' height='13.34' fill='%23fff'/%3E%3Crect width='30' height='6.67' fill='%23CE1126'/%3E%3Ccircle cx='15' cy='10' r='2.2' fill='%23C09300'/%3E%3C/svg%3E"); }
+.fv .f-ksa { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20'%3E%3Crect width='30' height='20' fill='%23006C35'/%3E%3Crect x='7' y='6.5' width='16' height='2.2' rx='1.1' fill='%23fff'/%3E%3Crect x='8' y='12.3' width='14' height='1.2' rx='.6' fill='%23fff'/%3E%3C/svg%3E"); }
+.fv .f-uk { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Crect width='60' height='40' fill='%23012169'/%3E%3Cpath d='M0 0L60 40M60 0L0 40' stroke='%23fff' stroke-width='8'/%3E%3Cpath d='M0 0L60 40M60 0L0 40' stroke='%23C8102E' stroke-width='3'/%3E%3Cpath d='M30 0V40M0 20H60' stroke='%23fff' stroke-width='12'/%3E%3Cpath d='M30 0V40M0 20H60' stroke='%23C8102E' stroke-width='7'/%3E%3C/svg%3E"); }
+
+/* end of an accordion card the footer was drawn over: its bottom edge in HTML, then breathing room before the footer */
+.bd.cend { position: relative; height: calc((var(--e) + 56) * var(--u)); background: var(--pbg); }
+.bd.cend .cend-in { position: absolute; top: 0; left: calc(var(--x) * var(--u)); width: calc(var(--w) * var(--u)); height: calc(var(--e) * var(--u)); background: linear-gradient(90deg, var(--c1), var(--c2)); border-radius: 0 0 calc(10 * var(--u)) calc(10 * var(--u)); }

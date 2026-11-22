@@ -157,3 +157,41 @@ document.querySelectorAll('.acc-t').forEach(function (btn) {
   window.addEventListener('load', run);
   var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(run, 150); });
 })();
+
+// Pricing: country picker (United Kingdom / Saudi Arabia / Egypt) and Continue -> that country's office on Contact.
+document.querySelectorAll('[data-cty]').forEach(function (box) {
+  var btn = box.querySelector('.cty-b'), list = box.querySelector('.cty-l'), items = Array.prototype.slice.call(list.querySelectorAll('li'));
+  var label = box.querySelector('.cty-v'), act = -1;
+  function mark() {
+    items.forEach(function (li, i) { li.classList.toggle('act', i === act); });
+    if (items[act]) list.setAttribute('aria-activedescendant', items[act].id);
+  }
+  function open(on) {
+    box.classList.toggle('open', on); btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    if (on) {
+      act = Math.max(0, items.findIndex(function (li) { return li.getAttribute('aria-selected') === 'true'; }));
+      mark(); list.focus({ preventScroll: true });
+    }
+  }
+  function pick(li) {
+    items.forEach(function (x) { x.setAttribute('aria-selected', x === li ? 'true' : 'false'); });
+    label.innerHTML = li.innerHTML; box.dataset.value = li.dataset.v; box.classList.add('has'); box.classList.remove('need');
+    open(false); btn.focus();
+  }
+  btn.addEventListener('click', function () { open(!box.classList.contains('open')); });
+  btn.addEventListener('keydown', function (e) { if (e.key === 'ArrowDown') { open(true); e.preventDefault(); } });
+  items.forEach(function (li) { li.addEventListener('click', function () { pick(li); }); });
+  list.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') { act = (act + 1) % items.length; mark(); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { act = (act - 1 + items.length) % items.length; mark(); e.preventDefault(); }
+    else if (e.key === 'Enter' || e.key === ' ') { if (items[act]) pick(items[act]); e.preventDefault(); }
+    else if (e.key === 'Escape') { open(false); btn.focus(); }
+  });
+  document.addEventListener('click', function (e) { if (!box.contains(e.target)) open(false); });
+  var go = box.closest('.fv').querySelector('.cty-go');
+  if (go) go.addEventListener('click', function () {
+    if (!box.dataset.value) { box.classList.remove('need'); void box.offsetWidth; box.classList.add('need'); open(true); return; }
+    try { sessionStorage.setItem('mint-section', box.dataset.value); } catch (err) {}
+    location.href = 'contact.html';
+  });
+});

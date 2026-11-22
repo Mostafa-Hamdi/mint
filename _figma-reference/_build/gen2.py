@@ -110,6 +110,9 @@ def frame(name, prod, bp):
             if mt: x += float(mt.group(1)); y += float(mt.group(2) or 0)
             elif tr: continue
             rects.append((x, y, num(r.get('width')), num(r.get('height')), r.get('fill'), r.get('stroke'), num(r.get('rx', '0'))))
+    # a thin white gap between the drawn header and the first full-width block is hidden along with the header
+    nxt = [r[1] for r in rects if r[2] >= W * .95 and r[3] > 150 and hh < r[1] <= hh + 50 and (r[4] or '').lower() not in ('white', '#ffffff', '#fff')]
+    if nxt: hh = min(nxt)
     # small teal stroke paths = the accordion chevrons/arrows drawn in the design
     chevs = []
     for pth in root.iter(N + 'path'):
@@ -164,6 +167,15 @@ def frame(name, prod, bp):
             for q in _sp(T): T.remove(q)
             for q in sp: T.append(q)
     texts = [(t, b) for t, b in texts if id(t) not in merged]
+    # footer group (drawn last in Figma, often over the bottom of the content)
+    foot_g = next((g for g in root.iter(N + 'g') if re.search('footer', g.get('id') or '', re.I)), None)
+    foot_ids = set()
+    if foot_g is not None:
+        for t, _ in texts:
+            a_ = textparent.get(id(t))
+            while a_ is not None:
+                if a_ is foot_g: foot_ids.add(id(t)); break
+                a_ = parent.get(a_)
     for e in root.iter():
         if e.get('id') and e.tag not in (N + 'clipPath', N + 'linearGradient', N + 'radialGradient', N + 'pattern', N + 'image', N + 'filter', N + 'mask'):
             del e.attrib['id']
@@ -171,13 +183,23 @@ def frame(name, prod, bp):
     os.makedirs(os.path.join(PROJ, 'assets', 'svg'), exist_ok=True)
     data = ET.tostring(root, encoding='unicode')
     open(os.path.join(PROJ, svg_rel), 'w', encoding='utf-8').write(data)
+    # the same drawing without the footer: used for content strips, so nothing is hidden under the footer
+    svg_nf = None
+    if foot_g is not None and parent.get(foot_g) is not None:
+        fp = parent[foot_g]; idx = list(fp).index(foot_g); fp.remove(foot_g)
+        svg_nf = f'assets/svg/{name}-nf.svg'
+        open(os.path.join(PROJ, svg_nf), 'w', encoding='utf-8').write(ET.tostring(root, encoding='unicode'))
+        fp.insert(idx, foot_g)
 
     L = links(prod)
     out = []; inputs = []; tinfo = []; input_y = []; side = []
     def inside(px, py, r, pad=2):
         return r[0] - pad <= px <= r[0] + r[2] + pad and r[1] - pad <= py <= r[1] + r[3] + pad
     ALLTXT = [(num(s.get('y')), fx(s.text or '')) for t, _ in texts for s in t.iter(N + 'tspan')]
+    FOOTIDX = set(); _prev = [0, False]
     for t, bad in texts:
+        if _prev[1]: FOOTIDX.update(range(_prev[0], len(out)))
+        _prev[0], _prev[1] = len(out), id(t) in foot_ids
         fam = (t.get('font-family') or 'Poppins').split(',')[0].strip("'\" ")
         fs = num(t.get('font-size', '16')); fw = t.get('font-weight', '400')
         fw = {'bold': '700', 'normal': '400'}.get(fw, fw)
@@ -200,7 +222,7 @@ def frame(name, prod, bp):
         if bad: print('  ! transformed text skipped:', full[:40], file=sys.stderr); continue
         first = spans[0]; fx0, fy0 = num(first.get('x')), num(first.get('y'))
         ty = fy0 - asc * fs; tbot = max(lines) + desc * fs
-        tinfo.append((ty, tbot, fx0, fill.upper(), re.sub(r'\s+', ' ', full)))
+        tinfo.append((ty, tbot, fx0, fill.upper(), re.sub(r'\s+', ' ', full), id(t) in foot_ids))
         # placeholder -> input
         if fill.upper() == '#95A5A4' and fw == '400':
             box = next((r for r in rects if r[5] and r[5].upper() == '#95A5A4' and inside(fx0, fy0, r)), None)
@@ -242,6 +264,21 @@ def frame(name, prod, bp):
         # legal page: the drawn side list is rebuilt as a sticky HTML nav (see below)
         if PAGE_FILE == 'pils-legal.html' and fam == 'Montserrat' and (key in LEGAL_SIDE or (key == 'Legal' and fs <= 24)):
             side.append((key, fx0, fy0)); continue
+        # pricing: the drawn "Select your country" card becomes a real country picker, "Continue" a real button
+        if key == 'Select your country':
+            card = min((r for r in rects if inside(fx0, fy0 - 5, r, 0) and r[2] < 700 and r[3] < 150), key=lambda r: r[2] * r[3], default=None)
+            if card:
+                opts = ''.join(f'<li role="option" id="cty-{bp}-{v}" data-v="{v}" aria-selected="false"><span class="cty-f f-{v}" aria-hidden="true"></span>{n}</li>'
+                               for v, n in (('uk', 'United Kingdom'), ('ksa', 'Saudi Arabia'), ('eg', 'Egypt')))
+                out.append((ty, f'<div class="cty" data-cty style="--x:{card[0]:.1f};--y:{card[1]:.1f};--w:{card[2]:.1f};--h:{card[3]:.1f};--tx:{fx0 - card[0]:.1f};--f:{fs:g}">'
+                                f'<button type="button" class="cty-b" aria-haspopup="listbox" aria-expanded="false" aria-controls="cty-l-{bp}">'
+                                f'<span class="cty-v">Select your country</span></button>'
+                                f'<ul class="cty-l" id="cty-l-{bp}" role="listbox" aria-label="Country" tabindex="-1">{opts}</ul></div>'))
+                continue
+        if key == 'Continue' and PAGE_FILE.endswith('pricing.html'):
+            out.append((ty, f'<p class="tx" aria-hidden="true" style="{style}">{body}</p>'
+                            f'<button class="hit cty-go" type="button" style="--x:{fx0 - 8:.1f};--y:{ty - 6:.1f};--w:150;--h:{fs * 1.4 + 16:.1f};--r:8">Continue</button>'))
+            continue
         target = L.get(key)
         if fam == 'Montserrat' and key in LEGAL_SIDE: target = ('pils-legal.html', LEGAL_SIDE[key])
         sec = None
@@ -280,6 +317,7 @@ def frame(name, prod, bp):
             gap = sorted(b - a for a, b in zip(ys_, ys_[1:]))[len(ys_) // 2 - 1] if len(ys_) > 1 else fs * 1.5
             flow = f' data-flow data-fs="{fs:g}" data-gap="{gap:.2f}" data-x="{fx0:.2f}" data-asc="{asc}"{cw}'
         out.append((ty, f'<{tag} class="tx"{flow} style="{style}">{body}</{tag}>'))
+    if _prev[1]: FOOTIDX.update(range(_prev[0], len(out)))
     if inputs:
         out = [(y, o.replace('<button class="hit"', '<button form="f-' + bp + '" class="hit"')) for y, o in out]
         out.append((min(input_y), f'<form id="f-{bp}" class="ff" action="#" method="post" onsubmit="return false">' + ''.join(inputs) + '</form>'))
@@ -296,7 +334,7 @@ def frame(name, prod, bp):
         if not f.startswith('url(#') or w < 300 or h < 60: continue
         if (paint_color(f, defs) or '').upper() != '#EAFAF5': continue
         ans = [t for t in tinfo if t[3] == '#288C91' and x <= t[2] <= x + w and t[0] >= y and t[1] <= y + h + 2]
-        ins = None
+        ins = None; cend = None
         if ans:
             a0 = min(t[0] for t in ans)
             qs = [t for t in tinfo if t[3] == '#3A495B' and x <= t[2] <= x + w and t[0] >= y - 2 and t[1] <= a0 + 2]
@@ -316,7 +354,16 @@ def frame(name, prod, bp):
             hc = (qbot - y) + pad; e = min(pad, 14)
             # a full-width block (the footer) drawn over the card ends it visually
             cover = [rr[1] for rr in rects if rr[2] >= W * .95 and y + hc < rr[1] < y + h]
-            if cover: y0, y1 = y + hc - e, min(cover)
+            cend = None
+            if cover:
+                # the footer is drawn over this card: end the card right after its content and draw its bottom edge in HTML
+                ab = max([t[1] for t in ans] + [im[1] + im[3] for im in imgs if x <= im[0] <= x + w and y < im[1] < y + h])
+                y0, y1 = y + hc - e, max(y + hc - e + 21, ab + pad - e)
+                def _px(px_, py_):
+                    if not ref: return '#F4FBF9'
+                    return '#%02X%02X%02X' % ref.getpixel((min(max(int(px_), 0), ref.width - 1), min(max(int(py_), 0), ref.height - 1)))
+                cend = dict(e=e, c1=_px(x + 6, y + hc - e / 2), c2=_px(x + w - 6, y + hc - e / 2), pbg=_px(max(x - 6, 1), y + hc), skip=y + h)
+            if cover: pass
             else: y0, y1 = y + hc - e, y + h - e
             if y1 - y0 < 20: continue
         # chevron centre from the Figma render (green/teal pixels at the right of the question row)
@@ -333,7 +380,7 @@ def frame(name, prod, bp):
                 cx = (min(p[0] for p in px) + max(p[0] for p in px)) / 2; cy = (min(p[1] for p in px) + max(p[1] for p in px)) / 2
                 bp_ = ref.getpixel((min(int(cx + 20), ref.width - 1), int(cy)))
                 bg = '#%02X%02X%02X' % bp_
-        accs.append(dict(x=x, y=y, w=w, hc=hc, y0=y0, y1=y1, cx=cx, cy=cy, bg=bg, q=' '.join(t[4] for t in sorted(qs)), ins=ins, qx=min(t[2] for t in qs) - x))
+        accs.append(dict(x=x, y=y, w=w, hc=hc, y0=y0, y1=y1, cx=cx, cy=cy, bg=bg, q=' '.join(t[4] for t in sorted(qs)), ins=ins, qx=min(t[2] for t in qs) - x, cend=(cend if not ins else None)))
     accs.sort(key=lambda a: a['y'])
     decor_obj = f'<object class="decor" type="image/svg+xml" data="{svg_rel}" tabindex="-1" aria-hidden="true"></object>'
     # sticky legal nav: same pills as the design (295x40, 57 apart), rebuilt in HTML over a cover of the drawn one
@@ -356,7 +403,18 @@ def frame(name, prod, bp):
     # full-photo hero (product home pages): the 1024-tall full-width block right under the header
     hero = next(((min(r[1], hh), r[1] + r[3]) for r in rects if r[2] >= W * .95 and 700 <= r[3] <= 1200 and hh - 5 <= r[1] <= hh + 60
                  and any(im[2] >= W * .9 and im[1] < r[1] + 50 for im in imgs)), None)
-    if not accs and not hero:
+    ftop = None
+    if svg_nf:
+        fr = [r[1] for r in rects if r[2] >= W * .95 and (r[4] or '').upper() == '#3A495B' and r[1] > H / 2]
+        ftop = min(fr) if fr else None
+    ce = ftop
+    if ftop:
+        cb = [t[1] for t in tinfo if not t[5] and t[1] > ftop - 400]
+        if cb: ce = max(ftop, max(cb) + 60)
+        for a in accs: ce = max(ce, a['y1'] if not a['ins'] else a['y0'])
+    under = bool(ftop and (ce > ftop + 1 or any(a['cend'] for a in accs)))
+    if under and ce < max([a['y1'] for a in accs if a['cend']] + [0]): ce = max(a['y1'] for a in accs if a['cend'])
+    if not accs and not hero and not under:
         return W, H, hh, decor_obj + '\n' + '\n'.join(o for _, o in out) + legal_nav, False
     # bands: the page is cut into horizontal strips; each answer is its own strip that can fold to 0.
     # Answers borrowed from another frame are inserted as their own HTML strip under the question card.
@@ -369,7 +427,12 @@ def frame(name, prod, bp):
             bands.append((cur, a['y0'], None)); bands.append((a['y0'], a['y0'], ('ins', i))); cur = a['y0']
         else:
             bands.append((cur, a['y0'], None)); bands.append((a['y0'], a['y1'], i)); cur = a['y1']
-    bands.append((cur, H, None))
+            if a['cend']:
+                bands.append((a['y1'], a['y1'], ('end', i))); cur = max(a['y1'], a['cend']['skip'])
+    if under:
+        bands.append((cur, ce, None)); bands.append((ftop, H, 'foot'))
+    else:
+        bands.append((cur, H, None))
     bands = [b_ for b_ in bands if b_[1] > b_[0] or b_[2] is not None]
     open_first = 'guide' in PAGE_FILE
     html_bands = []
@@ -378,12 +441,19 @@ def frame(name, prod, bp):
         out_ = ''.join(f'<p>{html.escape(p)}</p>' for p in parts_)
         return re.sub(r'([\w.+-]+@[\w-]+\.[\w.]+)', r'<a href="mailto:\1">\1</a>', out_)
     for ys, ye, acc in bands:
+        if isinstance(acc, tuple) and acc[0] == 'end':
+            c = accs[acc[1]]['cend']; a = accs[acc[1]]
+            html_bands.append(f'<div class="bd cend" style="--pbg:{c["pbg"]};--x:{a["x"]:.1f};--w:{a["w"]:.1f};--e:{c["e"]:.1f};--c1:{c["c1"]};--c2:{c["c2"]}"><span class="cend-in" aria-hidden="true"></span></div>')
+            continue
         if isinstance(acc, tuple):
             a = accs[acc[1]]
             pb = ('#%02X%02X%02X' % ref.getpixel((2, min(int(a["y0"]) + 2, ref.height - 1)))) if ref else '#D7ECE9'
             html_bands.append(f'<div class="bd acc ins closed" id="acc-{bp}-{acc[1]}" style="--pbg:{pb};--x:{a["x"]:.1f};--w:{a["w"]:.1f};--fs:{20 if W >= 1000 else 16};--pl:{a["qx"]:.1f}"><div class="ans"><div class="ans-in">{answer_html(a["ins"])}</div></div></div>')
             continue
-        items = [o for (y, o) in out if ys <= y < ye or (ys == 0 and y < 0)]
+        if under:
+            items = [o for k, (y, o) in enumerate(out) if (k in FOOTIDX) == (acc == 'foot') and (acc == 'foot' or ys <= y < ye or (ys == 0 and y < 0))]
+        else:
+            items = [o for (y, o) in out if ys <= y < ye or (ys == 0 and y < 0)]
         # toggles live in the band that holds their question row
         for i, a in enumerate(accs):
             if ys <= a['y'] < ye:
@@ -392,13 +462,16 @@ def frame(name, prod, bp):
                              f'style="--x:{a["x"]:.1f};--y:{a["y"]:.1f};--w:{a["w"]:.1f};--h:{a["hc"]:.1f}"><span class="visually-hidden">{html.escape(a["q"])}</span>'
                              f'<span class="acc-c" style="--cx:{a["cx"] - a["x"]:.1f};--cy:{a["cy"] - a["y"]:.1f};--bg:{a["bg"]}" aria-hidden="true"></span></button>')
         has_img = any(r[1] < ye and r[1] + r[3] > ys for r in imgs)
-        dec = decor_obj if has_img else f'<img class="decor" src="{svg_rel}" alt="" aria-hidden="true">'
+        src_ = svg_nf if (under and acc != 'foot') else svg_rel
+        dec = (decor_obj.replace(svg_rel, src_) if has_img else f'<img class="decor" src="{src_}" alt="" aria-hidden="true">')
         if acc == 'hero':
             # centre the hero text block vertically (the photo stays put): shift = hero centre - content centre
             ht = [t for t in tinfo if ys <= t[0] and t[1] <= ye]
             dy = ((ye - ys) / 2 - ((min(t[0] for t in ht) + max(t[1] for t in ht)) / 2 - ys)) if ht else 0
             html_bands.append(f'<div class="bd hero" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n'
                               f'<div class="hero-c" style="--dy:{dy:.1f}">' + '\n'.join(items) + '</div></div></div>')
+        elif acc == 'foot':
+            html_bands.append(f'<div class="bd" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
         elif acc is None:
             html_bands.append(f'<div class="bd" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
         else:
