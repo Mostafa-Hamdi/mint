@@ -199,3 +199,68 @@
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   update();
 })();
+
+// Cookie consent: a glass card that asks once, remembers the choice, and can be reopened from the cookie button.
+(function () {
+  var KEY = 'mint-cookie-consent';
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (err) {}
+  var cfgEl = document.getElementById('sticky-cfg'), home = 'index.html';
+  try { home = JSON.parse(cfgEl.textContent).home || home; } catch (err) {}
+  var policy = home === 'index.html' ? 'cookies.html' : home.replace('.html', '-cookies.html');
+  var CATS = [
+    { k: 'essential', t: 'Essential', d: 'Keep the site secure and working. Always on.', fixed: true },
+    { k: 'functional', t: 'Functional', d: 'Remember your choices, like recently viewed items.' },
+    { k: 'analytics', t: 'Analytics', d: 'Help us understand how the site is used.' },
+    { k: 'marketing', t: 'Advertising and marketing', d: 'Show you relevant messages on other sites.' }
+  ];
+  var icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M12 3a9 9 0 1 0 9 9 3 3 0 0 1-3.6-3.3A3 3 0 0 1 13.6 5 3 3 0 0 1 12 3Z"/><circle cx="8.5" cy="11" r="1"/><circle cx="12" cy="15.5" r="1"/><circle cx="15.5" cy="12.5" r=".6"/><circle cx="9" cy="16" r=".6"/></svg>';
+  var box = document.createElement('section');
+  box.className = 'ck-pop'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-labelledby', 'ck-pop-t'); box.setAttribute('aria-describedby', 'ck-pop-d');
+  box.innerHTML =
+    '<div class="ck-head"><span class="ck-ico">' + icon + '</span><h2 id="ck-pop-t">We value your privacy</h2></div>' +
+    '<p id="ck-pop-d">We use cookies to keep the site working, understand how it is used and improve your experience. ' +
+    'Read our <a href="' + policy + '">Cookie Policy</a>.</p>' +
+    '<div class="ck-prefs" id="ck-prefs" hidden>' + CATS.map(function (c) {
+      return '<label class="ck-row"><span><b>' + c.t + '</b><small>' + c.d + '</small></span>' +
+        '<input type="checkbox" data-k="' + c.k + '"' + (c.fixed ? ' checked disabled' : '') + '><i class="ck-sw" aria-hidden="true"></i></label>';
+    }).join('') + '</div>' +
+    '<div class="ck-actions">' +
+      '<button type="button" class="ck-btn ck-all">Accept all</button>' +
+      '<button type="button" class="ck-btn ck-ghost ck-none">Reject non-essential</button>' +
+      '<button type="button" class="ck-link ck-more" aria-expanded="false" aria-controls="ck-prefs">Customize</button>' +
+    '</div>';
+  var fab = document.createElement('button');
+  fab.type = 'button'; fab.className = 'ck-fab'; fab.setAttribute('aria-label', 'Cookie settings'); fab.innerHTML = icon;
+  document.body.appendChild(box); document.body.appendChild(fab);
+  var prefs = box.querySelector('.ck-prefs'), more = box.querySelector('.ck-more');
+  function fill(choice) {
+    box.querySelectorAll('input[data-k]').forEach(function (i) { if (!i.disabled) i.checked = !!(choice && choice[i.dataset.k]); });
+  }
+  function show(on) {
+    box.classList.toggle('show', on); fab.classList.toggle('show', !on && !!saved);
+    if (on) fill(saved);
+  }
+  function save(choice) {
+    choice.essential = true; choice.date = new Date().toISOString(); saved = choice;
+    try { localStorage.setItem(KEY, JSON.stringify(choice)); } catch (err) {}
+    document.dispatchEvent(new CustomEvent('mint:cookies', { detail: choice }));
+    show(false);
+  }
+  function custom(on) {
+    prefs.hidden = !on; more.setAttribute('aria-expanded', on ? 'true' : 'false');
+    more.textContent = on ? 'Save choices' : 'Customize';
+    box.classList.toggle('expanded', on);
+  }
+  box.querySelector('.ck-all').addEventListener('click', function () { save({ functional: true, analytics: true, marketing: true }); custom(false); });
+  box.querySelector('.ck-none').addEventListener('click', function () { save({ functional: false, analytics: false, marketing: false }); custom(false); });
+  more.addEventListener('click', function () {
+    if (prefs.hidden) { custom(true); return; }
+    var c = {}; box.querySelectorAll('input[data-k]').forEach(function (i) { c[i.dataset.k] = i.checked; });
+    save(c); custom(false);
+  });
+  fab.addEventListener('click', function () { show(true); });
+  if (saved) fab.classList.add('show');
+  else setTimeout(function () { show(true); }, 900);
+})();
