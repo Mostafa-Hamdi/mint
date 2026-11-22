@@ -400,6 +400,135 @@ def frame(name, prod, bp):
         legal_nav = (f'<span class="lgn-cover" style="--x:{px_ - 14:.1f};--y:{htop - 8:.1f};--w:{295 + 28};--h:{bottom - htop + 18:.1f}" aria-hidden="true"></span>'
                      f'<nav class="lgn" aria-label="Legal sections" style="--x:{px_:.1f};--y:{htop:.1f};--gap:{57 - 40}">'
                      f'<div class="lgn-in"><p class="lgn-h">Legal</p>{links_}</div></nav>')
+    # ---------- accordions rebuilt in HTML (guide + legal FAQ) ----------
+    # The drawn question cards are replaced by a real accordion list: question buttons, animated answers,
+    # answer images cropped from the design. Each run of cards becomes one "zone" that flows with its content.
+    zones = []
+    if 'guide' in PAGE_FILE or 'legal' in PAGE_FILE:
+        def crop_img(r):
+            m_ = re.match(r'url\(#(.*)\)', r[4] or '')
+            pat = defs.get(m_.group(1)) if m_ else None
+            use = next(pat.iter(N + 'use'), None) if pat is not None else None
+            if use is None: return None
+            im_el = defs.get((use.get(XL) or use.get('href') or '').lstrip('#'))
+            if im_el is None: return None
+            fn = (im_el.get(XL) or '').split('/')[-1]
+            fp = os.path.join(IMG_OUT, fn)
+            if not os.path.exists(fp): return None
+            tr = use.get('transform', '')
+            mm = re.match(r'matrix\(([^)]*)\)', tr); ms = re.match(r'scale\(([^)]*)\)', tr)
+            if mm: a_, _, _, d_, e_, f_ = [float(v) for v in re.split(r'[ ,]+', mm.group(1).strip())]
+            elif ms:
+                vv = [float(v) for v in re.split(r'[ ,]+', ms.group(1).strip())]; a_, d_ = vv[0], vv[-1]; e_ = f_ = 0
+            else: return None
+            iw, ih = num(im_el.get('width')), num(im_el.get('height'))
+            src = Image.open(fp); sx = src.width / iw
+            box_ = (-e_ / a_ * sx, -f_ / d_ * sx, (-e_ + 1) / a_ * sx, (-f_ + 1) / d_ * sx)
+            c = src.convert('RGB').crop(tuple(int(round(v)) for v in box_))
+            tw = int(min(c.width, r[2] * 2)); c = c.resize((tw, int(tw * r[3] / r[2])), Image.LANCZOS)
+            out_fn = 'crop-' + hashlib.md5((fn + repr(box_)).encode()).hexdigest()[:10] + '.jpg'
+            c.save(os.path.join(IMG_OUT, out_fn), quality=84, optimize=True, progressive=True)
+            return out_fn
+        cards = []
+        for r in rects:
+            x, y, w, h, f = r[0], r[1], r[2], r[3], r[4] or ''
+            if not f.startswith('url(#') or w < 300 or h < 60: continue
+            if (paint_color(f, defs) or '').upper() != '#EAFAF5': continue
+            inside_ = [t for t in tinfo if not t[5] and x - 2 <= t[2] <= x + w and y - 2 <= t[0] and t[0] < y + h]
+            qs = [t for t in inside_ if t[3] == '#3A495B']
+            if not qs: continue
+            q0 = min(qs)
+            # the question = the navy text at the top of the card (it can wrap over several lines)
+            qs = [t for t in qs if t[0] <= q0[1] + 4]
+            qbot = max(t[1] for t in qs)
+            rest = sorted([t for t in inside_ if t not in qs and t[0] >= qbot - 2], key=lambda t: (round(t[0]), t[2]))
+            ims = [im for im in imgs if x <= im[0] <= x + w and qbot < im[1] < y + h]
+            cards.append(dict(x=x, y=y, w=w, h=h, qs=qs, qbot=qbot, rest=rest, ims=ims, fs=max(t[0] for t in [(0,)])))
+        cards.sort(key=lambda c: c['y'])
+        _seen = set(); _cards = []
+        for c in cards:
+            k_ = (round(c['y']), round(c['x']))
+            if k_ in _seen: continue
+            _seen.add(k_); _cards.append(c)
+        cards = _cards
+        # group cards into zones; a heading between cards (e.g. "Patients:") starts a new zone
+        for c in cards:
+            z = zones[-1] if zones else None
+            if z:
+                last = z['cards'][-1]; gap_top = last['y'] + last['h']
+                between = [t for t in tinfo if not t[5] and gap_top - 2 < t[0] < c['y'] and not any(t in cc['qs'] or t in cc['rest'] for cc in z['cards'])]
+                if c['y'] - gap_top < 90 and not between:
+                    z['cards'].append(c); continue
+            zones.append(dict(cards=[c]))
+        for z in zones:
+            cs = z['cards']
+            z['top'] = cs[0]['y']; z['bottom'] = max(c['y'] + c['h'] for c in cs)
+            z['x'] = min(c['x'] for c in cs); z['w'] = max(c['w'] for c in cs)
+            if z['x'] < 8 or z['x'] + z['w'] > W - 8: z['x'], z['w'] = 16.0, W - 32.0   # edge-to-edge cards get a gutter
+            z['gap'] = min([b['y'] - (a['y'] + a['h']) for a, b in zip(cs, cs[1:])] + [24])
+            z['pbg'] = ('#%02X%02X%02X' % ref.getpixel((max(int(z['x']) - 8, 1), min(int(z['top']) + 4, ref.height - 1)))) if ref else '#FFFFFF'
+        def para_html(txt):
+            txt = re.sub(r'\s+([.,;:!?])', r'\1', txt.strip())
+            parts_ = [p.strip() for p in re.split(r'\s(?=- )', txt) if p.strip()]
+            h_ = ''.join(f'<p>{html.escape(p)}</p>' for p in parts_)
+            return re.sub(r'([\w.+-]+@[\w-]+\.[\w.]+[\w])', r'<a href="mailto:\1">\1</a>', h_)
+        first_open = 'guide' in PAGE_FILE
+        for zi, z in enumerate(zones):
+            items = []
+            for ci, c in enumerate(z['cards']):
+                q = re.sub(r'\s+', ' ', ' '.join(t[4] for t in sorted(c['qs'], key=lambda t: (round(t[0]), t[2])))).strip()
+                qfs = max(16, min(20, (c['qs'][0][1] - c['qs'][0][0]) / 1.4))
+                # answer: texts under the question in reading order (+ images), or the answer borrowed from another frame
+                blocks = []
+                line_y, buf = None, []
+                for t in c['rest']:
+                    if line_y is not None and t[0] - line_y > 4:
+                        blocks.append((line_y, ' '.join(buf))); buf = []
+                    if not buf: line_y = t[0]
+                    buf.append(t[4])
+                if buf: blocks.append((line_y, ' '.join(buf)))
+                content = [(by, para_html(bt)) for by, bt in blocks]
+                for im in c['ims']:
+                    fn_ = crop_img(im)
+                    if fn_: content.append((im[1], f'<figure class="az-media"><img src="assets/v2/{fn_}" alt="" loading="lazy"><span class="az-play" aria-hidden="true"></span></figure>'))
+                content.sort(key=lambda v: v[0])
+                ans_html = ''.join(v[1] for v in content)
+                if not ans_html:
+                    borrowed = ANSWERS.get(qkey(q))
+                    if borrowed: ans_html = para_html(borrowed)
+                iid = f'az-{bp}-{zi}-{ci}'
+                is_open = first_open and zi == 0 and ci == 0 and bool(ans_html)
+                chev = '<i class="az-c" aria-hidden="true"></i>' if ans_html else ''
+                btn = (f'<button class="az-q" type="button" id="{iid}-q" aria-expanded="{"true" if is_open else "false"}" aria-controls="{iid}-a"'
+                       f' style="--qf:{qfs:g}"><span>{html.escape(q)}</span>{chev}</button>') if ans_html else f'<div class="az-q az-static" style="--qf:{qfs:g}"><span>{html.escape(q)}</span></div>'
+                panel = (f'<div class="az-a" id="{iid}-a" role="region" aria-labelledby="{iid}-q"><div class="az-in"><div class="az-body">{ans_html}</div></div></div>') if ans_html else ''
+                items.append(f'<div class="az-i{" open" if is_open else ""}"><h3 class="az-h">{btn}</h3>{panel}</div>')
+            z['html'] = (f'<div class="bd az" style="--pbg:{z["pbg"]};--x:{z["x"]:.1f};--w:{z["w"]:.1f};--gap:{max(12, z["gap"]):.1f}">'
+                         f'<div class="az-list">' + ''.join(items) + '</div></div>')
+    if zones:
+        fr_ = [r[1] for r in rects if r[2] >= W * .95 and (r[4] or '').upper() == '#3A495B' and r[1] > H / 2]
+        ftop_z = min(fr_) if fr_ else H
+        bands_z = []; cur = 0
+        for zi, z in enumerate(zones):
+            bands_z.append((cur, z['top'], None)); bands_z.append((z['top'], z['top'], ('zone', zi)))
+            cur = z['bottom']
+            if cur >= ftop_z - 1:
+                bands_z.append((0, 0, ('space', 0))); cur = ftop_z
+        bands_z.append((cur, H, None))
+        zr = [(z['top'], z['bottom']) for z in zones]
+        html_z = []
+        for ys, ye, kind in bands_z:
+            if kind:
+                if kind[0] == 'zone': html_z.append(zones[kind[1]]['html'])
+                else: html_z.append(f'<div class="bd az-space" style="--pbg:{zones[-1]["pbg"]}"></div>')
+                continue
+            if ye <= ys: continue
+            items = [o for k, (y, o) in enumerate(out) if (ys <= y < ye or (ys == 0 and y < 0))
+                     and (k in FOOTIDX or not any(a_ <= y < b_ for a_, b_ in zr))]
+            has_img = any(r[1] < ye and r[1] + r[3] > ys for r in imgs)
+            dec = decor_obj if has_img else f'<img class="decor" src="{svg_rel}" alt="" aria-hidden="true">'
+            html_z.append(f'<div class="bd" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
+        return W, H, hh, '\n'.join(html_z) + legal_nav, True
     # full-photo hero (product home pages): the 1024-tall full-width block right under the header
     hero = next(((min(r[1], hh), r[1] + r[3]) for r in rects if r[2] >= W * .95 and 700 <= r[3] <= 1200 and hh - 5 <= r[1] <= hh + 60
                  and any(im[2] >= W * .9 and im[1] < r[1] + 50 for im in imgs)), None)
@@ -521,6 +650,8 @@ for out, title, prod, names in PAGES:
             'Yes. Each MINT PIL is based on current clinical evidence and guidance, and is reviewed regularly. '
             'When the evidence or guidance changes, the leaflet is updated so patients always see accurate information.',
     }
+    for name in names:   # first pass: learn every question's answer from all three frames
+        if name and os.path.exists(os.path.join(SVGDIR, name + '.svg')): frame(name, prod, 'x')
     for bp, name in zip(('d', 't', 'm'), names):
         if name is None: continue
         if not os.path.exists(os.path.join(SVGDIR, name + '.svg')):

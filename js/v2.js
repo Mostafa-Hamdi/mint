@@ -55,7 +55,7 @@ document.querySelectorAll('.acc-t').forEach(function (btn) {
   window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; spy(); }); } }, { passive: true });
   window.addEventListener('resize', function () { size(); spy(); });
   window.addEventListener('load', function () { size(); spy(); });
-  document.addEventListener('transitionend', function (e) { if (e.target.classList && e.target.classList.contains('bd')) { size(); spy(); } });
+  document.addEventListener('transitionend', function (e) { if (e.target.classList && (e.target.classList.contains('bd') || e.target.classList.contains('az-a'))) { size(); spy(); } });
   size(); spy();
 })();
 
@@ -193,5 +193,14 @@ document.querySelectorAll('[data-cty]').forEach(function (box) {
     if (!box.dataset.value) { box.classList.remove('need'); void box.offsetWidth; box.classList.add('need'); open(true); return; }
     try { sessionStorage.setItem('mint-section', box.dataset.value); } catch (err) {}
     location.href = 'contact.html';
+  });
+});
+
+// HTML accordions (guide + legal FAQ): the question button opens / closes its answer.
+document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var item = btn.closest('.az-i'), open = !item.classList.contains('open');
+    item.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 });

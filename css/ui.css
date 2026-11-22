@@ -284,3 +284,16 @@ a.fh-eco-i:hover .fh-eco-l { transform: scale(1.05); box-shadow: 0 8px 18px -8px
   .ck-fab { left: 14px; bottom: calc(var(--tb-h, 0px) + 22px); width: 40px; height: 40px; }
 }
 @media (prefers-reduced-motion: reduce) { .ck-pop, .ck-fab, .ck-sw::after, .ck-btn { transition: none; } }
+
+/* ---------- page scrollbar: slim brand-gradient thumb on a soft mint track ---------- */
+@supports not selector(::-webkit-scrollbar) { html { scrollbar-width: thin; scrollbar-color: #2EB4A3 #EEF7F5; } }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: linear-gradient(90deg, #F4FBF9, #EAF5F2); }
+::-webkit-scrollbar-thumb { border: 3px solid transparent; border-radius: 99px; background-clip: padding-box;
+  background-image: linear-gradient(180deg, #00A48F, #2EB4A3 55%, #6ACE2A); min-height: 48px; }
+::-webkit-scrollbar-thumb:hover { border-width: 2px; background-image: linear-gradient(180deg, #009482, #26A796 55%, #5DBB22); }
+::-webkit-scrollbar-thumb:active { border-width: 1.5px; }
+::-webkit-scrollbar-corner { background: #EAF5F2; }
+/* inner scroll areas (cookie preferences, menus) get a slimmer version */
+.ck-prefs::-webkit-scrollbar, .fh-ecop::-webkit-scrollbar, .fh-ddp::-webkit-scrollbar { width: 8px; }
+.ck-prefs::-webkit-scrollbar-track { background: transparent; }

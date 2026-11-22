@@ -16,6 +16,10 @@ for p, name in (('consent', 'MINT CONSENT'), ('pils', 'MINT PILs')):
     page = CFG.sub(lambda m: m.group(1) + json.dumps(cfg) + m.group(3), src, count=1)
     page = re.sub(r'<title>[^<]*</title>', f'<title>About AMPM Training – {name}</title>', page, count=1)
     page = page.replace('class="page pg-about"', f'class="page pg-about pg-{p}-about"')
+    # keep the (MINTFORMED-style) footer links inside the product too
+    for x_, y_ in (('href="about.html"', f'href="{about}"'), ('href="piftick.html"', f'href="{p}-piftick.html"'),
+                   ('href="cookies.html"', f'href="{p}-cookies.html"'), ('href="contact.html"', f'href="{p}.html" data-section="contact"')):
+        page = page.replace(x_, y_)
     open(os.path.join(proj, about), 'w', encoding='utf-8').write(page)
     # every About link on this product's pages (header/tabs config, page links, footer "About AMPM")
     n = 0
