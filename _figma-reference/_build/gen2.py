@@ -22,7 +22,7 @@ PAGES = [
   ('pils-pricing.html', 'MINT PILs – Pricing', 'pils', ('MINTPILSPricing1440', 'MINTPILSPricing_991', 'MINTPILSPricing_430')),
   ('pils-piftick.html', 'MINT PILs – PIF TICK', 'pils', ('MINTPILPIFTICK1440', 'MINTPilspiftick991', 'MINTINPillspiftick430')),
   ('pils-cookies.html', 'MINT PILs – Cookies', 'pils', ('MINTPILCookies1440', 'MINTPilscookies991', 'MINTPilscookies430')),
-  ('pils-legal.html', 'MINT PILs – Legal', 'pils', ('MINTPILSlegal1440', 'MINTPILsLegal_991', 'MINTPILsLegal_430')),
+  ('pils-legal.html', 'MINT PILs – Legal', 'pils', ('MINTPILSlegal1440', None, 'MINTPILsLegal_430')),
 ]
 
 # font metrics (hhea ascender / descender, em units)
@@ -33,13 +33,17 @@ def links(prod):
     legal = 'pils-legal.html'
     return {
         'Home': p + '.html', 'About': 'about.html', 'About Us': 'about.html', 'Guide': p + '-guide.html',
-        'Contact Us': p + '.html#contact', 'Pricing': p + '-pricing.html', 'About AMPM': 'about.html',
+        'Contact Us': (p + '.html', 'contact'), 'Pricing': p + '-pricing.html', 'About AMPM': 'about.html',
         'Tutorials and Guides': p + '-guide.html', 'Cookies': p + '-cookies.html', 'PIFTICK': p + '-piftick.html',
-        'MINTFORMED': 'index.html', 'Privacy Policy': legal, 'Terms and Conditions': legal, 'FAQ’s': p + '-guide.html',
-        'Refunds Policy': legal, 'Copyright Information': legal, 'Log in': '#', 'More Info': p + '-guide.html',
+        'MINTFORMED': 'index.html', 'Privacy Policy': (legal, 'privacy'), 'Terms and Conditions': (legal, 'terms'),
+        'FAQ’s': (legal, 'faq'), 'Refunds Policy': (legal, 'refunds'), 'Copyright Information': (legal, 'copyright'),
+        'Log in': '#', 'More Info': p + '-guide.html',
         'info@ampmtraining.com': 'mailto:info@ampmtraining.com', 'www.pifttick.org.uk': 'https://piftick.org.uk',
-        'www.piftick.org.uk': 'https://piftick.org.uk', 'MINT CONSENT': None, 'MINT PILs': None,
+        'www.piftick.org.uk': 'https://piftick.org.uk',
     }
+
+LEGAL_HEADINGS = {'Terms and conditions': 'terms', 'Privacy Policy': 'privacy', 'FAQ': 'faq', 'Refunds Policy': 'refunds', 'Copyright Information': 'copyright'}
+LEGAL_SIDE = {'Terms Of Use': 'terms', 'Privacy Policy': 'privacy', 'FAQ': 'faq', 'Refunds Policy': 'refunds', 'Copyrights Information': 'copyright'}
 
 def fx(t):
     try: return t.encode('latin1').decode('utf8')
@@ -106,6 +110,14 @@ def frame(name, prod, bp):
             if mt: x += float(mt.group(1)); y += float(mt.group(2) or 0)
             elif tr: continue
             rects.append((x, y, num(r.get('width')), num(r.get('height')), r.get('fill'), r.get('stroke'), num(r.get('rx', '0'))))
+    # small teal stroke paths = the accordion chevrons/arrows drawn in the design
+    chevs = []
+    for pth in root.iter(N + 'path'):
+        if (pth.get('stroke') or '').upper() != '#00A48F' or parent.get(pth) is None: continue
+        nums = [float(v) for v in re.findall(r'-?\d*\.?\d+', pth.get('d', ''))]
+        xs, ys_ = nums[0::2], nums[1::2]
+        if xs and max(xs) - min(xs) < 30 and max(ys_) - min(ys_) < 30:
+            chevs.append(((min(xs) + max(xs)) / 2, (min(ys_) + max(ys_)) / 2))
     texts = []
     for t in list(root.iter(N + 'text')):
         anc = parent.get(t); bad = False
@@ -125,9 +137,10 @@ def frame(name, prod, bp):
     open(os.path.join(PROJ, svg_rel), 'w', encoding='utf-8').write(data)
 
     L = links(prod)
-    out = []; inputs = []
+    out = []; inputs = []; tinfo = []; input_y = []; side = []
     def inside(px, py, r, pad=2):
         return r[0] - pad <= px <= r[0] + r[2] + pad and r[1] - pad <= py <= r[1] + r[3] + pad
+    ALLTXT = [(num(s.get('y')), fx(s.text or '')) for t, _ in texts for s in t.iter(N + 'tspan')]
     for t, bad in texts:
         fam = (t.get('font-family') or 'Poppins').split(',')[0].strip("'\" ")
         fs = num(t.get('font-size', '16')); fw = t.get('font-weight', '400')
@@ -142,9 +155,16 @@ def frame(name, prod, bp):
             y = round(num(s.get('y')), 2)
             lines.setdefault(y, []).append(s)
         full = fx(' '.join(''.join(s.text or '' for s in v) for v in lines.values())).strip()
+        if not full and spans:
+            # Figma left the e-mail run empty after "...by email on" — fill it in as the real address
+            sy = num(spans[0].get('y'))
+            if any(abs(yy - sy) < 1 and 'email on' in tt for yy, tt in ALLTXT):
+                spans[0].text = 'info@ampmtraining.com'; lines = {round(sy, 2): [spans[0]]}; full = spans[0].text
         if not full: continue
         if bad: print('  ! transformed text skipped:', full[:40], file=sys.stderr); continue
         first = spans[0]; fx0, fy0 = num(first.get('x')), num(first.get('y'))
+        ty = fy0 - asc * fs; tbot = max(lines) + desc * fs
+        tinfo.append((ty, tbot, fx0, fill.upper(), re.sub(r'\s+', ' ', full)))
         # placeholder -> input
         if fill.upper() == '#95A5A4' and fw == '400':
             box = next((r for r in rects if r[5] and r[5].upper() == '#95A5A4' and inside(fx0, fy0, r)), None)
@@ -153,7 +173,7 @@ def frame(name, prod, bp):
                 typ = '' if tag == 'textarea' else ' type="%s"' % ('email' if 'mail' in full.lower() else 'tel' if 'phone' in full.lower() else 'text')
                 st = f'--x:{box[0]:.1f};--y:{box[1]:.1f};--w:{box[2]:.1f};--h:{box[3]:.1f};--f:{fs:g};--pl:{fx0 - box[0]:.1f}'
                 el = f'<{tag} class="fi"{typ} style="{st}" placeholder="{html.escape(full)}" aria-label="{html.escape(full)}"' + ('></textarea>' if tag == 'textarea' else '>')
-                inputs.append(el); continue
+                inputs.append(el); input_y.append(box[1]); continue
         style = f"font:{fw} calc({fs:g}*var(--u))/{asc + desc:.4f} {fam},sans-serif;color:{fill}"
         if lsv: style += f";letter-spacing:calc({lsv:.3f}*var(--u))"
         line_html = []
@@ -169,34 +189,158 @@ def frame(name, prod, bp):
                 st = (';' + ';'.join(sst)) if sst else ''
                 line_html.append(f'<span class="ln" style="--x:{num(s.get("x")):.2f};--y:{y - asc * fs:.2f}{st}">{txt}</span>')
         body = ''.join(line_html)
-        key = full.rstrip(' :')
-        href = L.get(key)
-        if href and href.startswith(PAGE_FILE + '#'): href = href[len(PAGE_FILE):]
+        key = re.sub(r'\s+', ' ', full).strip(' :')
+        # breadcrumb "Home/Page": Home is a link, the current page is plain text
+        mb = re.match(r'^Home\s*/\s*(.+)$', key)
+        if mb and len(lines) == 1:
+            crumb = (f'<nav class="tx crumb" aria-label="Breadcrumb" style="{style}"><span class="ln" style="--x:{fx0:.2f};--y:{ty:.2f}">'
+                     f'<a href="{L["Home"]}">Home</a><span class="crumb-sep" aria-hidden="true">/</span><span aria-current="page">{html.escape(mb.group(1))}</span></span></nav>')
+            out.append((ty, crumb)); continue
+        # section headings on the legal page become scroll targets (never links)
+        if PAGE_FILE == 'pils-legal.html' and fam == 'Poppins' and key in LEGAL_HEADINGS:
+            out.append((ty, f'<span class="anchor" data-anchor="{LEGAL_HEADINGS[key]}" style="--y:{ty:.1f}"></span>'))
+            tag = 'h2' if fs >= 34 else 'h3'
+            out.append((ty, f'<{tag} class="tx" style="{style}">{body}</{tag}>'))
+            continue
+        # legal page: the drawn side list is rebuilt as a sticky HTML nav (see below)
+        if PAGE_FILE == 'pils-legal.html' and fam == 'Montserrat' and (key in LEGAL_SIDE or (key == 'Legal' and fs <= 24)):
+            side.append((key, fx0, fy0)); continue
+        target = L.get(key)
+        if fam == 'Montserrat' and key in LEGAL_SIDE: target = ('pils-legal.html', LEGAL_SIDE[key])
+        sec = None
+        if isinstance(target, tuple): target, sec = target
+        href = target
+        dsec = f' data-section="{sec}"' if sec else ''
         if href is not None or key in ('Send', 'Continue'):
             box = None
             cand = [r for r in rects if inside(fx0 + 2, fy0 - fs * .3, r, 0) and r[2] < 700 and r[3] < 120 and (r[4] not in (None, 'none') or r[5])]
             if cand: box = min(cand, key=lambda r: r[2] * r[3])
             if key in ('Send', 'Continue'):
                 hit = f'<button class="hit" type="submit" style="--x:{box[0]:.1f};--y:{box[1]:.1f};--w:{box[2]:.1f};--h:{box[3]:.1f};--r:{box[6]:g}" aria-label="{key}"></button>' if box else ''
-                out.append(f'<p class="tx" aria-hidden="true" style="{style}">{body}</p>{hit}' if box else f'<p class="tx" style="{style}">{body}</p>')
+                out.append((ty, f'<p class="tx" aria-hidden="true" style="{style}">{body}</p>{hit}' if box else f'<p class="tx" style="{style}">{body}</p>'))
             elif box:
-                out.append(f'<p class="tx" aria-hidden="true" style="{style}">{body}</p><a class="hit" href="{href}" style="--x:{box[0]:.1f};--y:{box[1]:.1f};--w:{box[2]:.1f};--h:{box[3]:.1f};--r:{box[6]:g}">{html.escape(key)}</a>')
+                out.append((ty, f'<p class="tx" aria-hidden="true" style="{style}">{body}</p><a class="hit" href="{href}"{dsec} style="--x:{box[0]:.1f};--y:{box[1]:.1f};--w:{box[2]:.1f};--h:{box[3]:.1f};--r:{box[6]:g}">{html.escape(key)}</a>'))
             else:
-                cur = ' aria-current="page"' if href == PAGE_FILE else ''
+                cur = ' aria-current="page"' if href == PAGE_FILE and not sec else ''
                 tone = ' lk-on-dark' if fill.lower() in ('white', '#fff', '#ffffff') or fill.upper() == '#EAFAF5' else ''
-                out.append(f'<a class="tx lk{tone}" href="{href}"{cur} style="{style}">{body}</a>')
+                out.append((ty, f'<a class="tx lk{tone}" href="{href}"{dsec}{cur} style="{style}">{body}</a>'))
             continue
         if key == 'GET IN TOUCH':
-            out.append(f'<span class="anchor" data-anchor="contact" style="--y:{fy0 - 140:.1f}"></span>')
-        tag = 'h1' if fs >= 56 and not any('<h1' in o for o in out) else 'h2' if fs >= 34 else 'h3' if fs >= 26 else 'p'
-        out.append(f'<{tag} class="tx" style="{style}">{body}</{tag}>')
-    form = ''
+            out.append((ty, f'<span class="anchor" data-anchor="contact" style="--y:{fy0 - 40:.1f}"></span>'))
+        tag = 'h1' if fs >= 56 and not any('<h1' in o[1] for o in out) else 'h2' if fs >= 34 else 'h3' if fs >= 26 else 'p'
+        out.append((ty, f'<{tag} class="tx" style="{style}">{body}</{tag}>'))
     if inputs:
-        form = '<form class="ff" action="#" method="post" onsubmit="return false">' + ''.join(inputs) + '</form>'
-        # move the Send button inside the form
-        out = [o.replace('<button class="hit"', '<button form="f-' + bp + '" class="hit"') for o in out]
-        form = form.replace('<form class="ff"', f'<form id="f-{bp}" class="ff"')
-    return W, H, hh, svg_rel, '\n'.join(out) + '\n' + form
+        out = [(y, o.replace('<button class="hit"', '<button form="f-' + bp + '" class="hit"')) for y, o in out]
+        out.append((min(input_y), f'<form id="f-{bp}" class="ff" action="#" method="post" onsubmit="return false">' + ''.join(inputs) + '</form>'))
+
+    # ---------- accordions: cards (white -> #EAFAF5) holding a question and a #288C91 answer ----------
+    imgs = [r for r in rects if (r[4] or '').startswith('url(#pattern')]
+    ref = None
+    try: ref = Image.open(os.path.join(PROJ, '_figma-reference', 'v2', name + '.png')).convert('RGB')
+    except Exception: pass
+    accs = []
+    def qkey(q): return re.sub(r'[^a-z0-9]', '', q.lower())
+    for r in rects:
+        x, y, w, h, f = r[0], r[1], r[2], r[3], r[4] or ''
+        if not f.startswith('url(#') or w < 300 or h < 60: continue
+        if (paint_color(f, defs) or '').upper() != '#EAFAF5': continue
+        ans = [t for t in tinfo if t[3] == '#288C91' and x <= t[2] <= x + w and t[0] >= y and t[1] <= y + h + 2]
+        ins = None
+        if ans:
+            a0 = min(t[0] for t in ans)
+            qs = [t for t in tinfo if t[3] == '#3A495B' and x <= t[2] <= x + w and t[0] >= y - 2 and t[1] <= a0 + 2]
+            if not qs: continue
+            ANSWERS.setdefault(qkey(' '.join(t[4] for t in qs)), ' '.join(t[4] for t in sorted(ans)))
+        else:
+            # a question card with no answer in this frame: borrow the answer the design gives in another frame
+            qs = [t for t in tinfo if t[3] == '#3A495B' and x <= t[2] <= x + w and t[0] >= y - 2 and t[1] <= y + h + 2]
+            if not qs: continue
+            ins = ANSWERS.get(qkey(' '.join(t[4] for t in qs)))
+            if not ins: continue
+        qtop, qbot = min(t[0] for t in qs), max(t[1] for t in qs)
+        pad = qtop - y
+        if ins:
+            hc = h; y0 = y1 = y + h
+        else:
+            hc = (qbot - y) + pad; e = min(pad, 14)
+            # a full-width block (the footer) drawn over the card ends it visually
+            cover = [rr[1] for rr in rects if rr[2] >= W * .95 and y + hc < rr[1] < y + h]
+            if cover: y0, y1 = y + hc - e, min(cover)
+            else: y0, y1 = y + hc - e, y + h - e
+            if y1 - y0 < 20: continue
+        # chevron centre from the Figma render (green/teal pixels at the right of the question row)
+        cx, cy = x + w - 34.5, y + hc / 2; bg = '#FBFEFD'
+        ch = [c for c in chevs if x + w - 100 <= c[0] <= x + w and y <= c[1] <= y + hc]
+        if ch:
+            cx, cy = ch[0]
+            if ref and 0 <= int(cx + 20) < ref.width and 0 <= int(cy) < ref.height:
+                bg = '#%02X%02X%02X' % ref.getpixel((int(cx + 20), int(cy)))
+        elif ref:
+            px = [(i, j) for i in range(int(x + w - 90), int(x + w)) for j in range(int(y), int(y + hc))
+                  if 0 <= i < ref.width and 0 <= j < ref.height and (lambda p: p[1] > 150 and p[0] < 150 and p[2] < 170)(ref.getpixel((i, j)))]
+            if px:
+                cx = (min(p[0] for p in px) + max(p[0] for p in px)) / 2; cy = (min(p[1] for p in px) + max(p[1] for p in px)) / 2
+                bp_ = ref.getpixel((min(int(cx + 20), ref.width - 1), int(cy)))
+                bg = '#%02X%02X%02X' % bp_
+        accs.append(dict(x=x, y=y, w=w, hc=hc, y0=y0, y1=y1, cx=cx, cy=cy, bg=bg, q=' '.join(t[4] for t in qs), ins=ins))
+    accs.sort(key=lambda a: a['y'])
+    decor_obj = f'<object class="decor" type="image/svg+xml" data="{svg_rel}" tabindex="-1" aria-hidden="true"></object>'
+    # sticky legal nav: same pills as the design (295x40, 57 apart), rebuilt in HTML over a cover of the drawn one
+    legal_nav = ''
+    if side:
+        head = next((s for s in side if s[0] == 'Legal'), None)
+        pills = [s for s in side if s[0] != 'Legal']
+        px_ = (head[1] if head else min(p[1] for p in pills) - 80)
+        top0 = min(p[2] for p in pills) - 25.7
+        htop = (head[2] - 22 if head else top0 - 40)
+        bottom = max(p[2] for p in pills) - 25.7 + 40
+        foot = [r[1] for r in rects if r[2] >= W * .95 and (r[4] or '').upper() == '#3A495B' and r[1] > H / 2]
+        end_y = min(foot) if foot else H - 600
+        out.append((end_y - 1, f'<span class="anchor" data-anchor="legal-end" style="--y:{end_y - 40:.1f}"></span>'))
+        links_ = ''.join(f'<a class="lgn-a" href="pils-legal.html" data-section="{LEGAL_SIDE[k]}">{html.escape(k)}</a>'
+                         for k, _, _ in sorted(pills, key=lambda p: p[2]))
+        legal_nav = (f'<span class="lgn-cover" style="--x:{px_ - 14:.1f};--y:{htop - 8:.1f};--w:{295 + 28};--h:{bottom - htop + 18:.1f}" aria-hidden="true"></span>'
+                     f'<nav class="lgn" aria-label="Legal sections" style="--x:{px_:.1f};--y:{htop:.1f};--gap:{57 - 40}">'
+                     f'<div class="lgn-in"><p class="lgn-h">Legal</p>{links_}</div></nav>')
+    if not accs:
+        return W, H, hh, decor_obj + '\n' + '\n'.join(o for _, o in out) + legal_nav, False
+    # bands: the page is cut into horizontal strips; each answer is its own strip that can fold to 0.
+    # Answers borrowed from another frame are inserted as their own HTML strip under the question card.
+    bands = []; cur = 0
+    for i, a in enumerate(accs):
+        if a['ins']:
+            bands.append((cur, a['y0'], None)); bands.append((a['y0'], a['y0'], ('ins', i))); cur = a['y0']
+        else:
+            bands.append((cur, a['y0'], None)); bands.append((a['y0'], a['y1'], i)); cur = a['y1']
+    bands.append((cur, H, None))
+    bands = [b_ for b_ in bands if b_[1] > b_[0] or b_[2] is not None]
+    open_first = 'guide' in PAGE_FILE
+    html_bands = []
+    def answer_html(t):
+        parts_ = [p.strip() for p in re.split(r'\s(?=- )', t) if p.strip()]
+        out_ = ''.join(f'<p>{html.escape(p)}</p>' for p in parts_)
+        return re.sub(r'([\w.+-]+@[\w-]+\.[\w.]+)', r'<a href="mailto:\1">\1</a>', out_)
+    for ys, ye, acc in bands:
+        if isinstance(acc, tuple):
+            a = accs[acc[1]]
+            html_bands.append(f'<div class="bd acc ins closed" id="acc-{bp}-{acc[1]}" style="--x:{a["x"]:.1f};--w:{a["w"]:.1f}"><div class="ans"><div class="ans-in">{answer_html(a["ins"])}</div></div></div>')
+            continue
+        items = [o for (y, o) in out if ys <= y < ye or (ys == 0 and y < 0)]
+        # toggles live in the band that holds their question row
+        for i, a in enumerate(accs):
+            if ys <= a['y'] < ye:
+                is_open = open_first and i == 0 and not a['ins']
+                items.append(f'<button class="acc-t" type="button" aria-expanded="{"true" if is_open else "false"}" aria-controls="acc-{bp}-{i}" '
+                             f'style="--x:{a["x"]:.1f};--y:{a["y"]:.1f};--w:{a["w"]:.1f};--h:{a["hc"]:.1f}"><span class="visually-hidden">{html.escape(a["q"])}</span>'
+                             f'<span class="acc-c" style="--cx:{a["cx"] - a["x"]:.1f};--cy:{a["cy"] - a["y"]:.1f};--bg:{a["bg"]}" aria-hidden="true"></span></button>')
+        has_img = any(r[1] < ye and r[1] + r[3] > ys for r in imgs)
+        dec = decor_obj if has_img else f'<img class="decor" src="{svg_rel}" alt="" aria-hidden="true">'
+        if acc is None:
+            html_bands.append(f'<div class="bd" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
+        else:
+            is_open = open_first and acc == 0
+            html_bands.append(f'<div class="bd acc{"" if is_open else " closed"}" id="acc-{bp}-{acc}" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
+    return W, H, hh, '\n'.join(html_bands) + legal_nav, True
 
 HEAD = '''<!doctype html>
 <html lang="en">
@@ -230,28 +374,21 @@ for out, title, prod, names in PAGES:
     if ONLY and slug not in ONLY: continue
     parts = []
     L = links(prod)
+    ANSWERS = {}
     for bp, name in zip(('d', 't', 'm'), names):
         if name is None: continue
         if not os.path.exists(os.path.join(SVGDIR, name + '.svg')):
             print('missing', name, file=sys.stderr); continue
-        W, H, HH, rel, body = frame(name, prod, bp)
-        home = L['Home']
-        lb = {'d': (60, 10, 240, 78), 't': (40, 10, 225, 78), 'm': (60, 6, 180, 86)}[bp]
-        logo = f'<a class="hit hit-logo" href="{home}" style="--x:{lb[0]};--y:{lb[1]};--w:{lb[2]};--h:{lb[3]};--r:12" aria-label="{"MINT CONSENT" if prod == "consent" else "MINT PILs"} home"></a>'
-        extra = ' fv-td' if (bp == 't' and names[0] is None) else ''
-        menu = ''
-        if bp == 'm':
-            menu = ('<button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"></button>'
-                    '<nav class="mnav" id="mnav" aria-label="Main">' + ''.join(f'<a href="{L[k]}">{k}</a>' for k in ('Home', 'About', 'Guide', 'Contact Us')) + '</nav>\n')
-        parts.append(f'<section class="fv fv-{bp}{extra}" style="--W:{W:g};--H:{H:g};--HH:{HH:g}" aria-label="{html.escape(title)}">\n'
-                     f'<object class="decor" type="image/svg+xml" data="{rel}" tabindex="-1" aria-hidden="true"></object>\n{logo}{menu}{body}\n</section>\n')
+        W, H, HH, body, banded = frame(name, prod, bp)
+        extra = (' fv-td' if (bp == 't' and names[0] is None) else '') + (' banded' if banded else '')
+        parts.append(f'<section class="fv fv-{bp}{extra}" style="--W:{W:g};--H:{H:g};--HH:{HH:g}" aria-label="{html.escape(title)}">\n{body}\n</section>\n')
     p_ = 'consent' if prod == 'consent' else 'pils'
     cfg = {'name': 'MINT CONSENT' if prod == 'consent' else 'MINT PILs', 'logo': f'assets/img/logo-{p_}.svg', 'home': p_ + '.html',
            'links': [{'label': 'Home', 'href': p_ + '.html'}, {'label': 'About', 'href': 'about.html'}, {'label': 'Guide', 'href': p_ + '-guide.html'},
-                     {'label': 'Pricing', 'href': p_ + '-pricing.html'}, {'label': 'Contact Us', 'href': p_ + '.html#contact'}],
+                     {'label': 'Pricing', 'href': p_ + '-pricing.html'}, {'label': 'Contact Us', 'href': p_ + '.html', 'section': 'contact'}],
            'tabs': [{'label': 'Home', 'href': p_ + '.html', 'icon': 'home'}, {'label': 'Guide', 'href': p_ + '-guide.html', 'icon': 'book'},
                     {'label': 'Pricing', 'href': p_ + '-pricing.html', 'icon': 'tag'}, {'label': 'About', 'href': 'about.html', 'icon': 'info'},
-                    {'label': 'Contact', 'href': p_ + '.html#contact', 'icon': 'mail'}]}
+                    {'label': 'Contact', 'href': p_ + '.html', 'section': 'contact', 'icon': 'mail'}]}
     foot = FOOT.replace('<script src="js/ui.js"></script>', '<script type="application/json" id="sticky-cfg">' + json.dumps(cfg) + '</script>\n<script src="js/ui.js"></script>')
     open(os.path.join(PROJ, out), 'w', encoding='utf-8').write(HEAD.format(title=html.escape(title), slug=slug) + ''.join(parts) + foot)
     print('wrote', out)

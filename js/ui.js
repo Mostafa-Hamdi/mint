@@ -22,8 +22,9 @@
             return '<a href="' + m.href + '"' + (m.href === here ? ' aria-current="page"' : '') + '><span class="fh-ml"><img src="' + m.logo + '" alt=""></span><span class="fh-mt"><b>' + m.label + '</b><small>' + m.note + '</small></span>' + arrow + '</a>';
           }).join('') + '</div></div>';
       }
-      var cur = l.href === here ? ' aria-current="page"' : '';
-      return '<a href="' + l.href + '"' + cur + '>' + l.label + '</a>';
+      var cur = l.href === here && !l.section ? ' aria-current="page"' : '';
+      var sec = l.section ? ' data-section="' + l.section + '"' : '';
+      return '<a href="' + l.href + '"' + sec + cur + '>' + l.label + '</a>';
     }).join('');
     bar.innerHTML =
       '<div class="fh-pill">' +
@@ -75,8 +76,9 @@
         }).join('') + '</div>';
         return '<button type="button" class="tb-i" data-i="' + i + '" aria-expanded="false" aria-controls="tb-sheet">' + svg(t.icon) + '<span>' + t.label + '</span></button>';
       }
-      var cur = t.href === here ? ' aria-current="page"' : '';
-      return '<a class="tb-i" data-i="' + i + '" href="' + t.href + '"' + cur + '>' + svg(t.icon) + '<span>' + t.label + '</span></a>';
+      var cur = t.href === here && !t.section ? ' aria-current="page"' : '';
+      var sec = t.section ? ' data-section="' + t.section + '"' : '';
+      return '<a class="tb-i" data-i="' + i + '" href="' + t.href + '"' + sec + cur + '>' + svg(t.icon) + '<span>' + t.label + '</span></a>';
     }).join('');
     tabbar.innerHTML = sheetHtml + '<div class="tb-bar" style="--n:' + cfg.tabs.length + '"><span class="tb-ind" aria-hidden="true"></span>' + items + '</div>';
     document.body.appendChild(tabbar);
@@ -101,6 +103,50 @@
     document.addEventListener('click', function (e) { if (tabbar.classList.contains('sheet-open') && !tabbar.contains(e.target)) setSheet(false); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setSheet(false); });
     window.addEventListener('pageshow', function () { setSheet(false); moveInd(active); });
+  }
+
+  /* ---------- section scrolling (JS only, no #ids in links or the URL) ----------
+     <a data-section="x"> scrolls to the visible [data-anchor="x"]. On another page the
+     section name is handed over in sessionStorage and the scroll happens after load. */
+  var KEY = 'mint-section';
+  function anchorFor(name) {
+    return Array.prototype.find.call(document.querySelectorAll('[data-anchor="' + name + '"]'), function (el) { return el.offsetParent !== null; });
+  }
+  function headerSpace() { return window.innerWidth < 768 ? 80 : 100; }
+  function goTo(name, smooth) {
+    var el = anchorFor(name);
+    if (!el) return false;
+    var y = el.getBoundingClientRect().top + window.scrollY - headerSpace();
+    window.scrollTo({ top: Math.max(0, y), behavior: smooth && !reduce ? 'smooth' : 'auto' });
+    return true;
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[data-section]');
+    if (a) {
+      e.preventDefault();
+      var name = a.getAttribute('data-section');
+      var page = (a.getAttribute('href') || '').split('?')[0];
+      if (!page || page === here) {
+        if (!goTo(name, true) && name === 'contact') location.href = 'contact.html';
+      } else {
+        try { sessionStorage.setItem(KEY, name); } catch (err) {}
+        location.href = page;
+      }
+      return;
+    }
+    var dead = e.target.closest('a[href="#"]');
+    if (dead) e.preventDefault();          // placeholder links (Log in) never jump to the top
+  });
+  var pending = null;
+  try { pending = sessionStorage.getItem(KEY); sessionStorage.removeItem(KEY); } catch (err) {}
+  if (pending) {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    var run = function () {
+      setTimeout(function () {
+        if (!goTo(pending, true) && pending === 'contact') location.href = 'contact.html';
+      }, 120);
+    };
+    if (document.readyState === 'complete') run(); else window.addEventListener('load', run);
   }
 
   /* ---------- back to top ---------- */

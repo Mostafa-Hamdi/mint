@@ -93,7 +93,7 @@ FOOTER = '''
       </div>
       <nav class="ft-links" aria-label="Footer">
         <a class="l1" href="about.html">About Us</a><span class="bar b1"></span>
-        <a class="l2" href="pils-legal.html">Terms and Conditions</a><span class="bar b2"></span>
+        <a class="l2" href="pils-legal.html" data-section="terms">Terms and Conditions</a><span class="bar b2"></span>
         <a class="l3" href="piftick.html">PIFTICK</a><span class="bar b3"></span>
         <a class="l4" href="cookies.html">Cookies</a><span class="bar b4"></span>
         <a class="l5" href="contact.html">Contact Us</a>
