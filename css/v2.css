@@ -1,0 +1,38 @@
+/* MINT CONSENT / MINT PILs pages.
+   Each page holds one layout per Figma frame (1440 / 991 / 430).
+   1u = one Figma pixel of the active frame; the frame scales to the viewport width. */
+body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+.v2 { container-type: inline-size; overflow-x: clip; }
+.fv { position: relative; margin: 0 auto; width: calc(var(--W) * var(--u)); height: calc(var(--H) * var(--u)); overflow: hidden; }
+.fv-d { --u: min(100cqw / 1440, 1.3334px); }
+.fv-t { --u: calc(100cqw / 991); }
+.fv-m { --u: calc(100cqw / 430); }
+@media (min-width: 992px) { .fv-t, .fv-m { display: none; } }
+@media (max-width: 991.98px) { .fv-d { display: none; } }
+@media (min-width: 600px) { .fv-m { display: none; } }
+@media (max-width: 599.98px) { .fv-t { display: none; } }
+.fv .decor { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; display: block; }
+.fv .tx { margin: 0; position: static; }
+.fv .ln { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); white-space: pre; }
+.fv a.lk { text-decoration: none; }
+.fv a.lk:hover .ln { text-decoration: underline; }
+.fv .hit { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w) * var(--u)); height: calc(var(--h) * var(--u));
+  background: transparent; border: 0; padding: 0; border-radius: 6px; font-size: 0; color: transparent; cursor: pointer; z-index: 2; }
+.fv .hit:hover { background: rgba(255, 255, 255, .12); box-shadow: 0 0 0 2px rgba(0, 164, 143, .25); }
+.fv .hit:focus-visible, .fv .fi:focus-visible, .fv a.lk:focus-visible { outline: 2px solid #00A48F; outline-offset: 2px; }
+.fv .fi { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w) * var(--u)); height: calc(var(--h) * var(--u));
+  box-sizing: border-box; margin: 0; border: 0; background: transparent; resize: none; overflow: hidden;
+  padding: 0 0 0 calc(var(--pl) * var(--u)); font: 400 calc(var(--f) * var(--u))/1.4 Poppins, sans-serif; color: #3A495B; z-index: 2; }
+.fv textarea.fi { padding-top: calc((var(--h) - var(--f) * 1.4) / 2 * var(--u)); }
+.fv .fi::placeholder { color: #95A5A4; opacity: 1; }
+/* page with no desktop frame in Figma: the 991 layout is shown centred at its native size */
+@media (min-width: 992px) { .fv-td { display: block; --u: 1px; } }
+/* phone menu */
+.fv .burger { position: absolute; left: calc(8 * var(--u)); top: calc(26 * var(--u)); width: calc(40 * var(--u)); height: calc(40 * var(--u));
+  background: transparent; border: 0; padding: 0; z-index: 5; cursor: pointer; border-radius: 6px; }
+.fv .burger:focus-visible { outline: 2px solid #00A48F; }
+.fv .mnav { display: none; position: absolute; left: 0; right: 0; top: calc(97 * var(--u)); z-index: 6; background: #fff;
+  box-shadow: 0 10px 24px rgba(58, 73, 91, .15); padding: calc(8 * var(--u)) 0; }
+.fv .mnav.open { display: block; }
+.fv .mnav a { display: block; padding: calc(12 * var(--u)) calc(24 * var(--u)); font: 500 calc(18 * var(--u))/1.4 Poppins, sans-serif; color: #3A495B; text-decoration: none; }
+.fv .mnav a:hover { color: #00A48F; background: #EAFAF5; }
