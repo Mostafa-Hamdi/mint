@@ -11,7 +11,7 @@ document.querySelectorAll('.hdr-burger').forEach(function (btn) {
 // Products menu: opens on hover (pointer devices) and on click / keyboard everywhere.
 document.querySelectorAll('.nav-products').forEach(function (li) {
   var btn = li.querySelector('.nav-trigger');
-  var hoverable = window.matchMedia('(hover: hover) and (min-width: 600px)');
+  var hoverable = window.matchMedia('(hover: hover) and (min-width: 768px)');
   var timer;
   function set(open) {
     li.classList.toggle('is-open', open);

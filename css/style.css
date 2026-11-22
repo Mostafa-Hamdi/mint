@@ -197,8 +197,8 @@ a { color: inherit; }
 .ab-ceo-txt .goal { color: var(--navy); }
 .ab-ceo-txt .b-t { font-weight: inherit; }
 .ab-global .b-tm { font-weight: inherit; }
-@media (max-width: 991.98px) { .ab-global .pb { font-weight: 700; } }
-@media (max-width: 599.98px) { .ab-global .pd { font-weight: 700; } .ab-global .b-d { font-weight: inherit; } }
+@media (max-width: 1199.98px) { .ab-global .pb { font-weight: 700; } }
+@media (max-width: 767.98px) { .ab-global .pd { font-weight: 700; } .ab-global .b-d { font-weight: inherit; } }
 .ab-ceo-txt a { color: var(--navy); font-weight: 700; }
 .ab-ceo-links { left: calc(var(--u) * 103); top: calc(var(--u) * 538); display: flex; gap: calc(var(--u) * 20); align-items: flex-start; }
 .ab-ceo-links img.m { width: calc(var(--u) * 44.28); height: calc(var(--u) * 29.4); }
@@ -324,7 +324,7 @@ a { color: inherit; }
 /* ==========================================================================
    TABLET  (600px – 991px)  — Figma frames *_991, scaled to the viewport
    ========================================================================== */
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .page > *, .page main > * { --u: calc(100cqw / 991); }
   .site-footer.ft-c .frame { top: 0; height: calc(var(--u) * 809); }
   .frame { width: calc(var(--u) * 991); }
@@ -388,7 +388,7 @@ a { color: inherit; }
 /* ==========================================================================
    PHONE  (< 600px)  — Figma frames *_430, scaled to the viewport
    ========================================================================== */
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .page > *, .page main > * { --u: calc(100cqw / 430); }
   .frame { width: calc(var(--u) * 430); }
   .br-d { display: none; }
@@ -464,7 +464,7 @@ a { color: inherit; }
 }
 
 /* ------------------------------------------------ ABOUT – tablet */
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .pg-about .page-hero-title { width: calc(var(--u) * 991); top: calc(var(--u) * 278); left: calc(var(--u) * 0.5); }
   .hdr-nav a.active { color: var(--navy); }
   .pg-about .hero-inner { background-image: url(../assets/img/hero-about-991.jpg); }
@@ -496,7 +496,7 @@ a { color: inherit; }
 }
 
 /* ------------------------------------------------ ABOUT – phone */
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .site-header.h92 .frame { height: calc(var(--u) * 95); }
   .site-header.h92 .hdr-logo { left: calc(var(--u) * 97); }
   .site-header.h92 .hdr-burger { left: calc(var(--u) * 20); }
@@ -542,17 +542,17 @@ a { color: inherit; }
 
 /* Interim: Contact / Cookies / PIFTICK bodies keep the 1440 layout scaled to the
    viewport below 992px (their 991/430 layouts are not built yet). */
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
 }
 
 /* ------------------------------------------------ PIFTICK – tablet / phone */
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .pf-sec .frame { height: calc(var(--u) * 2283); }
   .pf-logo { left: calc(var(--u) * 132); top: calc(var(--u) * 137.5); }
   .pf-h { left: calc(var(--u) * 148.5); top: calc(var(--u) * 301.3); }
   .pf-body { left: calc(var(--u) * 95); top: calc(var(--u) * 525.4); width: calc(var(--u) * 795); }
 }
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .pf-sec .frame { height: calc(var(--u) * 2712); }
   .pf-logo { left: calc(var(--u) * 66); top: calc(var(--u) * 104.5); }
   .pf-h { left: calc(var(--u) * 63); top: calc(var(--u) * 283.3); width: calc(var(--u) * 330); line-height: calc(var(--u) * 54); }
@@ -561,7 +561,7 @@ a { color: inherit; }
 }
 
 /* ------------------------------------------------ CONTACT – tablet / phone */
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
   .ct-sec .ct-info [style*="--t"] { top: calc(var(--t2) * var(--u)) !important; }
   .ct-ico { display: none; }
   .ct-ri { display: flex; align-items: center; gap: calc(var(--u) * 10.8); }
@@ -569,7 +569,7 @@ a { color: inherit; }
   .ct-li { left: auto !important; }
   .ct-form { top: var(--ft); }
 }
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .ct-sec .frame { height: calc(var(--u) * 1747); }
   .ct-h1 { left: calc(var(--u) * 216); top: calc(var(--u) * 109.6); }
   .ct-addr-h { left: calc(var(--u) * 214); top: calc(var(--u) * 231); }
@@ -579,7 +579,7 @@ a { color: inherit; }
   .r-eg { --t2: 742; } .r-etel { --t2: 828; } .r-email { --t2: 874; }
   .ct-form { left: calc(var(--u) * 216); top: calc(var(--u) * 969); }
 }
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .pg-contact .site-header .frame { height: calc(var(--u) * 88); }
   .pg-contact .site-footer { margin-top: calc(var(--u) * 9); }
   .ct-sec .frame { height: calc(var(--u) * 1976); }
@@ -607,10 +607,10 @@ a { color: inherit; }
 
 /* ------------------------------------------------ COOKIES – tablet / phone */
 .ck-p .b-m { font-weight: inherit; }
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
   .ck-table th > span, .ck-table td > div { white-space: normal; padding-right: calc(18 * var(--u)) !important; }
 }
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .pg-cookies .site-header .frame { height: calc(var(--u) * 97); }
   .pg-cookies .page-hero .frame { height: calc(var(--u) * 650); }
   .pg-cookies .hero-inner { background-image: url(../assets/img/hero-about-991.jpg); }
@@ -631,7 +631,7 @@ a { color: inherit; }
   .ck-table .r-per { height: calc(var(--u) * 1086); } .ck-table .r-ana { height: calc(var(--u) * 784); } .ck-table .r-adv { height: calc(var(--u) * 1171); }
   .ck-table th > span { --pl: 93 !important; }
 }
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .pg-cookies .site-header .frame { height: calc(var(--u) * 131); }
   .pg-cookies .page-hero .frame { height: calc(var(--u) * 655); }
   .pg-cookies .hero-inner { background-image: url(../assets/img/hero-about-430.jpg); }
@@ -813,13 +813,13 @@ a { color: inherit; }
 .hdr-nav a:focus-visible, .hdr-nav .nav-trigger:focus-visible, .btn-login:focus-visible, .link-more:focus-visible,
 .ft-links a:focus-visible, .ft-social a:focus-visible, .ct-send:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 4px; }
 
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .nav-products .mega { width: calc(var(--u) * 400); }
   .hdr-nav .nav-trigger { color: var(--navy); }
 }
 
 /* phone: the menu panel slides down, Products expands in place */
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .hdr-nav { display: block; visibility: hidden; opacity: 0; transform: translateY(calc(var(--u) * -8));
     transition: opacity .3s var(--ease), transform .4s var(--ease), visibility 0s .4s;
     border-top: 2px solid; border-image: var(--grad) 1; }

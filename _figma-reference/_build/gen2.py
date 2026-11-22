@@ -1,6 +1,6 @@
 # Figma SVG frames -> static HTML pages (MINT CONSENT / MINT PILs sub-sites)
 # usage: python -I gen2.py <svgdir> <projectdir> [page ...]
-import sys, os, re, io, copy, base64, hashlib, html
+import sys, os, re, io, copy, base64, hashlib, html, json
 import xml.etree.ElementTree as ET
 from PIL import Image
 
@@ -198,11 +198,14 @@ HEAD = '''<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
+  <meta name="theme-color" content="#3A495B">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="css/v2.css" rel="stylesheet">
+  <link href="css/ui.css" rel="stylesheet">
 </head>
 <body>
 <div class="page v2 pg-{slug}">
@@ -210,6 +213,7 @@ HEAD = '''<!doctype html>
 FOOT = '''</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/v2.js"></script>
+<script src="js/ui.js"></script>
 </body>
 </html>
 '''
@@ -235,5 +239,10 @@ for out, title, prod, names in PAGES:
                     '<nav class="mnav" id="mnav" aria-label="Main">' + ''.join(f'<a href="{L[k]}">{k}</a>' for k in ('Home', 'About', 'Guide', 'Contact Us')) + '</nav>\n')
         parts.append(f'<section class="fv fv-{bp}{extra}" style="--W:{W:g};--H:{H:g}" aria-label="{html.escape(title)}">\n'
                      f'<object class="decor" type="image/svg+xml" data="{rel}" tabindex="-1" aria-hidden="true"></object>\n{logo}{menu}{body}\n</section>\n')
-    open(os.path.join(PROJ, out), 'w', encoding='utf-8').write(HEAD.format(title=html.escape(title), slug=slug) + ''.join(parts) + FOOT)
+    p_ = 'consent' if prod == 'consent' else 'pils'
+    cfg = {'name': 'MINT CONSENT' if prod == 'consent' else 'MINT PILs', 'logo': f'assets/img/logo-{p_}.svg', 'home': p_ + '.html',
+           'links': [{'label': 'Home', 'href': p_ + '.html'}, {'label': 'About', 'href': 'about.html'}, {'label': 'Guide', 'href': p_ + '-guide.html'},
+                     {'label': 'Pricing', 'href': p_ + '-pricing.html'}, {'label': 'Contact Us', 'href': p_ + '.html#contact'}]}
+    foot = FOOT.replace('<script src="js/ui.js"></script>', '<script type="application/json" id="sticky-cfg">' + json.dumps(cfg) + '</script>\n<script src="js/ui.js"></script>')
+    open(os.path.join(PROJ, out), 'w', encoding='utf-8').write(HEAD.format(title=html.escape(title), slug=slug) + ''.join(parts) + foot)
     print('wrote', out)

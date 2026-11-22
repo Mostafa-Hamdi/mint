@@ -197,8 +197,8 @@ a { color: inherit; }
 .ab-ceo-txt .goal { color: var(--navy); }
 .ab-ceo-txt .b-t { font-weight: inherit; }
 .ab-global .b-tm { font-weight: inherit; }
-@media (max-width: 991.98px) { .ab-global .pb { font-weight: 700; } }
-@media (max-width: 599.98px) { .ab-global .pd { font-weight: 700; } .ab-global .b-d { font-weight: inherit; } }
+@media (max-width: 1199.98px) { .ab-global .pb { font-weight: 700; } }
+@media (max-width: 767.98px) { .ab-global .pd { font-weight: 700; } .ab-global .b-d { font-weight: inherit; } }
 .ab-ceo-txt a { color: var(--navy); font-weight: 700; }
 .ab-ceo-links { left: 103u; top: 538u; display: flex; gap: 20u; align-items: flex-start; }
 .ab-ceo-links img.m { width: 44.28u; height: 29.4u; }
@@ -324,7 +324,7 @@ a { color: inherit; }
 /* ==========================================================================
    TABLET  (600px – 991px)  — Figma frames *_991, scaled to the viewport
    ========================================================================== */
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .page > *, .page main > * { --u: calc(100cqw / 991); }
   .site-footer.ft-c .frame { top: 0; height: 809u; }
   .frame { width: 991u; }
@@ -388,7 +388,7 @@ a { color: inherit; }
 /* ==========================================================================
    PHONE  (< 600px)  — Figma frames *_430, scaled to the viewport
    ========================================================================== */
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .page > *, .page main > * { --u: calc(100cqw / 430); }
   .frame { width: 430u; }
   .br-d { display: none; }
@@ -464,7 +464,7 @@ a { color: inherit; }
 }
 
 /* ------------------------------------------------ ABOUT – tablet */
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .pg-about .page-hero-title { width: 991u; top: 278u; left: 0.5u; }
   .hdr-nav a.active { color: var(--navy); }
   .pg-about .hero-inner { background-image: url(../assets/img/hero-about-991.jpg); }
@@ -496,7 +496,7 @@ a { color: inherit; }
 }
 
 /* ------------------------------------------------ ABOUT – phone */
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .site-header.h92 .frame { height: 95u; }
   .site-header.h92 .hdr-logo { left: 97u; }
   .site-header.h92 .hdr-burger { left: 20u; }
@@ -542,17 +542,17 @@ a { color: inherit; }
 
 /* Interim: Contact / Cookies / PIFTICK bodies keep the 1440 layout scaled to the
    viewport below 992px (their 991/430 layouts are not built yet). */
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
 }
 
 /* ------------------------------------------------ PIFTICK – tablet / phone */
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .pf-sec .frame { height: 2283u; }
   .pf-logo { left: 132u; top: 137.5u; }
   .pf-h { left: 148.5u; top: 301.3u; }
   .pf-body { left: 95u; top: 525.4u; width: 795u; }
 }
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .pf-sec .frame { height: 2712u; }
   .pf-logo { left: 66u; top: 104.5u; }
   .pf-h { left: 63u; top: 283.3u; width: 330u; line-height: 54u; }
@@ -561,7 +561,7 @@ a { color: inherit; }
 }
 
 /* ------------------------------------------------ CONTACT – tablet / phone */
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
   .ct-sec .ct-info [style*="--t"] { top: calc(var(--t2) * var(--u)) !important; }
   .ct-ico { display: none; }
   .ct-ri { display: flex; align-items: center; gap: 10.8u; }
@@ -569,7 +569,7 @@ a { color: inherit; }
   .ct-li { left: auto !important; }
   .ct-form { top: var(--ft); }
 }
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .ct-sec .frame { height: 1747u; }
   .ct-h1 { left: 216u; top: 109.6u; }
   .ct-addr-h { left: 214u; top: 231u; }
@@ -579,7 +579,7 @@ a { color: inherit; }
   .r-eg { --t2: 742; } .r-etel { --t2: 828; } .r-email { --t2: 874; }
   .ct-form { left: 216u; top: 969u; }
 }
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .pg-contact .site-header .frame { height: 88u; }
   .pg-contact .site-footer { margin-top: 9u; }
   .ct-sec .frame { height: 1976u; }
@@ -607,10 +607,10 @@ a { color: inherit; }
 
 /* ------------------------------------------------ COOKIES – tablet / phone */
 .ck-p .b-m { font-weight: inherit; }
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
   .ck-table th > span, .ck-table td > div { white-space: normal; padding-right: calc(18 * var(--u)) !important; }
 }
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .pg-cookies .site-header .frame { height: 97u; }
   .pg-cookies .page-hero .frame { height: 650u; }
   .pg-cookies .hero-inner { background-image: url(../assets/img/hero-about-991.jpg); }
@@ -631,7 +631,7 @@ a { color: inherit; }
   .ck-table .r-per { height: 1086u; } .ck-table .r-ana { height: 784u; } .ck-table .r-adv { height: 1171u; }
   .ck-table th > span { --pl: 93 !important; }
 }
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .pg-cookies .site-header .frame { height: 131u; }
   .pg-cookies .page-hero .frame { height: 655u; }
   .pg-cookies .hero-inner { background-image: url(../assets/img/hero-about-430.jpg); }
@@ -813,13 +813,13 @@ a { color: inherit; }
 .hdr-nav a:focus-visible, .hdr-nav .nav-trigger:focus-visible, .btn-login:focus-visible, .link-more:focus-visible,
 .ft-links a:focus-visible, .ft-social a:focus-visible, .ct-send:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 4px; }
 
-@media (max-width: 991.98px) and (min-width: 600px) {
+@media (max-width: 1199.98px) and (min-width: 768px) {
   .nav-products .mega { width: 400u; }
   .hdr-nav .nav-trigger { color: var(--navy); }
 }
 
 /* phone: the menu panel slides down, Products expands in place */
-@media (max-width: 599.98px) {
+@media (max-width: 767.98px) {
   .hdr-nav { display: block; visibility: hidden; opacity: 0; transform: translateY(-8u);
     transition: opacity .3s var(--ease), transform .4s var(--ease), visibility 0s .4s;
     border-top: 2px solid; border-image: var(--grad) 1; }
