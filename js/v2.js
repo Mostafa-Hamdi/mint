@@ -139,6 +139,13 @@ document.querySelectorAll('.acc-t').forEach(function (btn) {
         para.forEach(function (l) { l.row.forEach(function (o) { out += o.s.outerHTML; }); });
         return;
       }
+      // other text drawn between the previous paragraph and this one: start this one at its own design position
+      if (run.length) {
+        var last = run[run.length - 1], lr = [];
+        last.forEach(function (l) { l.row.forEach(function (o) { lr.push(o.r); }); });
+        var between = { left: area.left, right: area.right, top: box(lr).bottom, bottom: area.top + 2 };
+        if (between.bottom > between.top && blockers.some(function (b) { return hits(between, b); })) flush();
+      }
       run.push(para);
     });
     flush();

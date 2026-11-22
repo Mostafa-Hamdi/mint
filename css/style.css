@@ -375,7 +375,7 @@ a { color: inherit; }
   .hp-photo-pils { left: calc(var(--u) * 50); top: calc(var(--u) * 1300); width: calc(var(--u) * 556); height: calc(var(--u) * 310); }
   .hp-photo-family { left: calc(var(--u) * 377); top: calc(var(--u) * 2130); width: calc(var(--u) * 556); height: calc(var(--u) * 310); border-radius: 0; content: url(../assets/img/home-family-991.png); }
   .hp-h-consent { left: calc(var(--u) * 60); top: calc(var(--u) * 45); }
-  .hp-p-consent { left: calc(var(--u) * 61); top: calc(var(--u) * 145.5); }
+  .hp-p-consent { left: calc(var(--u) * 61); top: calc(var(--u) * 145.5); width: calc(var(--u) * 400); }
   .hp-more-consent { left: calc(var(--u) * 60); top: calc(var(--u) * 358); }
   .hp-h-pils { left: calc(var(--u) * 53); top: calc(var(--u) * 51.5); }
   .hp-p-pils { left: calc(var(--u) * 54); top: calc(var(--u) * 152.5); }

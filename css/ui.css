@@ -159,5 +159,6 @@ body.has-fh .fv { margin-top: calc(var(--HH, 97) * var(--u) * -1); }          /*
 @media (prefers-reduced-motion: reduce) { .tb *, .tb-ind { transition: none !important; } }
 
 /* typography: avoid one-word last lines and balance short headings */
-p, li, td, .fl { text-wrap: pretty; }
+p, li, td { text-wrap: pretty; }
+.fv .fl { text-wrap: wrap; }   /* re-flowed text must never gain a line */
 h1, h2, h3 { text-wrap: balance; }

@@ -151,7 +151,7 @@ body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-re
 
 /* re-flowed paragraphs (js/v2.js) */
 .fv .fl { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w) * var(--u));
-  font-size: calc(var(--fs) * var(--u)); line-height: calc(var(--lh) * var(--u)); white-space: normal; text-wrap: pretty; }
+  font-size: calc(var(--fs) * var(--u)); line-height: calc(var(--lh) * var(--u)); white-space: normal; text-wrap: wrap; }
 
 /* breadcrumb: link vs current page clearly different */
 .fv .crumb a { color: #6ACE2A; text-decoration: underline; text-decoration-color: rgba(106, 206, 42, .45); text-decoration-thickness: 1.5px; text-underline-offset: .22em; }

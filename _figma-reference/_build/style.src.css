@@ -375,7 +375,7 @@ a { color: inherit; }
   .hp-photo-pils { left: 50u; top: 1300u; width: 556u; height: 310u; }
   .hp-photo-family { left: 377u; top: 2130u; width: 556u; height: 310u; border-radius: 0; content: url(../assets/img/home-family-991.png); }
   .hp-h-consent { left: 60u; top: 45u; }
-  .hp-p-consent { left: 61u; top: 145.5u; }
+  .hp-p-consent { left: 61u; top: 145.5u; width: 400u; }
   .hp-more-consent { left: 60u; top: 358u; }
   .hp-h-pils { left: 53u; top: 51.5u; }
   .hp-p-pils { left: 54u; top: 152.5u; }
