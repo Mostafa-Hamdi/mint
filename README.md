@@ -18,3 +18,10 @@ Deploy: Vercel, Framework preset "Other", no build command, output directory = r
 These pages are generated from the Figma frames (exported as SVG) by `_figma-reference/_build/gen2.py`:
 each page holds the 1440 / 991 / 430 layouts; shapes and photos come from `assets/svg/*.svg` + `assets/v2/`,
 and all text, links, form fields and buttons are real HTML on top (`css/v2.css`, `js/v2.js`).
+
+### Rebuilding the product pages
+1. `python gen2.py <svg dir> <project>` — writes the 11 pages from the Figma SVG exports.
+2. Serve the project (e.g. `python -m http.server 5500`), copy `_figma-reference/_build/prerender.html` into the project root,
+   and run `msedge --headless=new --virtual-time-budget=300000 --dump-dom http://localhost:5500/prerender.html > dump.html`.
+3. `python bake.py <project> dump.html` — writes the re-flowed text into the pages, so they open already laid out.
+   (`js/v2.js` only re-flows text that was not baked.)
