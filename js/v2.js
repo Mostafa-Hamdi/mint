@@ -1,13 +1,18 @@
 // MINT CONSENT / MINT PILs pages.
-// Phone menu toggle.
+// Phone menu: burger toggles it; a tap outside, a link tap or Esc closes it.
 document.querySelectorAll('.burger').forEach(function (btn) {
   var nav = document.getElementById(btn.getAttribute('aria-controls'));
-  btn.addEventListener('click', function () {
-    var open = nav.classList.toggle('open');
+  function set(open) {
+    nav.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  btn.addEventListener('click', function () { set(!nav.classList.contains('open')); });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+  document.addEventListener('click', function (e) {
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) set(false);
   });
-  nav.addEventListener('click', function (e) { if (e.target.closest('a')) btn.click(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('open')) { set(false); btn.focus(); } });
 });
 // Mark the current page in the phone menu.
 var here = location.pathname.split('/').pop() || 'index.html';

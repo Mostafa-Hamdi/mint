@@ -242,7 +242,10 @@ for out, title, prod, names in PAGES:
     p_ = 'consent' if prod == 'consent' else 'pils'
     cfg = {'name': 'MINT CONSENT' if prod == 'consent' else 'MINT PILs', 'logo': f'assets/img/logo-{p_}.svg', 'home': p_ + '.html',
            'links': [{'label': 'Home', 'href': p_ + '.html'}, {'label': 'About', 'href': 'about.html'}, {'label': 'Guide', 'href': p_ + '-guide.html'},
-                     {'label': 'Pricing', 'href': p_ + '-pricing.html'}, {'label': 'Contact Us', 'href': p_ + '.html#contact'}]}
+                     {'label': 'Pricing', 'href': p_ + '-pricing.html'}, {'label': 'Contact Us', 'href': p_ + '.html#contact'}],
+           'tabs': [{'label': 'Home', 'href': p_ + '.html', 'icon': 'home'}, {'label': 'Guide', 'href': p_ + '-guide.html', 'icon': 'book'},
+                    {'label': 'Pricing', 'href': p_ + '-pricing.html', 'icon': 'tag'}, {'label': 'About', 'href': 'about.html', 'icon': 'info'},
+                    {'label': 'Contact', 'href': p_ + '.html#contact', 'icon': 'mail'}]}
     foot = FOOT.replace('<script src="js/ui.js"></script>', '<script type="application/json" id="sticky-cfg">' + json.dumps(cfg) + '</script>\n<script src="js/ui.js"></script>')
     open(os.path.join(PROJ, out), 'w', encoding='utf-8').write(HEAD.format(title=html.escape(title), slug=slug) + ''.join(parts) + foot)
     print('wrote', out)
