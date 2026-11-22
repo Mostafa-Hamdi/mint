@@ -30,15 +30,15 @@ METRICS = {'Poppins': (1.05, .35), 'Montserrat': (.968, .251), 'Inter': (.96875,
 
 def links(prod):
     p = 'consent' if prod == 'consent' else 'pils'
+    legal = 'pils-legal.html'
     return {
         'Home': p + '.html', 'About': 'about.html', 'About Us': 'about.html', 'Guide': p + '-guide.html',
         'Contact Us': p + '.html#contact', 'Pricing': p + '-pricing.html', 'About AMPM': 'about.html',
         'Tutorials and Guides': p + '-guide.html', 'Cookies': p + '-cookies.html', 'PIFTICK': p + '-piftick.html',
-        'MINTFORMED': 'index.html', 'Privacy Policy': ('pils-legal.html' if p == 'pils' else '#'),
-        'Terms and Conditions': ('pils-legal.html' if p == 'pils' else '#'), 'FAQ’s': '#', 'Refunds Policy': '#',
-        'Copyright Information': '#', 'Log in': '#', 'More Info': '#',
+        'MINTFORMED': 'index.html', 'Privacy Policy': legal, 'Terms and Conditions': legal, 'FAQ’s': p + '-guide.html',
+        'Refunds Policy': legal, 'Copyright Information': legal, 'Log in': '#', 'More Info': p + '-guide.html',
         'info@ampmtraining.com': 'mailto:info@ampmtraining.com', 'www.pifttick.org.uk': 'https://piftick.org.uk',
-        'www.piftick.org.uk': 'https://piftick.org.uk',
+        'www.piftick.org.uk': 'https://piftick.org.uk', 'MINT CONSENT': None, 'MINT PILs': None,
     }
 
 def fx(t):
@@ -165,18 +165,23 @@ def frame(name, prod, bp):
         body = ''.join(line_html)
         key = full.rstrip(' :')
         href = L.get(key)
+        if href and href.startswith(PAGE_FILE + '#'): href = href[len(PAGE_FILE):]
         if href is not None or key in ('Send', 'Continue'):
             box = None
             cand = [r for r in rects if inside(fx0 + 2, fy0 - fs * .3, r, 0) and r[2] < 700 and r[3] < 120 and (r[4] not in (None, 'none') or r[5])]
             if cand: box = min(cand, key=lambda r: r[2] * r[3])
             if key in ('Send', 'Continue'):
-                hit = f'<button class="hit" type="submit" style="--x:{box[0]:.1f};--y:{box[1]:.1f};--w:{box[2]:.1f};--h:{box[3]:.1f}" aria-label="{key}"></button>' if box else ''
+                hit = f'<button class="hit" type="submit" style="--x:{box[0]:.1f};--y:{box[1]:.1f};--w:{box[2]:.1f};--h:{box[3]:.1f};--r:{box[6]:g}" aria-label="{key}"></button>' if box else ''
                 out.append(f'<p class="tx" aria-hidden="true" style="{style}">{body}</p>{hit}' if box else f'<p class="tx" style="{style}">{body}</p>')
             elif box:
-                out.append(f'<p class="tx" aria-hidden="true" style="{style}">{body}</p><a class="hit" href="{href}" style="--x:{box[0]:.1f};--y:{box[1]:.1f};--w:{box[2]:.1f};--h:{box[3]:.1f}">{html.escape(key)}</a>')
+                out.append(f'<p class="tx" aria-hidden="true" style="{style}">{body}</p><a class="hit" href="{href}" style="--x:{box[0]:.1f};--y:{box[1]:.1f};--w:{box[2]:.1f};--h:{box[3]:.1f};--r:{box[6]:g}">{html.escape(key)}</a>')
             else:
-                out.append(f'<a class="tx lk" href="{href}" style="{style}">{body}</a>')
+                cur = ' aria-current="page"' if href == PAGE_FILE else ''
+                tone = ' lk-on-dark' if fill.lower() in ('white', '#fff', '#ffffff') or fill.upper() == '#EAFAF5' else ''
+                out.append(f'<a class="tx lk{tone}" href="{href}"{cur} style="{style}">{body}</a>')
             continue
+        if key == 'GET IN TOUCH':
+            out.append(f'<span class="anchor" data-anchor="contact" style="--y:{fy0 - 140:.1f}"></span>')
         tag = 'h1' if fs >= 56 and not any('<h1' in o for o in out) else 'h2' if fs >= 34 else 'h3' if fs >= 26 else 'p'
         out.append(f'<{tag} class="tx" style="{style}">{body}</{tag}>')
     form = ''
@@ -211,6 +216,7 @@ FOOT = '''</div>
 
 for out, title, prod, names in PAGES:
     slug = out[:-5]
+    PAGE_FILE = out
     if ONLY and slug not in ONLY: continue
     parts = []
     L = links(prod)
@@ -219,12 +225,15 @@ for out, title, prod, names in PAGES:
         if not os.path.exists(os.path.join(SVGDIR, name + '.svg')):
             print('missing', name, file=sys.stderr); continue
         W, H, rel, body = frame(name, prod, bp)
+        home = L['Home']
+        lb = {'d': (60, 10, 240, 78), 't': (40, 10, 225, 78), 'm': (60, 6, 180, 86)}[bp]
+        logo = f'<a class="hit hit-logo" href="{home}" style="--x:{lb[0]};--y:{lb[1]};--w:{lb[2]};--h:{lb[3]};--r:12" aria-label="{"MINT CONSENT" if prod == "consent" else "MINT PILs"} home"></a>'
         extra = ' fv-td' if (bp == 't' and names[0] is None) else ''
         menu = ''
         if bp == 'm':
             menu = ('<button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"></button>'
                     '<nav class="mnav" id="mnav" aria-label="Main">' + ''.join(f'<a href="{L[k]}">{k}</a>' for k in ('Home', 'About', 'Guide', 'Contact Us')) + '</nav>\n')
         parts.append(f'<section class="fv fv-{bp}{extra}" style="--W:{W:g};--H:{H:g}" aria-label="{html.escape(title)}">\n'
-                     f'<object class="decor" type="image/svg+xml" data="{rel}" tabindex="-1" aria-hidden="true"></object>\n{menu}{body}\n</section>\n')
+                     f'<object class="decor" type="image/svg+xml" data="{rel}" tabindex="-1" aria-hidden="true"></object>\n{logo}{menu}{body}\n</section>\n')
     open(os.path.join(PROJ, out), 'w', encoding='utf-8').write(HEAD.format(title=html.escape(title), slug=slug) + ''.join(parts) + FOOT)
     print('wrote', out)

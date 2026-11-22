@@ -14,17 +14,44 @@ body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-re
 .fv .decor { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; display: block; }
 .fv .tx { margin: 0; position: static; }
 .fv .ln { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); white-space: pre; }
-.fv a.lk { text-decoration: none; }
-.fv a.lk:hover .ln { text-decoration: underline; }
+/* ---------- links: gradient hairline that draws in from the centre ---------- */
+.fv a.lk { text-decoration: none; transition: color .35s cubic-bezier(.2,.8,.2,1); }
+.fv a.lk .ln::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.08em; height: max(1.5px, .09em); border-radius: 2px;
+  background: linear-gradient(90deg, #00A48F, #6ACE2A); transform: scaleX(0); transform-origin: 50% 50%;
+  transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.fv a.lk:hover, .fv a.lk:focus-visible { color: #00A48F !important; }
+.fv a.lk.lk-on-dark:hover, .fv a.lk.lk-on-dark:focus-visible { color: #A6E57A !important; }
+.fv a.lk.lk-on-dark .ln::after { background: linear-gradient(90deg, #6ACE2A, #EAFAF5); }
+.fv a.lk:hover .ln::after, .fv a.lk:focus-visible .ln::after, .fv a.lk[aria-current="page"] .ln::after { transform: scaleX(1); }
+
+/* ---------- buttons drawn by the design: glass sheen, glow ring and press ---------- */
 .fv .hit { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w) * var(--u)); height: calc(var(--h) * var(--u));
-  background: transparent; border: 0; padding: 0; border-radius: 6px; font-size: 0; color: transparent; cursor: pointer; z-index: 2; }
-.fv .hit:hover { background: rgba(255, 255, 255, .12); box-shadow: 0 0 0 2px rgba(0, 164, 143, .25); }
-.fv .hit:focus-visible, .fv .fi:focus-visible, .fv a.lk:focus-visible { outline: 2px solid #00A48F; outline-offset: 2px; }
+  background: transparent; border: 0; padding: 0; border-radius: calc(var(--r, 6) * var(--u)); font-size: 0; color: transparent; cursor: pointer; z-index: 2;
+  overflow: hidden; isolation: isolate;
+  transition: box-shadow .45s cubic-bezier(.2,.8,.2,1), background-color .3s; }
+.fv .hit::before { content: ""; position: absolute; inset: -2px; z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.55) 48%, rgba(255,255,255,.15) 54%, transparent 70%);
+  transform: translateX(-120%); transition: transform .9s cubic-bezier(.2,.8,.2,1); }
+.fv .hit:hover::before, .fv .hit:focus-visible::before { transform: translateX(120%); }
+.fv .hit:hover, .fv .hit:focus-visible {
+  box-shadow: 0 0 0 1.5px rgba(0,164,143,.55), 0 10px 28px -6px rgba(0,164,143,.45), 0 4px 10px -4px rgba(58,73,91,.25); }
+.fv .hit:active { background-color: rgba(58,73,91,.10); box-shadow: 0 0 0 1.5px rgba(0,164,143,.7), 0 4px 12px -6px rgba(0,164,143,.5); }
+.fv .hit-logo { overflow: visible; }
+.fv .hit-logo::before { display: none; }
+.fv .hit-logo:hover { box-shadow: none; }
+.fv .hit:focus-visible, .fv .fi:focus-visible, .fv a.lk:focus-visible { outline: 2px solid #00A48F; outline-offset: 3px; }
+.fv .anchor { position: absolute; top: calc(var(--y) * var(--u)); }
+
+/* ---------- form fields: soft focus halo ---------- */
 .fv .fi { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w) * var(--u)); height: calc(var(--h) * var(--u));
   box-sizing: border-box; margin: 0; border: 0; background: transparent; resize: none; overflow: hidden;
   padding: 0 0 0 calc(var(--pl) * var(--u)); font: 400 calc(var(--f) * var(--u))/1.4 Poppins, sans-serif; color: #3A495B; z-index: 2; }
 .fv textarea.fi { padding-top: calc((var(--h) - var(--f) * 1.4) / 2 * var(--u)); }
-.fv .fi::placeholder { color: #95A5A4; opacity: 1; }
+.fv .fi::placeholder { color: #95A5A4; opacity: 1; transition: opacity .3s; }
+.fv .fi { border-radius: calc(4.5 * var(--u)); transition: box-shadow .35s cubic-bezier(.2,.8,.2,1), background-color .35s; }
+.fv .fi:hover { box-shadow: 0 0 0 1px rgba(0,164,143,.45); }
+.fv .fi:focus { outline: none; background: rgba(255,255,255,.6); box-shadow: 0 0 0 1.5px #00A48F, 0 0 0 6px rgba(0,164,143,.14); }
+.fv .fi:focus::placeholder { opacity: .45; }
 /* page with no desktop frame in Figma: the 991 layout is shown centred at its native size */
 @media (min-width: 992px) { .fv-td { display: block; --u: 1px; } }
 /* phone menu */
@@ -36,3 +63,14 @@ body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-re
 .fv .mnav.open { display: block; }
 .fv .mnav a { display: block; padding: calc(12 * var(--u)) calc(24 * var(--u)); font: 500 calc(18 * var(--u))/1.4 Poppins, sans-serif; color: #3A495B; text-decoration: none; }
 .fv .mnav a:hover { color: #00A48F; background: #EAFAF5; }
+
+/* phone menu: animated panel */
+.fv .mnav { display: block; visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .3s, transform .35s cubic-bezier(.2,.8,.2,1), visibility 0s .35s;
+  border-top: 2px solid; border-image: linear-gradient(90deg, #00A48F, #6ACE2A) 1; }
+.fv .mnav.open { visibility: visible; opacity: 1; transform: none; transition: opacity .3s, transform .35s cubic-bezier(.2,.8,.2,1); }
+.fv .mnav a { position: relative; transition: color .3s, background-color .3s, padding-left .35s cubic-bezier(.2,.8,.2,1); }
+.fv .mnav a::before { content: ""; position: absolute; left: 0; top: 20%; bottom: 20%; width: 3px; border-radius: 0 3px 3px 0;
+  background: linear-gradient(#00A48F, #6ACE2A); transform: scaleY(0); transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.fv .mnav a:hover { padding-left: calc(32 * var(--u)); }
+.fv .mnav a:hover::before, .fv .mnav a[aria-current="page"]::before { transform: scaleY(1); }
+@media (prefers-reduced-motion: reduce) { .fv *, .fv *::before, .fv *::after { transition: none !important; } }
