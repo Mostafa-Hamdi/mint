@@ -6,6 +6,23 @@
   /* ---------- site header (built from #sticky-cfg) ----------
      One header for every page: full width at the top of the page,
      it glides into a floating glass capsule once the page scrolls. */
+  // "by MINTFORMED" switcher shown on the product sites: back to the main site, or across to the other product
+  function familySwitcher(cfg) {
+    var check = '<svg class="fh-eco-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+    var go = '<svg class="fh-eco-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    var items = cfg.family.map(function (f) {
+      var logo = f.logo ? '<img src="' + f.logo + '" alt="">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.5" r="2.4"/><path d="M3.5 19c.6-3.2 2.9-5 5.5-5s4.9 1.8 5.5 5M14.8 14.6c.7-.4 1.4-.6 2.2-.6 2 0 3.6 1.4 4 3.6"/></svg>';
+      var inner = '<span class="fh-eco-l">' + logo + '</span><span class="fh-eco-t"><b>' + f.label + '</b><small>' + f.note + '</small></span>';
+      if (f.soon) return '<span class="fh-eco-i is-soon" aria-disabled="true">' + inner + '<em>Coming soon</em></span>';
+      if (f.current) return '<span class="fh-eco-i is-cur" aria-current="page">' + inner + check + '</span>';
+      return '<a class="fh-eco-i' + (f.main ? ' is-main' : '') + '" href="' + f.href + '">' + inner + go + '</a>';
+    }).join('');
+    return '<span class="fh-eco-sep" aria-hidden="true"></span>' +
+      '<div class="fh-eco"><button class="fh-ecot" type="button" aria-expanded="false" aria-controls="fh-eco-p" aria-label="MINTFORMED family of products">' +
+      '<span class="fh-eco-by">by</span><img src="assets/img/logo.svg" alt="MINTFORMED">' +
+      '<svg class="fh-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>' +
+      '<div class="fh-ecop" id="fh-eco-p"><p class="fh-eco-k">The MINTFORMED family</p>' + items + '</div></div>';
+  }
   var cfgEl = document.getElementById('sticky-cfg');
   var bar = null, progress = null;
   if (cfgEl) {
@@ -30,6 +47,7 @@
       '<div class="fh-pill">' +
         '<span class="fh-bg" aria-hidden="true"></span>' +
         '<a class="fh-logo" href="' + cfg.home + '" aria-label="' + cfg.name + ' home"><img src="' + cfg.logo + '" alt="' + cfg.name + '"></a>' +
+        (cfg.family ? familySwitcher(cfg) : '') +
         '<nav class="fh-nav" aria-label="Main">' + links + '</nav>' +
         '<a class="fh-login" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg><span>Log in</span></a>' +
         '<span class="fh-progress" aria-hidden="true"></span>' +
@@ -38,6 +56,15 @@
     document.body.classList.add('has-fh');
     progress = bar.querySelector('.fh-progress');
     // Products dropdown: hover on pointer devices, click/keyboard everywhere, closes on an outside click
+    // family switcher: click / keyboard; closes on an outside click or Esc
+    var eco = bar.querySelector('.fh-eco');
+    if (eco) {
+      var et = eco.querySelector('.fh-ecot');
+      var setEco = function (open) { eco.classList.toggle('open', open); et.setAttribute('aria-expanded', open ? 'true' : 'false'); };
+      et.addEventListener('click', function () { setEco(!eco.classList.contains('open')); });
+      document.addEventListener('click', function (e) { if (!eco.contains(e.target)) setEco(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && eco.classList.contains('open')) { setEco(false); et.focus(); } });
+    }
     bar.querySelectorAll('.fh-dd').forEach(function (dd) {
       var t = dd.querySelector('.fh-ddt'), timer;
       var hoverable = window.matchMedia('(hover: hover)');
