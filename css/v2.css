@@ -139,7 +139,7 @@ body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-re
 .fv .crumb [aria-current="page"] { cursor: default; }
 
 /* ---------- answers borrowed from the desktop design (phone FAQ): an HTML strip that unfolds under its card ---------- */
-.bd.ins { height: auto; display: grid; grid-template-rows: 1fr; transition: grid-template-rows .55s cubic-bezier(.2,.8,.2,1); }
+.bd.ins { background: var(--pbg, #fff); height: auto; display: grid; grid-template-rows: 1fr; transition: grid-template-rows .55s cubic-bezier(.2,.8,.2,1); }
 .bd.ins.closed { height: auto; grid-template-rows: 0fr; }
 .bd.ins > .ans { min-height: 0; overflow: hidden; margin-left: calc(var(--x) * var(--u)); width: calc(var(--w) * var(--u)); }
 .ans-in { margin: 0 0 calc(4 * var(--u)); padding: calc(14 * var(--u)) calc(var(--pl, 22) * var(--u)) calc(18 * var(--u)); border-radius: 0 0 calc(12 * var(--u)) calc(12 * var(--u));
@@ -148,3 +148,18 @@ body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-re
 .ans-in p { margin: 0 0 calc(6 * var(--u)); }
 .ans-in p:last-child { margin-bottom: 0; }
 .ans-in a { color: #00A48F; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+
+/* re-flowed paragraphs (js/v2.js) */
+.fv .fl { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w) * var(--u));
+  font-size: calc(var(--fs) * var(--u)); line-height: calc(var(--lh) * var(--u)); white-space: normal; text-wrap: pretty; }
+
+/* breadcrumb: link vs current page clearly different */
+.fv .crumb a { color: #6ACE2A; text-decoration: underline; text-decoration-color: rgba(106, 206, 42, .45); text-decoration-thickness: 1.5px; text-underline-offset: .22em; }
+.fv .crumb a::after { display: none; }
+.fv .crumb a:hover, .fv .crumb a:focus-visible { color: #A6E57A; text-decoration-color: currentColor; }
+.fv .crumb .crumb-sep { margin: 0 .35em; color: rgba(255, 255, 255, .45); font-weight: 400; }
+.fv .crumb [aria-current="page"] { color: #fff; opacity: .92; }
+
+/* hero with a full photo: never taller than the screen under the header; the photo is cropped evenly top and bottom */
+.bd.hero { --full: calc(var(--h) * var(--u)); --vis: clamp(calc(var(--full) * .62), calc(100svh - var(--fh-h, 84px)), var(--full)); height: var(--vis); }
+.bd.hero > .bd-in { top: calc(var(--y0) * var(--u) * -1 - (var(--full) - var(--vis)) / 2); }

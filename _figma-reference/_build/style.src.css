@@ -280,8 +280,8 @@ a { color: inherit; }
 .pf-sec .frame { height: 1941u; }
 .pf-logo { left: 139u; top: 184.5u; width: 313u; height: 151u; }
 .pf-h { left: 624.5u; top: 173.3u; width: 675u; margin: 0; font: 700 36u/60u var(--ff-alt); color: var(--navy); }
-.pf-body { left: 104u; top: 473.4u; width: 1210u; font: 400 24u/40u var(--ff); color: var(--navy); }
-.pf-body p { margin: 0 0 40u; }
+.pf-body { left: 104u; top: 473.4u; width: 1210u; font: 400 20u/32u var(--ff); color: var(--navy); }
+.pf-body p { margin: 0 0 32u; }
 .pf-body b { font-weight: 700; }
 .pf-body a { color: var(--green); font-weight: 700; text-decoration: none; }
 .pf-body a:hover { text-decoration: underline; }
@@ -296,7 +296,7 @@ a { color: inherit; }
 .ck-h1 { margin: 0; font: 700 26u/39u var(--ff); color: var(--navy); white-space: nowrap; letter-spacing: -0.05em; translate: 0 1u; }
 .ck-center { left: 0; width: 1407u; text-align: center; }
 .ck-h2 { margin: 0; font: 700 24u/36u var(--ff); color: var(--navy); white-space: nowrap; translate: 0 4u; }
-.ck-p { margin: 0; width: 1290u; translate: 0 2u; font: 400 20u/40u var(--ff); color: var(--ink); }
+.ck-p { margin: 0; width: 1290u; translate: 0 2u; font: 400 20u/32u var(--ff); color: var(--ink); }
 .ck-ol { margin: 0; padding: 0; translate: 0 2u; font: 400 20u/40u var(--ff); color: var(--ink); white-space: nowrap; }
 .ck-ol li { padding-left: 4u; }
 .ck-ol li::marker { font-variant-numeric: normal; }
@@ -556,8 +556,8 @@ a { color: inherit; }
   .pf-sec .frame { height: 2712u; }
   .pf-logo { left: 66u; top: 104.5u; }
   .pf-h { left: 63u; top: 283.3u; width: 330u; line-height: 54u; }
-  .pf-body { left: 33u; top: 655u; width: 362u; font-size: 20u; line-height: 30u; }
-  .pf-body p { margin-bottom: 30u; }
+  .pf-body { left: 33u; top: 655u; width: 362u; font-size: 17u; line-height: 27u; }
+  .pf-body p { margin-bottom: 24u; }
 }
 
 /* ------------------------------------------------ CONTACT – tablet / phone */
@@ -593,6 +593,7 @@ a { color: inherit; }
   .r-addr { --t2: 243; translate: 6u 0; } .r-reg { --t2: 322; } .r-tel { --t2: 369; } .r-mail { --t2: 415; }
   .r-ksa { --t2: 485; } .r-ktel { --t2: 607; } .r-kmail { --t2: 653; }
   .r-eg { --t2: 730; } .r-etel { --t2: 818; } .r-email { --t2: 865; }
+  .ct-info .ct-h3 { width: 362u; }   /* keeps "Alafaf medical Services" on one line as in the design */
   .ct-form { left: 50u; top: 956u; width: 317u; height: 876u; padding: 0 0 0 35u; }
   .ct-form-lbl { margin-top: 44u; text-align: center; width: 247u; margin-left: -4.5u; }
   .ct-form-h { margin: 27.6u 0 0 64u; width: 112u; text-align: center; font-size: 18u; line-height: 30u; }
@@ -838,4 +839,11 @@ a { color: inherit; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; }
+}
+
+/* home hero (desktop + tablet): never taller than the screen under the header. The photo is cropped by
+   "cover" and the content block (title -> product cards, 278u..864u) stays centred and never clipped. */
+@media (min-width: 768px) {
+  .home-hero { --V: max(650u, min(1024u, calc(100svh - var(--fh-h, 84px)))); height: var(--V); overflow: hidden; }
+  .home-hero .frame { top: calc(-1 * clamp(0px, 571u - var(--V) / 2, 1024u - var(--V))); }
 }

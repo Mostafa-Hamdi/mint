@@ -280,8 +280,8 @@ a { color: inherit; }
 .pf-sec .frame { height: calc(var(--u) * 1941); }
 .pf-logo { left: calc(var(--u) * 139); top: calc(var(--u) * 184.5); width: calc(var(--u) * 313); height: calc(var(--u) * 151); }
 .pf-h { left: calc(var(--u) * 624.5); top: calc(var(--u) * 173.3); width: calc(var(--u) * 675); margin: 0; font: 700 calc(var(--u) * 36)/calc(var(--u) * 60) var(--ff-alt); color: var(--navy); }
-.pf-body { left: calc(var(--u) * 104); top: calc(var(--u) * 473.4); width: calc(var(--u) * 1210); font: 400 calc(var(--u) * 24)/calc(var(--u) * 40) var(--ff); color: var(--navy); }
-.pf-body p { margin: 0 0 calc(var(--u) * 40); }
+.pf-body { left: calc(var(--u) * 104); top: calc(var(--u) * 473.4); width: calc(var(--u) * 1210); font: 400 calc(var(--u) * 20)/calc(var(--u) * 32) var(--ff); color: var(--navy); }
+.pf-body p { margin: 0 0 calc(var(--u) * 32); }
 .pf-body b { font-weight: 700; }
 .pf-body a { color: var(--green); font-weight: 700; text-decoration: none; }
 .pf-body a:hover { text-decoration: underline; }
@@ -296,7 +296,7 @@ a { color: inherit; }
 .ck-h1 { margin: 0; font: 700 calc(var(--u) * 26)/calc(var(--u) * 39) var(--ff); color: var(--navy); white-space: nowrap; letter-spacing: -0.05em; translate: 0 calc(var(--u) * 1); }
 .ck-center { left: 0; width: calc(var(--u) * 1407); text-align: center; }
 .ck-h2 { margin: 0; font: 700 calc(var(--u) * 24)/calc(var(--u) * 36) var(--ff); color: var(--navy); white-space: nowrap; translate: 0 calc(var(--u) * 4); }
-.ck-p { margin: 0; width: calc(var(--u) * 1290); translate: 0 calc(var(--u) * 2); font: 400 calc(var(--u) * 20)/calc(var(--u) * 40) var(--ff); color: var(--ink); }
+.ck-p { margin: 0; width: calc(var(--u) * 1290); translate: 0 calc(var(--u) * 2); font: 400 calc(var(--u) * 20)/calc(var(--u) * 32) var(--ff); color: var(--ink); }
 .ck-ol { margin: 0; padding: 0; translate: 0 calc(var(--u) * 2); font: 400 calc(var(--u) * 20)/calc(var(--u) * 40) var(--ff); color: var(--ink); white-space: nowrap; }
 .ck-ol li { padding-left: calc(var(--u) * 4); }
 .ck-ol li::marker { font-variant-numeric: normal; }
@@ -556,8 +556,8 @@ a { color: inherit; }
   .pf-sec .frame { height: calc(var(--u) * 2712); }
   .pf-logo { left: calc(var(--u) * 66); top: calc(var(--u) * 104.5); }
   .pf-h { left: calc(var(--u) * 63); top: calc(var(--u) * 283.3); width: calc(var(--u) * 330); line-height: calc(var(--u) * 54); }
-  .pf-body { left: calc(var(--u) * 33); top: calc(var(--u) * 655); width: calc(var(--u) * 362); font-size: calc(var(--u) * 20); line-height: calc(var(--u) * 30); }
-  .pf-body p { margin-bottom: calc(var(--u) * 30); }
+  .pf-body { left: calc(var(--u) * 33); top: calc(var(--u) * 655); width: calc(var(--u) * 362); font-size: calc(var(--u) * 17); line-height: calc(var(--u) * 27); }
+  .pf-body p { margin-bottom: calc(var(--u) * 24); }
 }
 
 /* ------------------------------------------------ CONTACT – tablet / phone */
@@ -593,6 +593,7 @@ a { color: inherit; }
   .r-addr { --t2: 243; translate: calc(var(--u) * 6) 0; } .r-reg { --t2: 322; } .r-tel { --t2: 369; } .r-mail { --t2: 415; }
   .r-ksa { --t2: 485; } .r-ktel { --t2: 607; } .r-kmail { --t2: 653; }
   .r-eg { --t2: 730; } .r-etel { --t2: 818; } .r-email { --t2: 865; }
+  .ct-info .ct-h3 { width: calc(var(--u) * 362); }   /* keeps "Alafaf medical Services" on one line as in the design */
   .ct-form { left: calc(var(--u) * 50); top: calc(var(--u) * 956); width: calc(var(--u) * 317); height: calc(var(--u) * 876); padding: 0 0 0 calc(var(--u) * 35); }
   .ct-form-lbl { margin-top: calc(var(--u) * 44); text-align: center; width: calc(var(--u) * 247); margin-left: calc(var(--u) * -4.5); }
   .ct-form-h { margin: calc(var(--u) * 27.6) 0 0 calc(var(--u) * 64); width: calc(var(--u) * 112); text-align: center; font-size: calc(var(--u) * 18); line-height: calc(var(--u) * 30); }
@@ -838,4 +839,11 @@ a { color: inherit; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; }
+}
+
+/* home hero (desktop + tablet): never taller than the screen under the header. The photo is cropped by
+   "cover" and the content block (title -> product cards, calc(var(--u) * 278)..864u) stays centred and never clipped. */
+@media (min-width: 768px) {
+  .home-hero { --V: max(calc(var(--u) * 650), min(calc(var(--u) * 1024), calc(100svh - var(--fh-h, 84px)))); height: var(--V); overflow: hidden; }
+  .home-hero .frame { top: calc(-1 * clamp(0px, calc(var(--u) * 571) - var(--V) / 2, calc(var(--u) * 1024) - var(--V))); }
 }

@@ -125,9 +125,45 @@ def frame(name, prod, bp):
             if anc.get('transform'): bad = True
             anc = parent.get(anc)
         texts.append((t, bad))
+    textparent = {id(t): parent[t] for t, _ in texts}
     # strip texts from decor
     for t, _ in texts:
         parent[t].remove(t)
+    # Figma often splits one paragraph into two text layers in the same group: the regular words and the bold
+    # words (e.g. "AMPM Training", "PIF TICK"), each placed on the same lines. Merge them back into one paragraph
+    # with styled runs so it can be read and re-flowed as one.
+    def _sp(t): return list(t.iter(N + 'tspan'))
+    merged = set()
+    groups = {}
+    for t, bad in texts:
+        if bad: continue
+        g = textparent.get(id(t))
+        groups.setdefault(id(g), []).append(t)
+    LK = links(prod)
+    for members in groups.values():
+        if len(members) < 2: continue
+        members = sorted(members, key=lambda t: -len(_sp(t)))
+        T = members[0]
+        tys = {round(num(q.get('y')), 1) for q in _sp(T)}
+        for B in members[1:]:
+            if B.get('font-family') != T.get('font-family') or B.get('font-size') != T.get('font-size'): continue
+            bs = _sp(B)
+            if not bs or not ({round(num(q.get('y')), 1) for q in bs} & tys): continue
+            if fx(''.join(q.text or '' for q in bs)).strip(' :') in LK: continue      # links stay links
+            for q in bs:
+                nq = ET.Element(N + 'tspan', {'x': q.get('x'), 'y': q.get('y')})
+                nq.text = q.text
+                for k in ('font-weight', 'fill', 'font-size'):
+                    val = q.get(k) or B.get(k)
+                    if val and val != T.get(k): nq.set(k, val)
+                T.append(nq)
+            merged.add(id(B))
+        # keep tspans in reading order: by line, then left to right
+        if any(id(B) in merged for B in members[1:]):
+            sp = sorted(_sp(T), key=lambda q: (round(num(q.get('y')), 1), num(q.get('x'))))
+            for q in _sp(T): T.remove(q)
+            for q in sp: T.append(q)
+    texts = [(t, b) for t, b in texts if id(t) not in merged]
     for e in root.iter():
         if e.get('id') and e.tag not in (N + 'clipPath', N + 'linearGradient', N + 'radialGradient', N + 'pattern', N + 'image', N + 'filter', N + 'mask'):
             del e.attrib['id']
@@ -187,7 +223,8 @@ def frame(name, prod, bp):
                 if s.get('fill'): sst.append('color:' + (paint_color(s.get('fill'), defs) or fill))
                 if s.get('font-size'): sst.append(f"font-size:calc({num(s.get('font-size')):g}*var(--u))")
                 st = (';' + ';'.join(sst)) if sst else ''
-                line_html.append(f'<span class="ln" style="--x:{num(s.get("x")):.2f};--y:{y - asc * fs:.2f}{st}">{txt}</span>')
+                hard = ' data-br' if fx(s.text or '').rstrip('  ').endswith(('\n', '\r')) else ''
+                line_html.append(f'<span class="ln"{hard} style="--x:{num(s.get("x")):.2f};--y:{y - asc * fs:.2f}{st}">{txt}</span>')
         body = ''.join(line_html)
         key = re.sub(r'\s+', ' ', full).strip(' :')
         # breadcrumb "Home/Page": Home is a link, the current page is plain text
@@ -228,7 +265,21 @@ def frame(name, prod, bp):
         if key == 'GET IN TOUCH':
             out.append((ty, f'<span class="anchor" data-anchor="contact" style="--y:{fy0 - 40:.1f}"></span>'))
         tag = 'h1' if fs >= 56 and not any('<h1' in o[1] for o in out) else 'h2' if fs >= 34 else 'h3' if fs >= 26 else 'p'
-        out.append((ty, f'<{tag} class="tx" style="{style}">{body}</{tag}>'))
+        # left-aligned body paragraphs over several lines get re-flowed at runtime (see js/v2.js):
+        # Figma's manual line breaks go, real paragraph breaks stay, line height is evened out
+        firsts = [num(v[0].get('x')) for v in lines.values()]
+        flow = ''
+        if tag == 'p' and fs < 30 and max(firsts) - min(firsts) < 1.5:
+            box = [r for r in rects if r[0] - 1 <= fx0 <= r[0] + r[2] and r[1] - 1 <= ty + 2 <= r[1] + r[3]
+                   and r[2] < W * .98 and r[3] > 40 and (fx0 - r[0]) < r[2] / 3]
+            cw = ''
+            if box:
+                bx = min(box, key=lambda r: r[2] * r[3])
+                cw = f' data-cw="{bx[0] + bx[2] - (fx0 - bx[0]):.1f}"'
+            ys_ = sorted(lines)
+            gap = sorted(b - a for a, b in zip(ys_, ys_[1:]))[len(ys_) // 2 - 1] if len(ys_) > 1 else fs * 1.5
+            flow = f' data-flow data-fs="{fs:g}" data-gap="{gap:.2f}" data-x="{fx0:.2f}" data-asc="{asc}"{cw}'
+        out.append((ty, f'<{tag} class="tx"{flow} style="{style}">{body}</{tag}>'))
     if inputs:
         out = [(y, o.replace('<button class="hit"', '<button form="f-' + bp + '" class="hit"')) for y, o in out]
         out.append((min(input_y), f'<form id="f-{bp}" class="ff" action="#" method="post" onsubmit="return false">' + ''.join(inputs) + '</form>'))
@@ -282,7 +333,7 @@ def frame(name, prod, bp):
                 cx = (min(p[0] for p in px) + max(p[0] for p in px)) / 2; cy = (min(p[1] for p in px) + max(p[1] for p in px)) / 2
                 bp_ = ref.getpixel((min(int(cx + 20), ref.width - 1), int(cy)))
                 bg = '#%02X%02X%02X' % bp_
-        accs.append(dict(x=x, y=y, w=w, hc=hc, y0=y0, y1=y1, cx=cx, cy=cy, bg=bg, q=' '.join(t[4] for t in sorted(qs)), ins=ins))
+        accs.append(dict(x=x, y=y, w=w, hc=hc, y0=y0, y1=y1, cx=cx, cy=cy, bg=bg, q=' '.join(t[4] for t in sorted(qs)), ins=ins, qx=min(t[2] for t in qs) - x))
     accs.sort(key=lambda a: a['y'])
     decor_obj = f'<object class="decor" type="image/svg+xml" data="{svg_rel}" tabindex="-1" aria-hidden="true"></object>'
     # sticky legal nav: same pills as the design (295x40, 57 apart), rebuilt in HTML over a cover of the drawn one
@@ -302,11 +353,17 @@ def frame(name, prod, bp):
         legal_nav = (f'<span class="lgn-cover" style="--x:{px_ - 14:.1f};--y:{htop - 8:.1f};--w:{295 + 28};--h:{bottom - htop + 18:.1f}" aria-hidden="true"></span>'
                      f'<nav class="lgn" aria-label="Legal sections" style="--x:{px_:.1f};--y:{htop:.1f};--gap:{57 - 40}">'
                      f'<div class="lgn-in"><p class="lgn-h">Legal</p>{links_}</div></nav>')
-    if not accs:
+    # full-photo hero (product home pages): the 1024-tall full-width block right under the header
+    hero = next(((min(r[1], hh), r[1] + r[3]) for r in rects if r[2] >= W * .95 and 700 <= r[3] <= 1200 and hh - 5 <= r[1] <= hh + 60
+                 and any(im[2] >= W * .9 and im[1] < r[1] + 50 for im in imgs)), None)
+    if not accs and not hero:
         return W, H, hh, decor_obj + '\n' + '\n'.join(o for _, o in out) + legal_nav, False
     # bands: the page is cut into horizontal strips; each answer is its own strip that can fold to 0.
     # Answers borrowed from another frame are inserted as their own HTML strip under the question card.
+    # The hero is its own strip that shrinks to the screen height (cropping the photo evenly top and bottom).
     bands = []; cur = 0
+    if hero:
+        bands.append((0, hero[0], None)); bands.append((hero[0], hero[1], 'hero')); cur = hero[1]
     for i, a in enumerate(accs):
         if a['ins']:
             bands.append((cur, a['y0'], None)); bands.append((a['y0'], a['y0'], ('ins', i))); cur = a['y0']
@@ -323,7 +380,8 @@ def frame(name, prod, bp):
     for ys, ye, acc in bands:
         if isinstance(acc, tuple):
             a = accs[acc[1]]
-            html_bands.append(f'<div class="bd acc ins closed" id="acc-{bp}-{acc[1]}" style="--x:{a["x"]:.1f};--w:{a["w"]:.1f};--fs:{20 if W >= 1000 else 16};--pl:{24 if W >= 1000 else 22}"><div class="ans"><div class="ans-in">{answer_html(a["ins"])}</div></div></div>')
+            pb = ('#%02X%02X%02X' % ref.getpixel((2, min(int(a["y0"]) + 2, ref.height - 1)))) if ref else '#D7ECE9'
+            html_bands.append(f'<div class="bd acc ins closed" id="acc-{bp}-{acc[1]}" style="--pbg:{pb};--x:{a["x"]:.1f};--w:{a["w"]:.1f};--fs:{20 if W >= 1000 else 16};--pl:{a["qx"]:.1f}"><div class="ans"><div class="ans-in">{answer_html(a["ins"])}</div></div></div>')
             continue
         items = [o for (y, o) in out if ys <= y < ye or (ys == 0 and y < 0)]
         # toggles live in the band that holds their question row
@@ -335,7 +393,9 @@ def frame(name, prod, bp):
                              f'<span class="acc-c" style="--cx:{a["cx"] - a["x"]:.1f};--cy:{a["cy"] - a["y"]:.1f};--bg:{a["bg"]}" aria-hidden="true"></span></button>')
         has_img = any(r[1] < ye and r[1] + r[3] > ys for r in imgs)
         dec = decor_obj if has_img else f'<img class="decor" src="{svg_rel}" alt="" aria-hidden="true">'
-        if acc is None:
+        if acc == 'hero':
+            html_bands.append(f'<div class="bd hero" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
+        elif acc is None:
             html_bands.append(f'<div class="bd" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
         else:
             is_open = open_first and acc == 0

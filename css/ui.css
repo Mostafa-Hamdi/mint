@@ -157,3 +157,7 @@ body.has-fh .fv { margin-top: calc(var(--HH, 97) * var(--u) * -1); }          /*
   .tb-go { width: 18px; height: 18px; margin-left: auto; color: #00A48F; flex: none; }
 }
 @media (prefers-reduced-motion: reduce) { .tb *, .tb-ind { transition: none !important; } }
+
+/* typography: avoid one-word last lines and balance short headings */
+p, li, td, .fl { text-wrap: pretty; }
+h1, h2, h3 { text-wrap: balance; }
