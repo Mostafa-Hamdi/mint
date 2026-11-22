@@ -250,12 +250,12 @@ def frame(name, prod, bp):
             a0 = min(t[0] for t in ans)
             qs = [t for t in tinfo if t[3] == '#3A495B' and x <= t[2] <= x + w and t[0] >= y - 2 and t[1] <= a0 + 2]
             if not qs: continue
-            ANSWERS.setdefault(qkey(' '.join(t[4] for t in qs)), ' '.join(t[4] for t in sorted(ans)))
+            ANSWERS.setdefault(qkey(' '.join(t[4] for t in sorted(qs))), ' '.join(t[4] for t in sorted(ans)))
         else:
             # a question card with no answer in this frame: borrow the answer the design gives in another frame
             qs = [t for t in tinfo if t[3] == '#3A495B' and x <= t[2] <= x + w and t[0] >= y - 2 and t[1] <= y + h + 2]
             if not qs: continue
-            ins = ANSWERS.get(qkey(' '.join(t[4] for t in qs)))
+            ins = ANSWERS.get(qkey(' '.join(t[4] for t in sorted(qs))))
             if not ins: continue
         qtop, qbot = min(t[0] for t in qs), max(t[1] for t in qs)
         pad = qtop - y
@@ -282,7 +282,7 @@ def frame(name, prod, bp):
                 cx = (min(p[0] for p in px) + max(p[0] for p in px)) / 2; cy = (min(p[1] for p in px) + max(p[1] for p in px)) / 2
                 bp_ = ref.getpixel((min(int(cx + 20), ref.width - 1), int(cy)))
                 bg = '#%02X%02X%02X' % bp_
-        accs.append(dict(x=x, y=y, w=w, hc=hc, y0=y0, y1=y1, cx=cx, cy=cy, bg=bg, q=' '.join(t[4] for t in qs), ins=ins))
+        accs.append(dict(x=x, y=y, w=w, hc=hc, y0=y0, y1=y1, cx=cx, cy=cy, bg=bg, q=' '.join(t[4] for t in sorted(qs)), ins=ins))
     accs.sort(key=lambda a: a['y'])
     decor_obj = f'<object class="decor" type="image/svg+xml" data="{svg_rel}" tabindex="-1" aria-hidden="true"></object>'
     # sticky legal nav: same pills as the design (295x40, 57 apart), rebuilt in HTML over a cover of the drawn one
@@ -323,7 +323,7 @@ def frame(name, prod, bp):
     for ys, ye, acc in bands:
         if isinstance(acc, tuple):
             a = accs[acc[1]]
-            html_bands.append(f'<div class="bd acc ins closed" id="acc-{bp}-{acc[1]}" style="--x:{a["x"]:.1f};--w:{a["w"]:.1f}"><div class="ans"><div class="ans-in">{answer_html(a["ins"])}</div></div></div>')
+            html_bands.append(f'<div class="bd acc ins closed" id="acc-{bp}-{acc[1]}" style="--x:{a["x"]:.1f};--w:{a["w"]:.1f};--fs:{20 if W >= 1000 else 16};--pl:{24 if W >= 1000 else 22}"><div class="ans"><div class="ans-in">{answer_html(a["ins"])}</div></div></div>')
             continue
         items = [o for (y, o) in out if ys <= y < ye or (ys == 0 and y < 0)]
         # toggles live in the band that holds their question row
@@ -374,7 +374,16 @@ for out, title, prod, names in PAGES:
     if ONLY and slug not in ONLY: continue
     parts = []
     L = links(prod)
-    ANSWERS = {}
+    # answers the Figma file leaves blank (written for the site, keyed like qkey())
+    ANSWERS = {
+        'whowritestheinformationprovidedinthemintpils':
+            'MINT PILs are written by the AMPM Training team of healthcare professionals and medical writers. '
+            'Every leaflet is checked by clinical reviewers before it is published, following the quality process '
+            'behind our PIF TICK accreditation as a trusted information creator.',
+        'istheinformationuptodateandaccurate':
+            'Yes. Each MINT PIL is based on current clinical evidence and guidance, and is reviewed regularly. '
+            'When the evidence or guidance changes, the leaflet is updated so patients always see accurate information.',
+    }
     for bp, name in zip(('d', 't', 'm'), names):
         if name is None: continue
         if not os.path.exists(os.path.join(SVGDIR, name + '.svg')):

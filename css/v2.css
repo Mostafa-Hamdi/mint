@@ -142,9 +142,9 @@ body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-re
 .bd.ins { height: auto; display: grid; grid-template-rows: 1fr; transition: grid-template-rows .55s cubic-bezier(.2,.8,.2,1); }
 .bd.ins.closed { height: auto; grid-template-rows: 0fr; }
 .bd.ins > .ans { min-height: 0; overflow: hidden; margin-left: calc(var(--x) * var(--u)); width: calc(var(--w) * var(--u)); }
-.ans-in { margin: 0 0 calc(4 * var(--u)); padding: calc(14 * var(--u)) calc(22 * var(--u)) calc(18 * var(--u)); border-radius: 0 0 calc(12 * var(--u)) calc(12 * var(--u));
+.ans-in { margin: 0 0 calc(4 * var(--u)); padding: calc(14 * var(--u)) calc(var(--pl, 22) * var(--u)) calc(18 * var(--u)); border-radius: 0 0 calc(12 * var(--u)) calc(12 * var(--u));
   background: linear-gradient(160deg, rgba(255,255,255,.9), #EAFAF5); box-shadow: 0 1px 0 rgba(0,164,143,.12) inset;
-  font: 400 calc(16 * var(--u))/1.6 Poppins, sans-serif; color: #288C91; }
+  font: 400 calc(var(--fs, 16) * var(--u))/1.6 Poppins, sans-serif; color: #288C91; }
 .ans-in p { margin: 0 0 calc(6 * var(--u)); }
 .ans-in p:last-child { margin-bottom: 0; }
 .ans-in a { color: #00A48F; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
