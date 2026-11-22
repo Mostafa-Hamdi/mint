@@ -394,7 +394,11 @@ def frame(name, prod, bp):
         has_img = any(r[1] < ye and r[1] + r[3] > ys for r in imgs)
         dec = decor_obj if has_img else f'<img class="decor" src="{svg_rel}" alt="" aria-hidden="true">'
         if acc == 'hero':
-            html_bands.append(f'<div class="bd hero" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
+            # centre the hero text block vertically (the photo stays put): shift = hero centre - content centre
+            ht = [t for t in tinfo if ys <= t[0] and t[1] <= ye]
+            dy = ((ye - ys) / 2 - ((min(t[0] for t in ht) + max(t[1] for t in ht)) / 2 - ys)) if ht else 0
+            html_bands.append(f'<div class="bd hero" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n'
+                              f'<div class="hero-c" style="--dy:{dy:.1f}">' + '\n'.join(items) + '</div></div></div>')
         elif acc is None:
             html_bands.append(f'<div class="bd" style="--y0:{ys:.1f};--h:{ye - ys:.1f}"><div class="bd-in">{dec}\n' + '\n'.join(items) + '</div></div>')
         else:

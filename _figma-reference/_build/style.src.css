@@ -229,7 +229,7 @@ a { color: inherit; }
 
 /* --------------------------------------------------------------- CONTACT */
 .ct-sec { background: var(--mint); }
-.ct-sec .frame { height: 1307u; }
+.ct-sec .frame { height: 1040u; }
 .ct-info [style*="--t"] { top: calc(var(--t) * var(--u)); }
 .ct-h1 { left: 83u; top: 112.6u; color: var(--navy); }
 .ct-h2 { font: 700 35u/52.5u var(--ff); color: var(--navy); margin: 0; }
@@ -240,7 +240,6 @@ a { color: inherit; }
 .ct-l a { color: inherit; text-decoration: none; }
 .ct-l a:hover { color: var(--teal); }
 .ct-h3 { left: 85u; margin: 0; font: 700 22u/33u var(--ff); color: var(--navy); white-space: nowrap; }
-.ct-ico { left: 83u; width: 23.2u; height: 23.2u; }
 .ct-li { display: flex; align-items: center; gap: 10.8u; left: 83u !important; }
 .ct-li img, .ct-ii { width: 23.2u; height: 23.2u; }
 .ct-ii { display: none; }
@@ -563,7 +562,6 @@ a { color: inherit; }
 /* ------------------------------------------------ CONTACT – tablet / phone */
 @media (max-width: 1199.98px) {
   .ct-sec .ct-info [style*="--t"] { top: calc(var(--t2) * var(--u)) !important; }
-  .ct-ico { display: none; }
   .ct-ri { display: flex; align-items: center; gap: 10.8u; }
   .ct-ri .ct-ii { display: block; }
   .ct-li { left: auto !important; }

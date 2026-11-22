@@ -229,7 +229,7 @@ a { color: inherit; }
 
 /* --------------------------------------------------------------- CONTACT */
 .ct-sec { background: var(--mint); }
-.ct-sec .frame { height: calc(var(--u) * 1307); }
+.ct-sec .frame { height: calc(var(--u) * 1040); }
 .ct-info [style*="--t"] { top: calc(var(--t) * var(--u)); }
 .ct-h1 { left: calc(var(--u) * 83); top: calc(var(--u) * 112.6); color: var(--navy); }
 .ct-h2 { font: 700 calc(var(--u) * 35)/calc(var(--u) * 52.5) var(--ff); color: var(--navy); margin: 0; }
@@ -240,7 +240,6 @@ a { color: inherit; }
 .ct-l a { color: inherit; text-decoration: none; }
 .ct-l a:hover { color: var(--teal); }
 .ct-h3 { left: calc(var(--u) * 85); margin: 0; font: 700 calc(var(--u) * 22)/calc(var(--u) * 33) var(--ff); color: var(--navy); white-space: nowrap; }
-.ct-ico { left: calc(var(--u) * 83); width: calc(var(--u) * 23.2); height: calc(var(--u) * 23.2); }
 .ct-li { display: flex; align-items: center; gap: calc(var(--u) * 10.8); left: calc(var(--u) * 83) !important; }
 .ct-li img, .ct-ii { width: calc(var(--u) * 23.2); height: calc(var(--u) * 23.2); }
 .ct-ii { display: none; }
@@ -563,7 +562,6 @@ a { color: inherit; }
 /* ------------------------------------------------ CONTACT – tablet / phone */
 @media (max-width: 1199.98px) {
   .ct-sec .ct-info [style*="--t"] { top: calc(var(--t2) * var(--u)) !important; }
-  .ct-ico { display: none; }
   .ct-ri { display: flex; align-items: center; gap: calc(var(--u) * 10.8); }
   .ct-ri .ct-ii { display: block; }
   .ct-li { left: auto !important; }

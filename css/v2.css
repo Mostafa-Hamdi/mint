@@ -161,5 +161,6 @@ body { margin: 0; background: #fff; -webkit-font-smoothing: antialiased; text-re
 .fv .crumb [aria-current="page"] { color: #fff; opacity: .92; }
 
 /* hero with a full photo: never taller than the screen under the header; the photo is cropped evenly top and bottom */
-.bd.hero { --full: calc(var(--h) * var(--u)); --vis: clamp(calc(var(--full) * .62), calc(100svh - var(--fh-h, 84px)), var(--full)); height: var(--vis); }
+.bd.hero { --full: calc(var(--h) * var(--u)); --vis: clamp(calc(var(--full) * .62), calc(100svh - var(--fh-h, 84px) - var(--tb-h, 0px)), var(--full)); height: var(--vis); }
 .bd.hero > .bd-in { top: calc(var(--y0) * var(--u) * -1 - (var(--full) - var(--vis)) / 2); }
+.bd.hero .hero-c { position: absolute; inset: 0; transform: translateY(calc(var(--dy, 0) * var(--u))); }

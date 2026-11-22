@@ -162,3 +162,7 @@ body.has-fh .fv { margin-top: calc(var(--HH, 97) * var(--u) * -1); }          /*
 p, li, td { text-wrap: pretty; }
 .fv .fl { text-wrap: wrap; }   /* re-flowed text must never gain a line */
 h1, h2, h3 { text-wrap: balance; }
+
+/* height taken by the phone tab bar (used to fit heroes to the visible screen) */
+:root { --tb-h: 0px; }
+@media (max-width: 767.98px) { :root { --tb-h: calc(84px + env(safe-area-inset-bottom)); } }
