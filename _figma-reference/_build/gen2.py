@@ -80,6 +80,12 @@ def frame(name, prod, bp):
     tree = ET.parse(path); root = tree.getroot()
     W, H = num(root.get('width')), num(root.get('height'))
     defs = {e.get('id'): e for e in root.iter() if e.get('id')}
+    hh = 97.0
+    for g in root.iter(N + 'g'):
+        if (g.get('id') or '').startswith('Header'):
+            r = next(g.iter(N + 'rect'), None)
+            if r is not None and r.get('height'): hh = num(r.get('height'))
+            break
     parent = {c: p for p in root.iter() for c in p}
     # images -> files
     for im in root.iter(N + 'image'):
@@ -152,16 +158,16 @@ def frame(name, prod, bp):
         if lsv: style += f";letter-spacing:calc({lsv:.3f}*var(--u))"
         line_html = []
         for y, ss in lines.items():
-            x0 = num(ss[0].get('x'))
-            inner = ''
+            # every run sits at its own Figma x, so text placed after another element (e.g. an inline link) never overlaps it
             for s in ss:
                 txt = html.escape(fx(s.text or '').rstrip('\n'))
+                if not txt: continue
                 sst = []
                 if s.get('font-weight'): sst.append('font-weight:' + {'bold': '700'}.get(s.get('font-weight'), s.get('font-weight')))
                 if s.get('fill'): sst.append('color:' + (paint_color(s.get('fill'), defs) or fill))
                 if s.get('font-size'): sst.append(f"font-size:calc({num(s.get('font-size')):g}*var(--u))")
-                inner += f'<span style="{";".join(sst)}">{txt}</span>' if sst else txt
-            line_html.append(f'<span class="ln" style="--x:{x0:.2f};--y:{y - asc * fs:.2f}">{inner}</span>')
+                st = (';' + ';'.join(sst)) if sst else ''
+                line_html.append(f'<span class="ln" style="--x:{num(s.get("x")):.2f};--y:{y - asc * fs:.2f}{st}">{txt}</span>')
         body = ''.join(line_html)
         key = full.rstrip(' :')
         href = L.get(key)
@@ -190,7 +196,7 @@ def frame(name, prod, bp):
         # move the Send button inside the form
         out = [o.replace('<button class="hit"', '<button form="f-' + bp + '" class="hit"') for o in out]
         form = form.replace('<form class="ff"', f'<form id="f-{bp}" class="ff"')
-    return W, H, svg_rel, '\n'.join(out) + '\n' + form
+    return W, H, hh, svg_rel, '\n'.join(out) + '\n' + form
 
 HEAD = '''<!doctype html>
 <html lang="en">
@@ -228,7 +234,7 @@ for out, title, prod, names in PAGES:
         if name is None: continue
         if not os.path.exists(os.path.join(SVGDIR, name + '.svg')):
             print('missing', name, file=sys.stderr); continue
-        W, H, rel, body = frame(name, prod, bp)
+        W, H, HH, rel, body = frame(name, prod, bp)
         home = L['Home']
         lb = {'d': (60, 10, 240, 78), 't': (40, 10, 225, 78), 'm': (60, 6, 180, 86)}[bp]
         logo = f'<a class="hit hit-logo" href="{home}" style="--x:{lb[0]};--y:{lb[1]};--w:{lb[2]};--h:{lb[3]};--r:12" aria-label="{"MINT CONSENT" if prod == "consent" else "MINT PILs"} home"></a>'
@@ -237,7 +243,7 @@ for out, title, prod, names in PAGES:
         if bp == 'm':
             menu = ('<button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"></button>'
                     '<nav class="mnav" id="mnav" aria-label="Main">' + ''.join(f'<a href="{L[k]}">{k}</a>' for k in ('Home', 'About', 'Guide', 'Contact Us')) + '</nav>\n')
-        parts.append(f'<section class="fv fv-{bp}{extra}" style="--W:{W:g};--H:{H:g}" aria-label="{html.escape(title)}">\n'
+        parts.append(f'<section class="fv fv-{bp}{extra}" style="--W:{W:g};--H:{H:g};--HH:{HH:g}" aria-label="{html.escape(title)}">\n'
                      f'<object class="decor" type="image/svg+xml" data="{rel}" tabindex="-1" aria-hidden="true"></object>\n{logo}{menu}{body}\n</section>\n')
     p_ = 'consent' if prod == 'consent' else 'pils'
     cfg = {'name': 'MINT CONSENT' if prod == 'consent' else 'MINT PILs', 'logo': f'assets/img/logo-{p_}.svg', 'home': p_ + '.html',

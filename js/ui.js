@@ -1,43 +1,52 @@
-// Shared finishing touches: floating sticky header + back-to-top button.
+// Shared finishing touches: site header, phone tab bar, back-to-top button.
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var here = location.pathname.split('/').pop() || 'index.html';
 
-  /* ---------- floating header (built from #sticky-cfg) ---------- */
+  /* ---------- site header (built from #sticky-cfg) ----------
+     One header for every page: full width at the top of the page,
+     it glides into a floating glass capsule once the page scrolls. */
   var cfgEl = document.getElementById('sticky-cfg');
-  var bar = null, panel = null, progress = null, menuBtn = null;
+  var bar = null, progress = null;
   if (cfgEl) {
     var cfg = JSON.parse(cfgEl.textContent);
     bar = document.createElement('header');
     bar.className = 'fh';
-    bar.setAttribute('aria-label', 'Quick navigation');
-    var links = cfg.links.map(function (l) {
-      var cur = l.href.split('#')[0] === here && !l.href.includes('#') ? ' aria-current="page"' : '';
+    var chev = '<svg class="fh-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+    var arrow = '<svg class="fh-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    var links = cfg.links.map(function (l, i) {
+      if (l.menu) {
+        var onMenu = l.menu.some(function (m) { return m.href === here; });
+        return '<div class="fh-dd"><button type="button" class="fh-ddt' + (onMenu ? ' is-cur' : '') + '" aria-expanded="false" aria-controls="fh-dd' + i + '">' + l.label + chev + '</button>' +
+          '<div class="fh-ddp" id="fh-dd' + i + '">' + l.menu.map(function (m) {
+            return '<a href="' + m.href + '"' + (m.href === here ? ' aria-current="page"' : '') + '><span class="fh-ml"><img src="' + m.logo + '" alt=""></span><span class="fh-mt"><b>' + m.label + '</b><small>' + m.note + '</small></span>' + arrow + '</a>';
+          }).join('') + '</div></div>';
+      }
+      var cur = l.href === here ? ' aria-current="page"' : '';
       return '<a href="' + l.href + '"' + cur + '>' + l.label + '</a>';
     }).join('');
     bar.innerHTML =
       '<div class="fh-pill">' +
-        '<a class="fh-logo" href="' + cfg.home + '" aria-label="' + cfg.name + ' home"><img src="' + cfg.logo + '" alt=""></a>' +
-        '<nav class="fh-nav" aria-label="Quick">' + links + '</nav>' +
+        '<span class="fh-bg" aria-hidden="true"></span>' +
+        '<a class="fh-logo" href="' + cfg.home + '" aria-label="' + cfg.name + ' home"><img src="' + cfg.logo + '" alt="' + cfg.name + '"></a>' +
+        '<nav class="fh-nav" aria-label="Main">' + links + '</nav>' +
         '<a class="fh-login" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg><span>Log in</span></a>' +
-        '<button class="fh-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="fh-panel"><i></i><i></i><i></i></button>' +
         '<span class="fh-progress" aria-hidden="true"></span>' +
-      '</div>' +
-      '<nav class="fh-panel" id="fh-panel" aria-label="Menu">' + links + '</nav>';
-    document.body.appendChild(bar);
-    panel = bar.querySelector('.fh-panel');
+      '</div>';
+    document.body.insertBefore(bar, document.body.firstChild);
+    document.body.classList.add('has-fh');
     progress = bar.querySelector('.fh-progress');
-    menuBtn = bar.querySelector('.fh-menu');
-    function setMenu(open) {
-      bar.classList.toggle('menu-open', open);
-      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    }
-    menuBtn.addEventListener('click', function () { setMenu(!bar.classList.contains('menu-open')); });
-    panel.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
-    document.addEventListener('click', function (e) { if (bar.classList.contains('menu-open') && !bar.contains(e.target)) setMenu(false); });
-    bar._setMenu = setMenu;
+    // Products dropdown: hover on pointer devices, click/keyboard everywhere, closes on an outside click
+    bar.querySelectorAll('.fh-dd').forEach(function (dd) {
+      var t = dd.querySelector('.fh-ddt'), timer;
+      var hoverable = window.matchMedia('(hover: hover)');
+      function set(open) { dd.classList.toggle('open', open); t.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+      t.addEventListener('click', function () { set(!dd.classList.contains('open')); });
+      dd.addEventListener('mouseenter', function () { if (hoverable.matches) { clearTimeout(timer); set(true); } });
+      dd.addEventListener('mouseleave', function () { if (hoverable.matches) timer = setTimeout(function () { set(false); }, 180); });
+      dd.addEventListener('keydown', function (e) { if (e.key === 'Escape') { set(false); t.focus(); } });
+      document.addEventListener('click', function (e) { if (!dd.contains(e.target)) set(false); });
+    });
   }
 
   /* ---------- phone tab bar (sticky, bottom) ---------- */
@@ -110,10 +119,7 @@
     top.classList.toggle('show', y > Math.max(700, window.innerHeight * 1.2));
     if (bar) {
       if (progress) progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
-      var past = y > 160;
-      // stays visible the whole time the original header is out of view
-      if (!past) { bar.classList.remove('show'); bar._setMenu(false); }
-      else bar.classList.add('show');
+      bar.classList.toggle('scrolled', y > 24);
     }
     lastY = y;
   }
