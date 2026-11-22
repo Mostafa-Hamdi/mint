@@ -25,3 +25,5 @@ and all text, links, form fields and buttons are real HTML on top (`css/v2.css`,
    and run `msedge --headless=new --virtual-time-budget=300000 --dump-dom http://localhost:5500/prerender.html > dump.html`.
 3. `python bake.py <project> dump.html` — writes the re-flowed text into the pages, so they open already laid out.
    (`js/v2.js` only re-flows text that was not baked.)
+4. `python make_about.py <project>` — builds `consent-about.html` / `pils-about.html` (About inside each product site)
+   and points the product pages' About links to them.

@@ -32,8 +32,8 @@ def links(prod):
     p = 'consent' if prod == 'consent' else 'pils'
     legal = 'pils-legal.html'
     return {
-        'Home': p + '.html', 'About': 'about.html', 'About Us': 'about.html', 'Guide': p + '-guide.html',
-        'Contact Us': (p + '.html', 'contact'), 'Pricing': p + '-pricing.html', 'About AMPM': 'about.html',
+        'Home': p + '.html', 'About': p + '-about.html', 'About Us': p + '-about.html', 'Guide': p + '-guide.html',
+        'Contact Us': (p + '.html', 'contact'), 'Pricing': p + '-pricing.html', 'About AMPM': p + '-about.html',
         'Tutorials and Guides': p + '-guide.html', 'Cookies': p + '-cookies.html', 'PIFTICK': p + '-piftick.html',
         'MINTFORMED': 'index.html', 'Privacy Policy': (legal, 'privacy'), 'Terms and Conditions': (legal, 'terms'),
         'FAQ’s': (legal, 'faq'), 'Refunds Policy': (legal, 'refunds'), 'Copyright Information': (legal, 'copyright'),
@@ -530,10 +530,10 @@ for out, title, prod, names in PAGES:
         parts.append(f'<section class="fv fv-{bp}{extra}" style="--W:{W:g};--H:{H:g};--HH:{HH:g}" aria-label="{html.escape(title)}">\n{body}\n</section>\n')
     p_ = 'consent' if prod == 'consent' else 'pils'
     cfg = {'name': 'MINT CONSENT' if prod == 'consent' else 'MINT PILs', 'logo': f'assets/img/logo-{p_}.svg', 'home': p_ + '.html',
-           'links': [{'label': 'Home', 'href': p_ + '.html'}, {'label': 'About', 'href': 'about.html'}, {'label': 'Guide', 'href': p_ + '-guide.html'},
+           'links': [{'label': 'Home', 'href': p_ + '.html'}, {'label': 'About', 'href': p_ + '-about.html'}, {'label': 'Guide', 'href': p_ + '-guide.html'},
                      {'label': 'Pricing', 'href': p_ + '-pricing.html'}, {'label': 'Contact Us', 'href': p_ + '.html', 'section': 'contact'}],
            'tabs': [{'label': 'Home', 'href': p_ + '.html', 'icon': 'home'}, {'label': 'Guide', 'href': p_ + '-guide.html', 'icon': 'book'},
-                    {'label': 'Pricing', 'href': p_ + '-pricing.html', 'icon': 'tag'}, {'label': 'About', 'href': 'about.html', 'icon': 'info'},
+                    {'label': 'Pricing', 'href': p_ + '-pricing.html', 'icon': 'tag'}, {'label': 'About', 'href': p_ + '-about.html', 'icon': 'info'},
                     {'label': 'Contact', 'href': p_ + '.html', 'section': 'contact', 'icon': 'mail'}]}
     cfg['family'] = [
         {'label': 'MINTFORMED', 'href': 'index.html', 'logo': 'assets/img/logo.svg', 'note': 'Back to the main site', 'main': True},
