@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="991" height="3243" viewBox="0 0 991 3243" fill="none">
 <g clip-path="url(#clip0_1178_11406)">
-<rect width="991" height="3243" fill="white" />
+<rect width="991" height="3243" fill="white" shape-rendering="crispEdges" />
 <g clip-path="url(#clip1_1178_11406)">
 <g clip-path="url(#clip2_1178_11406)">
 <g>
@@ -11,7 +11,7 @@
 </g>
 </g>
 <g>
-<rect width="991" height="97" fill="white" />
+<rect width="991" height="97" fill="white" shape-rendering="crispEdges" />
 <g>
 <g clip-path="url(#clip3_1178_11406)">
 <g>
@@ -83,22 +83,22 @@
 <stop offset="1" stop-color="#EAFAF5" />
 </linearGradient>
 <clipPath id="clip0_1178_11406">
-<rect width="991" height="3243" fill="white" />
+<rect width="991" height="3243" fill="white" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip1_1178_11406">
-<rect width="796" height="2266" fill="white" transform="translate(100 174)" />
+<rect width="796" height="2266" fill="white" transform="translate(100 174)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip2_1178_11406">
-<rect width="799" height="2266" fill="white" transform="translate(97 174)" />
+<rect width="799" height="2266" fill="white" transform="translate(97 174)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip3_1178_11406">
-<rect width="188" height="61" fill="white" transform="translate(75.5 19.5)" />
+<rect width="188" height="61" fill="white" transform="translate(75.5 19.5)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip4_1178_11406">
-<rect width="991" height="726" fill="white" transform="translate(0 2517)" />
+<rect width="991" height="726" fill="white" transform="translate(0 2517)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip5_1178_11406">
-<rect width="170" height="57" fill="white" transform="translate(274.408 2612.01)" />
+<rect width="170" height="57" fill="white" transform="translate(274.408 2612.01)" shape-rendering="crispEdges" />
 </clipPath>
 <image id="image0_1178_11406" data-name="PIFTICK_AMPM_home.png" width="313" height="151" preserveAspectRatio="none" xlink:href="../v2/2ac3ab5d3d.png" />
 </defs>

@@ -284,7 +284,8 @@ document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
   function fit(fv) {
     if (!fv.classList.contains('fv-m') || !fv.dataset.runs || !fv.offsetParent) return;
     var W = num(fv, '--W'), H = num(fv, '--H'), U = fv.getBoundingClientRect().width / W;
-    var runs = fv.dataset.runs.split(',').filter(Boolean).map(function (r) { return r.split('-').map(Number); });
+    var runs = fv.dataset.runs.split(',').filter(Boolean).map(function (r) { var c = r.split(':'), ab = c[0].split('-').map(Number); ab.color = c[1] || ''; return ab; });
+    function runColor(y) { var r = runs.filter(function (q) { return q[0] <= y && y < q[1]; })[0]; return r ? r.color : ''; }
     fv.removeAttribute('data-runs');
     // 1. everything into bands (a page without accordions is one band)
     if (!fv.classList.contains('banded')) {
@@ -300,6 +301,16 @@ document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
       var y = topOf(e); if (isNaN(y)) return;
       var host = plain().filter(function (b) { var y0 = num(b, '--y0'); return y0 <= y && y < y0 + num(b, '--h'); })[0];
       if (host) host.firstElementChild.appendChild(e);
+    });
+    // 1b. a one-line centred heading sitting right on top of a left-aligned paragraph lines up with that paragraph
+    var fls = Array.prototype.slice.call(fv.querySelectorAll('.bd > .bd-in > .tx > .fl')).map(function (f) {
+      return { f: f, y: num(f, '--y'), x: num(f, '--x'), w: num(f, '--w'), c: f.style.textAlign === 'center', h: f.getBoundingClientRect().height / U, lh: num(f, '--lh') };
+    }).sort(function (a, b) { return a.y - b.y; });
+    fls.forEach(function (a, i) {
+      if (!a.c || a.h > a.lh * 1.5) return;
+      var b = fls.slice(i + 1).filter(function (o) { return o.y > a.y; })[0];
+      if (!b || b.c || b.y - (a.y + a.h) > 90) return;
+      a.f.style.textAlign = 'left'; a.f.style.setProperty('--x', b.x); a.f.style.setProperty('--w', b.w);
     });
     // 2. measure text blocks (design units)
     function ext(el) {
@@ -396,12 +407,22 @@ document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
       if (op.add) {
         var st = document.createElement('div'); st.className = 'bd st'; st.style.cssText = '--y0:' + (a - 1) + ';--h:1;--k:' + op.add.toFixed(1);
         var si = document.createElement('div'); si.className = 'bd-in'; st.appendChild(si);
-        if (decor) { var sd = document.createElement('img'); sd.className = 'decor'; sd.alt = ''; sd.setAttribute('aria-hidden', 'true'); sd.src = svgUrl || decor.getAttribute('src') || decor.getAttribute('data'); si.appendChild(sd); }
+        var flat = runColor(a - 1) || runColor(a);
+        if (flat) { st.style.background = flat; st.classList.add('flat'); }      // a flat colour: plain block, no image stretching
+        else if (decor) { var sd = document.createElement('img'); sd.className = 'decor'; sd.alt = ''; sd.setAttribute('aria-hidden', 'true'); sd.src = svgUrl || decor.getAttribute('src') || decor.getAttribute('data'); si.appendChild(sd); }
         fv.insertBefore(st, after);
       }
       fv.insertBefore(nb, after);
     });
     plain().forEach(lightDecor);
+    // strips whose edge sits on a flat colour get that colour behind them, so sub-pixel edges never show a light seam
+    // strip edges that sit on plain rows overlap their neighbour by 6px, so sub-pixel edges never show a light seam
+    function plainRow(y) { return runs.some(function (q) { return q[0] <= y && y < q[1]; }); }
+    plain().forEach(function (b) {
+      var y0 = num(b, '--y0'), y1 = y0 + num(b, '--h');
+      if (plainRow(y0) && plainRow(y0 - 3)) b.style.setProperty('--ct', '6px');
+      if (plainRow(y1 - 1) && plainRow(y1 + 3)) b.style.setProperty('--cb', '6px');
+    });
     hero(fv, U);
   }
   // phone heroes: restack the title / subtitle / text with steady spacing and keep the block centred

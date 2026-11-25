@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="430" height="15210" viewBox="0 0 430 15210" fill="none">
 <g clip-path="url(#clip0_1188_21224)">
-<rect width="430" height="15210" fill="white" />
-<rect width="430" height="15210" fill="#D7ECE9" />
+<rect width="430" height="15210" fill="white" shape-rendering="crispEdges" />
+<rect width="430" height="15210" fill="#D7ECE9" shape-rendering="crispEdges" />
 <g>
-<rect width="430" height="91" transform="translate(0 1)" fill="white" />
+<rect width="430" height="91" transform="translate(0 1)" fill="white" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -60,7 +60,7 @@
 </g>
 </g>
 <g clip-path="url(#clip2_1188_21224)">
-<rect width="430" height="900" transform="translate(0 132)" fill="#3A495B" />
+<rect width="430" height="900" transform="translate(0 132)" fill="#3A495B" shape-rendering="crispEdges" />
 <g opacity="0.04">
 <path d="M-226.227 168.523C-205.588 206.258 -186.311 251.445 -169.331 299.735L-166.151 308.828L-163.057 318.008L-161.51 322.603L-159.999 327.244L-156.979 336.538C-153.04 349.009 -149.173 361.56 -145.482 374.262C-141.79 386.963 -138.134 399.688 -134.281 412.255C-130.476 424.914 -126.28 437.19 -121.764 448.879L-120.029 453.142C-119.47 454.529 -118.838 455.901 -118.24 457.297C-117.064 460.095 -115.804 462.63 -114.573 465.286C-113.953 466.563 -113.31 467.787 -112.676 469.037L-111.73 470.901C-111.412 471.515 -111.084 472.091 -110.765 472.682L-108.825 476.205L-106.858 479.53L-105.876 481.171L-104.879 482.695C-104.215 483.712 -103.554 484.785 -102.886 485.744C-101.556 487.665 -100.226 489.686 -98.8839 491.447C-96.2075 495.073 -93.525 498.397 -90.8487 501.404C-85.5009 507.342 -80.1818 512.485 -74.9281 516.797C-69.6683 521.205 -64.4524 525.217 -59.2491 528.944C-48.854 536.468 -38.5436 543.154 -28.1449 550.811C-17.7461 558.467 -7.22522 567.084 3.43674 578.601C14.0987 590.119 24.9111 604.59 35.2626 623.107C40.4364 632.322 45.4455 642.532 50.1972 653.547C54.9347 664.626 59.3875 676.419 63.4766 688.715C71.6709 713.269 78.8216 739.064 87.4119 763.235C89.5494 769.277 91.8006 775.133 94.1482 780.758C96.5015 786.367 98.9517 791.707 101.476 796.728C106.55 806.701 111.85 815.408 117.213 822.582C122.571 829.689 127.937 835.684 133.231 840.478C138.52 845.261 143.751 849.293 148.896 852.553C154.048 855.885 159.126 858.609 164.167 861.112L179.253 868.3C184.29 870.771 189.342 873.303 194.474 876.376C199.591 879.444 204.79 883.196 210.047 887.613C215.307 892.03 220.655 897.663 226.01 904.427C231.368 911.202 236.694 919.449 241.843 928.945C236.696 919.439 231.371 911.18 226.013 904.393C220.656 897.599 215.305 891.941 210.041 887.504C204.781 883.064 199.578 879.299 194.458 876.225C189.331 873.084 184.281 870.529 179.244 868.058L164.154 860.827C159.108 858.304 154.031 855.568 148.88 852.224C143.738 848.952 138.509 844.908 133.224 840.113C127.94 835.316 122.585 829.321 117.24 822.216C111.892 815.053 106.609 806.363 101.551 796.412C96.5159 786.358 91.7904 775.084 87.5415 762.99C78.98 738.875 71.8419 713.087 63.6415 688.435C59.5433 676.098 55.0803 664.264 50.3314 653.145C45.5685 642.059 40.5439 631.783 35.3515 622.508C24.9677 603.891 14.1044 589.304 3.43568 577.789C-7.23302 566.274 -17.7953 557.683 -28.1948 550.038C-38.5944 542.392 -48.8953 535.759 -59.2912 528.246C-64.487 524.505 -69.7061 520.539 -74.9549 516.16C-80.1999 511.857 -85.5092 506.737 -90.8475 500.836C-93.5213 497.927 -96.2039 494.696 -98.8829 491.157C-100.22 489.416 -101.549 487.395 -102.881 485.486C-103.539 484.479 -104.204 483.463 -104.862 482.456L-105.853 480.94L-106.835 479.3L-108.797 475.995L-110.73 472.48C-111.05 471.89 -111.372 471.334 -111.69 470.709L-112.636 468.856C-113.27 467.595 -113.908 466.392 -114.528 465.115C-115.754 462.479 -117.008 459.953 -118.184 457.166C-118.776 455.78 -119.385 454.444 -119.968 453.032L-121.698 448.778C-126.2 437.127 -130.386 424.892 -134.184 412.277C-138.037 399.721 -141.68 386.98 -145.399 374.3C-149.118 361.619 -152.97 348.951 -156.92 336.462L-159.948 327.171L-161.459 322.529L-163.005 317.934L-166.113 308.748L-169.287 299.663C-186.287 251.381 -205.584 206.212 -226.227 168.523Z" fill="url(#paint0_linear_1188_21224)" />
 <path d="M-225.739 154.047C-223.142 158.776 -220.516 163.371 -217.952 168.291C-216.67 170.751 -215.369 173.126 -214.099 175.657L-210.288 183.229C-205.223 193.462 -200.262 204.138 -195.425 215.211L-193.606 219.292C-193.006 220.688 -192.415 222.109 -191.823 223.508L-188.258 231.964L-184.766 240.602L-183.046 244.964L-181.341 249.343L-177.928 258.166L-174.609 267.112C-174.057 268.615 -173.503 270.094 -172.951 271.597L-171.3 276.185L-168.046 285.3C-159.503 309.819 -151.511 335.104 -144.152 360.9C-140.455 373.802 -136.91 386.78 -133.226 399.676C-129.596 412.618 -125.684 425.35 -121.521 437.774C-117.31 450.211 -112.566 461.794 -107.481 472.055C-102.388 482.21 -97.0613 491.074 -91.6674 498.369C-88.9759 502.065 -86.2773 505.437 -83.5857 508.466C-80.8979 511.45 -78.2231 514.076 -75.5759 516.331C-72.9194 518.646 -70.3062 520.46 -67.7058 522.268C-65.1053 524.075 -62.4981 525.88 -59.9038 527.588C-54.716 531.016 -49.5817 533.991 -44.4439 537.01C-39.306 540.029 -34.1471 543.029 -29.0099 546.149C-18.6962 552.577 -8.27886 559.587 2.37811 569.714C13.0351 579.841 23.9234 593.201 34.4716 610.97C39.7402 619.827 44.8669 629.783 49.7496 640.64C54.6259 651.535 59.218 663.268 63.4319 675.597C71.8964 700.228 79.159 726.281 87.6178 750.993C91.8064 763.428 96.4771 775.115 101.478 785.675C103.983 790.918 106.567 795.821 109.202 800.333C111.84 804.831 114.517 808.955 117.21 812.669C122.596 819.992 127.996 826.065 133.311 830.773C138.625 835.529 143.883 839.575 149.06 842.89C154.245 846.275 159.363 849.11 164.45 851.73L179.713 859.559C184.807 862.088 189.91 865.04 195.086 868.348C200.252 871.636 205.497 875.641 210.798 880.344C216.11 885.063 221.494 890.927 226.882 897.859C232.271 904.813 237.624 913.196 242.806 922.798C237.625 913.172 232.27 904.773 226.878 897.815C221.494 890.876 216.112 885.004 210.803 880.275C205.491 875.532 200.235 871.493 195.059 868.178C189.879 864.826 184.749 861.879 179.67 859.338C169.509 853.912 159.395 849.402 149.028 842.61C143.847 839.272 138.586 835.205 133.27 830.428C127.971 825.704 122.589 819.626 117.223 812.305C114.537 808.603 111.868 804.492 109.238 800.006C106.61 795.526 104.033 790.655 101.534 785.442C96.5513 774.896 91.8972 763.235 87.7215 750.833C79.2924 726.167 72.0366 700.112 63.5634 675.416C55.0944 650.557 45.135 628.306 34.5111 610.507C23.9179 592.63 13.0058 579.234 2.33263 569.056C-8.34049 558.879 -18.7704 551.952 -29.056 545.592C-34.2162 542.424 -39.3505 539.449 -44.484 536.462C-49.6175 533.476 -54.751 530.489 -59.9329 527.07C-62.522 525.383 -65.1241 523.598 -67.7305 521.782C-70.3369 519.966 -72.9323 518.179 -75.5777 515.894C-80.8671 511.405 -86.2605 505.394 -91.6344 497.998C-97.0141 490.736 -102.328 481.909 -107.41 471.794C-112.472 461.581 -117.196 450.051 -121.388 437.671C-125.552 425.267 -129.465 412.555 -133.098 399.631C-136.794 386.728 -140.341 373.762 -144.032 360.88C-151.403 335.074 -159.408 309.782 -167.964 285.26L-171.225 276.148L-172.876 271.559C-173.427 270.045 -173.982 268.577 -174.535 267.086L-177.854 258.14L-181.334 249.25L-183.003 244.904L-184.745 240.584L-188.244 231.947L-191.808 223.492C-192.407 222.084 -192.998 220.662 -193.598 219.278L-195.417 215.197C-200.255 204.135 -205.217 193.47 -210.282 183.249L-214.095 175.689C-215.365 173.158 -216.666 170.783 -217.949 168.334C-220.512 163.313 -223.141 158.764 -225.739 154.047Z" fill="url(#paint1_linear_1188_21224)" />
@@ -318,7 +318,7 @@
 </g>
 <g>
 <g>
-<rect width="390" height="112" transform="translate(20 8818)" fill="url(#paint166_linear_1188_21224)" />
+<rect width="390" height="112" transform="translate(20 8818)" fill="url(#paint166_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 8857.66L375 8866L366.667 8857.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -328,7 +328,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="154" transform="translate(20 8950)" fill="url(#paint167_linear_1188_21224)" />
+<rect width="390" height="154" transform="translate(20 8950)" fill="url(#paint167_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 8989.66L375 8998L366.667 8989.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -336,7 +336,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="156" transform="translate(20 9124)" fill="url(#paint168_linear_1188_21224)" />
+<rect width="390" height="156" transform="translate(20 9124)" fill="url(#paint168_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 9163.66L375 9172L366.667 9163.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -344,7 +344,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="156" transform="translate(20 9300)" fill="url(#paint169_linear_1188_21224)" />
+<rect width="390" height="156" transform="translate(20 9300)" fill="url(#paint169_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 9339.66L375 9348L366.667 9339.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -352,7 +352,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="192" transform="translate(20 9476)" fill="url(#paint170_linear_1188_21224)" />
+<rect width="390" height="192" transform="translate(20 9476)" fill="url(#paint170_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 9515.66L375 9524L366.667 9515.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -360,7 +360,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="156" transform="translate(20 9688)" fill="url(#paint171_linear_1188_21224)" />
+<rect width="390" height="156" transform="translate(20 9688)" fill="url(#paint171_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 9727.66L375 9736L366.667 9727.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -368,7 +368,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="106" transform="translate(20 9864)" fill="url(#paint172_linear_1188_21224)" />
+<rect width="390" height="106" transform="translate(20 9864)" fill="url(#paint172_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 9903.66L375 9912L366.667 9903.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -378,7 +378,7 @@
 <g>
 </g>
 <g>
-<rect width="390" height="129" transform="translate(20 10024)" fill="url(#paint173_linear_1188_21224)" />
+<rect width="390" height="129" transform="translate(20 10024)" fill="url(#paint173_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 10063.7L375 10072L366.667 10063.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -386,7 +386,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="156" transform="translate(20 10173)" fill="url(#paint174_linear_1188_21224)" />
+<rect width="390" height="156" transform="translate(20 10173)" fill="url(#paint174_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 10212.7L375 10221L366.667 10212.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -394,7 +394,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="156" transform="translate(20 10349)" fill="url(#paint175_linear_1188_21224)" />
+<rect width="390" height="156" transform="translate(20 10349)" fill="url(#paint175_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 10388.7L375 10397L366.667 10388.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -402,7 +402,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="117" transform="translate(20 10525)" fill="url(#paint176_linear_1188_21224)" />
+<rect width="390" height="117" transform="translate(20 10525)" fill="url(#paint176_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 10564.7L375 10573L366.667 10564.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -410,7 +410,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="129" transform="translate(20 10662)" fill="url(#paint177_linear_1188_21224)" />
+<rect width="390" height="129" transform="translate(20 10662)" fill="url(#paint177_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 10701.7L375 10710L366.667 10701.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -418,7 +418,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="86" transform="translate(20 10811)" fill="url(#paint178_linear_1188_21224)" />
+<rect width="390" height="86" transform="translate(20 10811)" fill="url(#paint178_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 10850.7L375 10859L366.667 10850.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -426,7 +426,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="86" transform="translate(20 10917)" fill="url(#paint179_linear_1188_21224)" />
+<rect width="390" height="86" transform="translate(20 10917)" fill="url(#paint179_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 10956.7L375 10965L366.667 10956.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -434,7 +434,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="169" transform="translate(20 11023)" fill="url(#paint180_linear_1188_21224)" />
+<rect width="390" height="169" transform="translate(20 11023)" fill="url(#paint180_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 11062.7L375 11071L366.667 11062.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -442,7 +442,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="129" transform="translate(20 11212)" fill="url(#paint181_linear_1188_21224)" />
+<rect width="390" height="129" transform="translate(20 11212)" fill="url(#paint181_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 11251.7L375 11260L366.667 11251.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -450,7 +450,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="146" transform="translate(20 11361)" fill="url(#paint182_linear_1188_21224)" />
+<rect width="390" height="146" transform="translate(20 11361)" fill="url(#paint182_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 11400.7L375 11409L366.667 11400.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -458,7 +458,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="156" transform="translate(20 11527)" fill="url(#paint183_linear_1188_21224)" />
+<rect width="390" height="156" transform="translate(20 11527)" fill="url(#paint183_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 11566.7L375 11575L366.667 11566.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -466,7 +466,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="146" transform="translate(20 11703)" fill="url(#paint184_linear_1188_21224)" />
+<rect width="390" height="146" transform="translate(20 11703)" fill="url(#paint184_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 11742.7L375 11751L366.667 11742.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -474,7 +474,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="86" transform="translate(20 11869)" fill="url(#paint185_linear_1188_21224)" />
+<rect width="390" height="86" transform="translate(20 11869)" fill="url(#paint185_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 11908.7L375 11917L366.667 11908.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -482,7 +482,7 @@
 </g>
 </g>
 <g>
-<rect width="390" height="127" transform="translate(20 11975)" fill="url(#paint186_linear_1188_21224)" />
+<rect width="390" height="127" transform="translate(20 11975)" fill="url(#paint186_linear_1188_21224)" shape-rendering="crispEdges" />
 <g>
 <path d="M383.333 12014.7L375 12023L366.667 12014.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -504,7 +504,7 @@
 </g>
 </g>
 <g clip-path="url(#clip6_1188_21224)">
-<rect width="430" height="974" transform="translate(0 14188)" fill="#3A495B" />
+<rect width="430" height="974" transform="translate(0 14188)" fill="#3A495B" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -680,7 +680,7 @@
 </g>
 </g>
 <g>
-<rect width="430" height="34.3476" transform="translate(0 15127.7)" fill="#6ACE2A" />
+<rect width="430" height="34.3476" transform="translate(0 15127.7)" fill="#6ACE2A" shape-rendering="crispEdges" />
 </g>
 </g>
 </g>
@@ -1445,28 +1445,28 @@
 <stop offset="1" stop-color="#EAFAF5" />
 </linearGradient>
 <clipPath id="clip0_1188_21224">
-<rect width="430" height="15210" fill="white" />
+<rect width="430" height="15210" fill="white" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip1_1188_21224">
-<rect width="139" height="61" fill="white" transform="translate(96.5 13.5)" />
+<rect width="139" height="61" fill="white" transform="translate(96.5 13.5)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip2_1188_21224">
-<rect width="430" height="900" fill="white" transform="translate(0 132)" />
+<rect width="430" height="900" fill="white" transform="translate(0 132)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip3_1188_21224">
-<rect width="269" height="119" fill="white" transform="translate(78 284)" />
+<rect width="269" height="119" fill="white" transform="translate(78 284)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip4_1188_21224">
 <rect y="710" width="425" height="320" rx="10" fill="white" />
 </clipPath>
 <clipPath id="clip5_1188_21224">
-<rect width="390" height="13076" fill="white" transform="translate(20 1072)" />
+<rect width="390" height="13076" fill="white" transform="translate(20 1072)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip6_1188_21224">
-<rect width="430" height="974" fill="white" transform="translate(0 14188)" />
+<rect width="430" height="974" fill="white" transform="translate(0 14188)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip7_1188_21224">
-<rect width="170" height="57" fill="white" transform="translate(115 14285)" />
+<rect width="170" height="57" fill="white" transform="translate(115 14285)" shape-rendering="crispEdges" />
 </clipPath>
 <image id="image0_1188_21224" data-name="Ø´Ø§Ø´Ù_Ø§ÙÙÙØ¨Ø§ÙÙ_Ø§ÙÙØ±ÙØ¶_Ø§ÙØºØ§Ø¡_Ø§ÙÙ_202606171050.jpg" width="2400" height="1792" preserveAspectRatio="none" xlink:href="../v2/7ab5234145.jpg" />
 </defs>

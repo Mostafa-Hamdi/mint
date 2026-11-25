@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="430" height="10076" viewBox="0 0 430 10076" fill="none">
 <g clip-path="url(#clip0_1188_19526)">
-<rect width="430" height="10076" fill="white" />
+<rect width="430" height="10076" fill="white" shape-rendering="crispEdges" />
 <g>
-<rect width="430" height="91" transform="translate(0 1)" fill="white" />
+<rect width="430" height="91" transform="translate(0 1)" fill="white" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -59,9 +59,9 @@
 </g>
 </g>
 <g clip-path="url(#clip2_1188_19526)">
-<rect width="430" height="656" transform="translate(0 132)" fill="white" />
+<rect width="430" height="656" transform="translate(0 132)" fill="white" shape-rendering="crispEdges" />
 <rect y="67" width="430" height="786" fill="url(#pattern0_1188_19526)" />
-<rect y="132" width="430" height="656" fill="url(#paint0_linear_1188_19526)" style="mix-blend-mode:multiply" />
+<rect y="132" width="430" height="656" fill="url(#paint0_linear_1188_19526)" style="mix-blend-mode:multiply" shape-rendering="crispEdges" />
 <g>
 </g>
 <g>
@@ -118,7 +118,7 @@
 </g>
 <path d="M181 8963L181 3105" stroke-linecap="round" stroke="black" />
 </g>
-<rect x="67.5" y="3105.5" width="292" height="5857" stroke="black" />
+<rect x="67.5" y="3105.5" width="292" height="5857" stroke="black" shape-rendering="crispEdges" />
 </g>
 </g>
 </g>
@@ -140,22 +140,22 @@
 <stop offset="1" stop-color="#EAFAF5" />
 </linearGradient>
 <clipPath id="clip0_1188_19526">
-<rect width="430" height="10076" fill="white" />
+<rect width="430" height="10076" fill="white" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip1_1188_19526">
-<rect width="139" height="61" fill="white" transform="translate(96.5 13.5)" />
+<rect width="139" height="61" fill="white" transform="translate(96.5 13.5)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip2_1188_19526">
-<rect width="430" height="656" fill="white" transform="translate(0 132)" />
+<rect width="430" height="656" fill="white" transform="translate(0 132)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip3_1188_19526">
-<rect width="338" height="8184" fill="white" transform="translate(46 828)" />
+<rect width="338" height="8184" fill="white" transform="translate(46 828)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip4_1188_19526">
-<rect x="67" y="3105" width="293" height="5858" fill="white" />
+<rect x="67" y="3105" width="293" height="5858" fill="white" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip5_1188_19526">
-<rect width="170" height="57" fill="white" transform="translate(115 9149)" />
+<rect width="170" height="57" fill="white" transform="translate(115 9149)" shape-rendering="crispEdges" />
 </clipPath>
 <image id="image0_1188_19526" width="2394" height="1786" preserveAspectRatio="none" xlink:href="../v2/91d7633055.png" />
 </defs>

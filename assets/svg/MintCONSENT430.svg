@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="430" height="4403" viewBox="0 0 430 4403" fill="none">
 <g clip-path="url(#clip0_1200_21922)">
-<rect width="430" height="4403" fill="white" />
+<rect width="430" height="4403" fill="white" shape-rendering="crispEdges" />
 <g>
-<rect width="430" height="97" fill="white" />
+<rect width="430" height="97" fill="white" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -56,9 +56,9 @@
 </g>
 </g>
 <g clip-path="url(#clip2_1200_21922)">
-<rect width="430" height="1024" transform="translate(0 126)" fill="white" />
+<rect width="430" height="1024" transform="translate(0 126)" fill="white" shape-rendering="crispEdges" />
 <rect x="-21" y="117" width="1481" height="1106" fill="url(#pattern0_1200_21922)" />
-<rect y="126" width="430" height="1024" fill="url(#paint0_linear_1200_21922)" style="mix-blend-mode:multiply" />
+<rect y="126" width="430" height="1024" fill="url(#paint0_linear_1200_21922)" style="mix-blend-mode:multiply" shape-rendering="crispEdges" />
 <g>
 </g>
 <g>
@@ -97,9 +97,9 @@
 </g>
 </g>
 <g>
-<rect width="430" height="970" transform="translate(0 3433)" fill="#3A495B" />
+<rect width="430" height="970" transform="translate(0 3433)" fill="#3A495B" shape-rendering="crispEdges" />
 <g>
-<rect width="430" height="48.5" transform="translate(0 4354.5)" fill="#6ACE2A" />
+<rect width="430" height="48.5" transform="translate(0 4354.5)" fill="#6ACE2A" shape-rendering="crispEdges" />
 </g>
 <g>
 <g>
@@ -309,13 +309,13 @@
 <stop offset="1" stop-color="#EAFAF5" />
 </linearGradient>
 <clipPath id="clip0_1200_21922">
-<rect width="430" height="4403" fill="white" />
+<rect width="430" height="4403" fill="white" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip1_1200_21922">
-<rect width="188" height="61" fill="white" transform="translate(72 15.5)" />
+<rect width="188" height="61" fill="white" transform="translate(72 15.5)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip2_1200_21922">
-<rect width="430" height="1024" fill="white" transform="translate(0 126)" />
+<rect width="430" height="1024" fill="white" transform="translate(0 126)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip3_1200_21922">
 <rect y="1623" width="430" height="240" rx="10" fill="white" />
@@ -327,7 +327,7 @@
 <rect y="3164" width="430" height="240" rx="10" fill="white" />
 </clipPath>
 <clipPath id="clip6_1200_21922">
-<rect width="170" height="57" fill="white" transform="translate(115 3530)" />
+<rect width="170" height="57" fill="white" transform="translate(115 3530)" shape-rendering="crispEdges" />
 </clipPath>
 <image id="image0_1200_21922" data-name="Doctor_in_modern_clinic_2K_202608111235.jpg" width="2400" height="1792" preserveAspectRatio="none" xlink:href="../v2/2a2e37ab46.jpg" />
 <image id="image1_1200_21922" data-name="Doctor_in_modern_clinic_2K_202608111230.jpg" width="2400" height="1792" preserveAspectRatio="none" xlink:href="../v2/ba5f7735ff.jpg" />

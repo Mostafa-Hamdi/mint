@@ -175,6 +175,14 @@ def frame(name, prod, bp):
     # footer group (drawn last in Figma, often over the bottom of the content)
     foot_g = next((g for g in root.iter(N + 'g') if re.search('footer', g.get('id') or '', re.I)), None)
     foot_ids = set()
+    FOOT_Y = []
+    if foot_g is not None:
+        for r_ in foot_g.iter(N + 'rect'):
+            if not r_.get('width') or num(r_.get('width')) < W * .9: continue
+            ry = num(r_.get('y', '0')); mt_ = re.match(r'translate\(([-\d.]+)(?:[ ,]([-\d.]+))?\)', r_.get('transform', ''))
+            if mt_: ry += float(mt_.group(2) or 0)
+            FOOT_Y.append(ry)
+        FOOT_Y = [min(FOOT_Y)] if FOOT_Y else []
     if foot_g is not None:
         for t, _ in texts:
             a_ = textparent.get(id(t))
@@ -184,6 +192,9 @@ def frame(name, prod, bp):
     for e in root.iter():
         if e.get('id') and e.tag not in (N + 'clipPath', N + 'linearGradient', N + 'radialGradient', N + 'pattern', N + 'image', N + 'filter', N + 'mask'):
             del e.attrib['id']
+    # square-cornered rectangles meeting edge to edge leave faint light lines at fractional scales: draw them crisp
+    for r_ in root.iter(N + 'rect'):
+        if not r_.get('rx') and not (r_.get('fill') or '').startswith('url(#pattern'): r_.set('shape-rendering', 'crispEdges')
     svg_rel = f'assets/svg/{name}.svg'
     os.makedirs(os.path.join(PROJ, 'assets', 'svg'), exist_ok=True)
     data = ET.tostring(root, encoding='unicode')
@@ -401,7 +412,7 @@ def frame(name, prod, bp):
         top0 = min(p[2] for p in pills) - 25.7
         htop = (head[2] - 22 if head else top0 - 40)
         bottom = max(p[2] for p in pills) - 25.7 + 40
-        foot = [r[1] for r in rects if r[2] >= W * .95 and (r[4] or '').upper() == '#3A495B' and r[1] > H / 2]
+        foot = FOOT_Y
         end_y = min(foot) if foot else H - 600
         out.append((end_y - 1, f'<span class="anchor" data-anchor="legal-end" style="--y:{end_y - 40:.1f}"></span>'))
         links_ = ''.join(f'<a class="lgn-a" href="pils-legal.html" data-section="{LEGAL_SIDE[k]}">{html.escape(k)}</a>'
@@ -515,7 +526,7 @@ def frame(name, prod, bp):
             z['html'] = (f'<div class="bd az" style="--pbg:{z["pbg"]};--x:{z["x"]:.1f};--w:{z["w"]:.1f};--gap:{max(12, z["gap"]):.1f}">'
                          f'<div class="az-list">' + ''.join(items) + '</div></div>')
     if zones:
-        fr_ = [r[1] for r in rects if r[2] >= W * .95 and (r[4] or '').upper() == '#3A495B' and r[1] > H / 2]
+        fr_ = FOOT_Y
         ftop_z = min(fr_) if fr_ else H
         bands_z = []; cur = 0
         for zi, z in enumerate(zones):
@@ -543,7 +554,7 @@ def frame(name, prod, bp):
                  and any(im[2] >= W * .9 and im[1] < r[1] + 50 for im in imgs)), None)
     ftop = None
     if svg_nf:
-        fr = [r[1] for r in rects if r[2] >= W * .95 and (r[4] or '').upper() == '#3A495B' and r[1] > H / 2]
+        fr = FOOT_Y
         ftop = min(fr) if fr else None
     ce = ftop
     if ftop:

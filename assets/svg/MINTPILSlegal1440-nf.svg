@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1440" height="11445" viewBox="0 0 1440 11445" fill="none">
 <g clip-path="url(#clip0_1050_83501)">
-<rect width="1440" height="11445" fill="white" />
-<rect width="1440" height="11445" fill="#D7ECE9" />
+<rect width="1440" height="11445" fill="white" shape-rendering="crispEdges" />
+<rect width="1440" height="11445" fill="#D7ECE9" shape-rendering="crispEdges" />
 <g clip-path="url(#clip1_1050_83501)">
-<rect width="1440" height="651" transform="translate(0 97)" fill="#3A495B" />
+<rect width="1440" height="651" transform="translate(0 97)" fill="#3A495B" shape-rendering="crispEdges" />
 <g opacity="0.04">
 <path d="M-712.586 123.422C-647.626 151.016 -590.48 191.432 -543.146 239.526L-534.301 248.607L-525.808 257.93L-521.566 262.6L-517.477 267.387L-509.306 276.978C-498.778 290.004 -488.55 303.246 -479.04 316.946C-469.53 330.645 -460.16 344.426 -449.992 357.711C-440.034 371.193 -428.461 383.584 -415.465 394.676L-410.389 398.602C-408.759 399.886 -406.846 401.05 -405.071 402.295C-401.602 404.823 -397.718 406.848 -393.985 409.09C-392.087 410.131 -390.08 411.062 -388.114 412.042L-385.185 413.505C-384.195 413.977 -383.157 414.383 -382.152 414.819L-376.04 417.379L-369.753 419.61L-366.608 420.695L-363.365 421.589C-361.204 422.185 -359.078 422.871 -356.88 423.377C-352.512 424.402 -348.181 425.576 -343.712 426.351C-334.84 428.064 -325.837 429.324 -316.746 430.125C-298.554 431.622 -280.19 431.986 -261.779 431.216C-243.38 430.58 -225.007 429.42 -206.58 427.857C-169.795 424.851 -133.035 420.724 -96.284 417.908C-59.5326 415.092 -22.6576 413.522 13.725 416.034C50.1075 418.546 86.0146 425.203 118.739 438.441C135.109 444.999 150.502 453.245 164.633 463.026C178.687 472.919 191.408 484.249 202.57 496.814C224.969 521.864 242.968 550.156 267.006 574.106C272.977 580.106 279.447 585.678 286.363 590.779C293.307 595.85 300.713 600.392 308.515 604.365C324.238 612.175 341.267 617.814 359.08 621.108C376.893 624.315 395.133 625.871 413.528 625.756C431.904 625.632 450.328 624.481 468.698 622.309C487.072 620.234 505.377 617.365 523.621 614.22L578.329 604.36C596.568 601.174 614.843 598.058 633.23 595.628C651.565 593.212 669.965 591.692 688.349 591.073C706.748 590.449 725.048 591.496 742.976 594.199C760.91 596.915 778.199 601.842 794.376 608.846C778.209 601.824 760.927 596.88 742.997 594.145C725.074 591.401 706.772 590.32 688.368 590.919C669.976 591.51 651.567 593.015 633.224 595.428C614.88 597.75 596.619 600.83 578.38 604.016L523.675 613.817C505.419 616.939 487.12 619.79 468.754 621.847C450.399 623.997 431.99 625.126 413.631 625.228C395.277 625.324 377.079 623.752 359.309 620.535C341.553 617.233 324.581 611.597 308.913 603.798C293.364 595.817 279.425 585.621 267.584 573.569C243.636 549.664 225.683 521.365 203.295 496.179C192.113 483.566 179.368 472.189 165.285 462.251C151.137 452.382 135.709 444.059 119.289 437.439C86.4771 424.097 50.4177 417.339 14.0087 414.839C-22.4003 412.34 -59.4412 414.003 -96.1997 416.837C-132.958 419.672 -169.701 423.863 -206.493 426.887C-224.886 428.419 -243.288 429.651 -261.656 430.316C-280.036 431.086 -298.372 430.742 -316.54 429.287C-325.657 428.626 -334.693 427.503 -343.606 425.922C-348.062 425.171 -352.393 423.997 -356.769 422.99C-358.911 422.399 -361.073 421.803 -363.215 421.213L-366.438 420.324L-369.583 419.239L-375.858 417.031L-381.951 414.476C-382.956 414.04 -383.982 413.658 -384.965 413.168L-387.901 411.722C-389.86 410.725 -391.854 409.817 -393.753 408.777C-397.474 406.558 -401.338 404.537 -404.815 402.028C-406.57 400.788 -408.406 399.645 -410.12 398.357L-415.176 394.438C-428.136 383.383 -439.685 371.04 -449.631 357.612C-459.806 344.345 -469.116 330.521 -478.739 316.889C-488.362 303.258 -498.492 289.824 -509.059 276.788L-517.256 267.209L-521.345 262.422L-525.587 257.752L-534.126 248.437L-542.952 239.361C-590.365 191.305 -647.597 150.944 -712.586 123.422Z" fill="url(#paint0_linear_1050_83501)" />
 <path d="M-708.289 112.945C-700.111 116.331 -691.775 119.482 -683.791 123.192C-679.799 125.047 -675.703 126.751 -671.781 128.726L-659.998 134.614C-644.404 142.69 -629.356 151.55 -614.92 161.156L-609.461 164.646C-607.68 165.871 -605.941 167.145 -604.187 168.383L-593.652 175.893L-583.456 183.766L-578.472 187.801L-573.548 191.878L-563.717 200.128L-554.286 208.684C-552.721 210.128 -551.143 211.536 -549.578 212.98L-544.934 217.437L-535.808 226.326C-512.053 250.52 -490.656 276.573 -471.833 304.223C-462.361 318.033 -453.486 332.155 -444.06 345.972C-434.852 359.929 -424.503 373.2 -413.094 385.682C-401.508 398.119 -387.603 408.593 -371.94 416.682C-356.212 424.605 -339.143 430.333 -321.269 433.685C-312.37 435.438 -303.33 436.709 -294.196 437.492C-285.06 438.213 -275.848 438.431 -266.611 438.145C-257.359 437.934 -248.095 437.052 -238.877 436.177C-229.659 435.302 -220.415 434.414 -211.185 433.404C-192.734 431.4 -174.326 428.808 -155.92 426.276C-137.514 423.743 -119.021 421.155 -100.653 418.771C-63.8341 414.223 -26.8266 410.384 9.99358 410.761C46.8138 411.139 83.3752 415.914 117.099 427.571C133.949 433.366 149.876 440.953 164.562 450.183C179.21 459.477 192.488 470.374 204.122 482.65C227.54 507.114 245.905 535.269 269.273 559.859C280.775 572.322 294.366 583.047 309.604 591.684C317.254 595.943 325.32 599.601 333.72 602.62C342.133 605.614 350.828 608.01 359.728 609.787C377.561 613.191 395.889 614.752 414.373 614.442C432.835 614.203 451.337 613.004 469.788 610.85C488.242 608.787 506.637 606.014 524.991 602.97L580.072 593.786C598.482 590.599 616.78 588.017 635.231 585.854C653.646 583.676 672.114 582.434 690.547 582.135C709.014 581.846 727.355 583.125 745.333 585.955C763.309 588.816 780.645 593.808 796.908 600.804C780.657 593.772 763.319 588.76 745.335 585.896C727.373 583.05 709.045 581.755 690.59 582.028C672.131 582.283 653.633 583.49 635.187 585.643C616.738 587.747 598.337 590.374 579.984 593.523C543.392 599.324 506.656 606.396 469.762 610.486C451.306 612.611 432.801 613.783 414.337 613.996C395.92 614.261 377.664 612.666 359.904 609.24C351.029 607.47 342.361 605.081 333.973 602.094C325.589 599.113 317.537 595.493 309.898 591.269C294.724 582.628 281.187 571.918 269.722 559.486C246.451 534.923 228.112 506.755 204.684 482.209C181.329 457.421 151.411 438.441 117.411 426.843C83.5549 415.089 46.9162 410.294 10.0525 409.864C-26.8113 409.435 -63.8953 413.412 -100.632 418.022C-119.07 420.367 -137.478 422.958 -155.879 425.532C-174.281 428.106 -192.682 430.68 -211.114 432.689C-220.331 433.723 -229.563 434.633 -238.8 435.503C-248.038 436.373 -257.243 437.271 -266.464 437.51C-284.928 438.106 -303.251 436.625 -321.014 433.1C-338.845 429.776 -355.878 424.085 -371.578 416.206C-387.173 408.157 -401.018 397.732 -412.555 385.353C-423.973 372.9 -434.333 359.66 -443.557 345.733C-453.029 331.924 -461.911 317.819 -471.371 304.033C-490.235 276.383 -511.678 250.337 -535.484 226.157L-544.636 217.281L-549.28 212.824C-550.837 211.362 -552.423 209.972 -553.995 208.546L-563.426 199.99L-573.491 191.735L-578.285 187.654L-583.37 183.711L-593.592 175.85L-604.127 168.34C-605.9 167.097 -607.64 165.823 -609.427 164.615L-614.886 161.125C-629.33 151.535 -644.385 142.693 -659.986 134.637L-671.776 128.767C-675.698 126.792 -679.794 125.088 -683.793 123.251C-691.739 119.393 -700.104 116.313 -708.289 112.945Z" fill="url(#paint1_linear_1050_83501)" />
@@ -228,7 +228,7 @@
 </g>
 <g>
 <g>
-<rect width="933" height="86" transform="translate(412 3501)" fill="url(#paint166_linear_1050_83501)" />
+<rect width="933" height="86" transform="translate(412 3501)" fill="url(#paint166_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <path d="M1319.33 3540.66L1311 3549L1302.67 3540.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -236,7 +236,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="86" transform="translate(412 3607)" fill="url(#paint167_linear_1050_83501)" />
+<rect width="933" height="86" transform="translate(412 3607)" fill="url(#paint167_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <path d="M1319.33 3646.66L1311 3655L1302.67 3646.66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#00A48F" />
 </g>
@@ -244,7 +244,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="187" transform="translate(412 3713)" fill="url(#paint168_linear_1050_83501)" />
+<rect width="933" height="187" transform="translate(412 3713)" fill="url(#paint168_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -258,7 +258,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="187" transform="translate(412 3920)" fill="url(#paint169_linear_1050_83501)" />
+<rect width="933" height="187" transform="translate(412 3920)" fill="url(#paint169_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -272,7 +272,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="237" transform="translate(412 4127)" fill="url(#paint170_linear_1050_83501)" />
+<rect width="933" height="237" transform="translate(412 4127)" fill="url(#paint170_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -286,7 +286,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="287" transform="translate(412 4384)" fill="url(#paint171_linear_1050_83501)" />
+<rect width="933" height="287" transform="translate(412 4384)" fill="url(#paint171_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -300,7 +300,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="287" transform="translate(412 4691)" fill="url(#paint172_linear_1050_83501)" />
+<rect width="933" height="287" transform="translate(412 4691)" fill="url(#paint172_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -316,7 +316,7 @@
 <g>
 </g>
 <g>
-<rect width="933" height="187" transform="translate(412 5032)" fill="url(#paint173_linear_1050_83501)" />
+<rect width="933" height="187" transform="translate(412 5032)" fill="url(#paint173_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -330,7 +330,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="187" transform="translate(412 5239)" fill="url(#paint174_linear_1050_83501)" />
+<rect width="933" height="187" transform="translate(412 5239)" fill="url(#paint174_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -344,7 +344,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="337" transform="translate(412 5446)" fill="url(#paint175_linear_1050_83501)" />
+<rect width="933" height="337" transform="translate(412 5446)" fill="url(#paint175_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -358,7 +358,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="237" transform="translate(412 5803)" fill="url(#paint176_linear_1050_83501)" />
+<rect width="933" height="237" transform="translate(412 5803)" fill="url(#paint176_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -372,7 +372,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="387" transform="translate(412 6060)" fill="url(#paint177_linear_1050_83501)" />
+<rect width="933" height="387" transform="translate(412 6060)" fill="url(#paint177_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -386,7 +386,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="187" transform="translate(412 6467)" fill="url(#paint178_linear_1050_83501)" />
+<rect width="933" height="187" transform="translate(412 6467)" fill="url(#paint178_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -400,7 +400,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="287" transform="translate(412 6674)" fill="url(#paint179_linear_1050_83501)" />
+<rect width="933" height="287" transform="translate(412 6674)" fill="url(#paint179_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -414,7 +414,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="287" transform="translate(412 6981)" fill="url(#paint180_linear_1050_83501)" />
+<rect width="933" height="287" transform="translate(412 6981)" fill="url(#paint180_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -428,7 +428,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="387" transform="translate(412 7288)" fill="url(#paint181_linear_1050_83501)" />
+<rect width="933" height="387" transform="translate(412 7288)" fill="url(#paint181_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -442,7 +442,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="287" transform="translate(412 7695)" fill="url(#paint182_linear_1050_83501)" />
+<rect width="933" height="287" transform="translate(412 7695)" fill="url(#paint182_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -456,7 +456,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="237" transform="translate(412 8002)" fill="url(#paint183_linear_1050_83501)" />
+<rect width="933" height="237" transform="translate(412 8002)" fill="url(#paint183_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -470,7 +470,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="237" transform="translate(412 8259)" fill="url(#paint184_linear_1050_83501)" />
+<rect width="933" height="237" transform="translate(412 8259)" fill="url(#paint184_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -484,7 +484,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="187" transform="translate(412 8516)" fill="url(#paint185_linear_1050_83501)" />
+<rect width="933" height="187" transform="translate(412 8516)" fill="url(#paint185_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -498,7 +498,7 @@
 </g>
 </g>
 <g>
-<rect width="933" height="287" transform="translate(412 8723)" fill="url(#paint186_linear_1050_83501)" />
+<rect width="933" height="287" transform="translate(412 8723)" fill="url(#paint186_linear_1050_83501)" shape-rendering="crispEdges" />
 <g>
 <g>
 <g>
@@ -559,7 +559,7 @@
 </g>
 </g>
 <g>
-<rect width="1440" height="97" fill="white" />
+<rect width="1440" height="97" fill="white" shape-rendering="crispEdges" />
 <g clip-path="url(#clip5_1050_83501)">
 <g>
 <g>
@@ -1380,28 +1380,28 @@
 <stop offset="1" stop-color="#EAFAF5" />
 </linearGradient>
 <clipPath id="clip0_1050_83501">
-<rect width="1440" height="11445" fill="white" />
+<rect width="1440" height="11445" fill="white" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip1_1050_83501">
-<rect width="1440" height="651" fill="white" transform="translate(0 97)" />
+<rect width="1440" height="651" fill="white" transform="translate(0 97)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip2_1050_83501">
 <rect x="759" y="184" width="560" height="422" rx="10" fill="white" />
 </clipPath>
 <clipPath id="clip3_1050_83501">
-<rect width="269" height="119" fill="white" transform="translate(91 260)" />
+<rect width="269" height="119" fill="white" transform="translate(91 260)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip4_1050_83501">
-<rect width="1253" height="10175" fill="white" transform="translate(92 785)" />
+<rect width="1253" height="10175" fill="white" transform="translate(92 785)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip5_1050_83501">
-<rect width="139" height="61" fill="white" transform="translate(119 19.5)" />
+<rect width="139" height="61" fill="white" transform="translate(119 19.5)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip6_1050_83501">
-<rect width="1440" height="485" fill="white" transform="translate(0 10960)" />
+<rect width="1440" height="485" fill="white" transform="translate(0 10960)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip7_1050_83501">
-<rect width="170" height="57" fill="white" transform="translate(86 11075)" />
+<rect width="170" height="57" fill="white" transform="translate(86 11075)" shape-rendering="crispEdges" />
 </clipPath>
 <image id="image0_1050_83501" data-name="Ø´Ø§Ø´Ù_Ø§ÙÙÙØ¨Ø§ÙÙ_Ø§ÙÙØ±ÙØ¶_Ø§ÙØºØ§Ø¡_Ø§ÙÙ_202606171050.jpg" width="2400" height="1792" preserveAspectRatio="none" xlink:href="../v2/7ab5234145.jpg" />
 </defs>

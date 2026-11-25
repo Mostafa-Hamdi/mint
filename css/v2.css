@@ -276,7 +276,7 @@ html.vlb-lock { overflow: hidden; }
 
 /* phone spacing fit (js/v2.js): bands show their slice of the drawing via clip-path so text may run past a band edge */
 .fv-m .bd:not(.hero):not(.st) { overflow: visible; }
-.fv-m .bd:not(.hero):not(.st) > .bd-in > .decor { clip-path: inset(calc(var(--y0) * var(--u)) 0 calc((var(--H) - var(--y0) - var(--h)) * var(--u)) 0); }
+.fv-m .bd:not(.hero):not(.st) > .bd-in > .decor { clip-path: inset(calc(var(--y0) * var(--u) - var(--ct, 1px)) 0 calc((var(--H) - var(--y0) - var(--h)) * var(--u) - var(--cb, 1px)) 0); }   /* 1px overlap: no hairline seams between strips */
 .fv .bd.st { height: calc(var(--k) * var(--u)); overflow: hidden; }
 .fv .bd.st > .bd-in { top: calc(var(--y0) * var(--u) * var(--k) * -1); transform: scaleY(var(--k)); transform-origin: 0 0; }
 .fv .tx .ln, .fv .tx .fl, .fv a.tx .ln { z-index: 2; }
@@ -287,3 +287,5 @@ html.vlb-lock { overflow: hidden; }
 
 /* phones: photo heroes stay well under the screen height (content stays centred) */
 @media (max-width: 767.98px) { .bd.hero { --vis: clamp(calc(var(--full) * .45), calc(78svh - var(--fh-h, 64px)), var(--full)); } }
+
+.fv .bd.st { position: relative; z-index: 0; }

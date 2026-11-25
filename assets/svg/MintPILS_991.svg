@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="991" height="4988" viewBox="0 0 991 4988" fill="none">
 <g clip-path="url(#clip0_1172_6123)">
-<rect width="991" height="4988" fill="white" />
+<rect width="991" height="4988" fill="white" shape-rendering="crispEdges" />
 <g>
 <g>
 <rect x="90" y="1253" width="520" height="518" rx="10" fill="#3A495B" />
@@ -26,9 +26,9 @@
 </g>
 </g>
 <g clip-path="url(#clip3_1172_6123)">
-<rect width="991" height="1024" transform="translate(0 97)" fill="white" />
+<rect width="991" height="1024" transform="translate(0 97)" fill="white" shape-rendering="crispEdges" />
 <rect x="-54" y="80" width="1455" height="1041" fill="url(#pattern2_1172_6123)" />
-<rect y="97" width="991" height="1024" fill="url(#paint0_linear_1172_6123)" style="mix-blend-mode:multiply" />
+<rect y="97" width="991" height="1024" fill="url(#paint0_linear_1172_6123)" style="mix-blend-mode:multiply" shape-rendering="crispEdges" />
 <g>
 </g>
 <g>
@@ -128,7 +128,7 @@
 </g>
 </g>
 <g>
-<rect width="991" height="97" transform="translate(-1 1)" fill="white" />
+<rect width="991" height="97" transform="translate(-1 1)" fill="white" shape-rendering="crispEdges" />
 <g clip-path="url(#clip4_1172_6123)">
 <g>
 <g>
@@ -188,9 +188,9 @@
 </g>
 </g>
 <g clip-path="url(#clip5_1172_6123)">
-<rect width="991" height="842" transform="translate(0 4146)" fill="#3A495B" />
+<rect width="991" height="842" transform="translate(0 4146)" fill="#3A495B" shape-rendering="crispEdges" />
 <g>
-<rect width="991" height="42.1" transform="translate(0 4946.34)" fill="#6ACE2A" />
+<rect width="991" height="42.1" transform="translate(0 4946.34)" fill="#6ACE2A" shape-rendering="crispEdges" />
 </g>
 <g>
 <g>
@@ -395,7 +395,7 @@
 <stop offset="1" stop-color="#EAFAF5" />
 </linearGradient>
 <clipPath id="clip0_1172_6123">
-<rect width="991" height="4988" fill="white" />
+<rect width="991" height="4988" fill="white" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip1_1172_6123">
 <rect x="381" y="1674" width="556" height="310" rx="10" fill="white" />
@@ -404,16 +404,16 @@
 <rect x="90" y="2585" width="556" height="310" rx="10" fill="white" />
 </clipPath>
 <clipPath id="clip3_1172_6123">
-<rect width="991" height="1024" fill="white" transform="translate(0 97)" />
+<rect width="991" height="1024" fill="white" transform="translate(0 97)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip4_1172_6123">
-<rect width="139" height="61" fill="white" transform="translate(96 20.5)" />
+<rect width="139" height="61" fill="white" transform="translate(96 20.5)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip5_1172_6123">
-<rect width="991" height="842" fill="white" transform="translate(0 4146)" />
+<rect width="991" height="842" fill="white" transform="translate(0 4146)" shape-rendering="crispEdges" />
 </clipPath>
 <clipPath id="clip6_1172_6123">
-<rect width="170" height="57" fill="white" transform="translate(277.186 4295.55)" />
+<rect width="170" height="57" fill="white" transform="translate(277.186 4295.55)" shape-rendering="crispEdges" />
 </clipPath>
 <image id="image0_1172_6123" data-name="tablet_mockup_showing_202604271145.jpg" width="2400" height="1792" preserveAspectRatio="none" xlink:href="../v2/ece03e7fe6.jpg" />
 <image id="image1_1172_6123" data-name="istockphoto_1400087189.png" width="4096" height="2731" preserveAspectRatio="none" xlink:href="../v2/b3918e43d2.jpg" />
