@@ -332,7 +332,11 @@
     );
   }
   function headerSpace() {
-    return window.innerWidth < 768 ? 80 : 100;
+    var base = window.innerWidth < 768 ? 80 : 100;
+    // the Legal section chips stick under the header on small screens
+    var chips = document.querySelector('.legal-nav');
+    if (chips && window.innerWidth < 992) base += chips.offsetHeight;
+    return base;
   }
   function goTo(name, smooth) {
     var el = anchorFor(name);

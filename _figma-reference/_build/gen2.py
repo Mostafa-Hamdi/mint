@@ -13,9 +13,6 @@ N = '{%s}' % NS; XL = '{%s}href' % XLN
 IMGRANGES = {}
 PAGES = [
   # out, title, product, (desktop, tablet, phone)
-  ('consent-piftick.html', 'MINT CONSENT – PIF TICK', 'consent', ('MINTconsentpiftick1440', 'MINTConsentpiftick991', 'MINTconsentpiftick430')),
-  ('pils-piftick.html', 'MINT PILs – PIF TICK', 'pils', ('MINTPILPIFTICK1440', 'MINTPilspiftick991', 'MINTINPillspiftick430')),
-  ('pils-legal.html', 'MINT PILs – Legal', 'pils', ('MINTPILSlegal1440', None, 'MINTPILsLegal_430')),
 ]
 
 # font metrics (hhea ascender / descender, em units)

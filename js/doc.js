@@ -82,3 +82,49 @@
     f.querySelector('.cty-msg').textContent = '';
   });
 })();
+
+// Legal: the section link of the part being read is highlighted (and kept in view in the chip row)
+(function () {
+  var nav = document.querySelector('.legal-nav');
+  if (!nav) return;
+  var links = {};
+  nav.querySelectorAll('a[data-section]').forEach(function (a) {
+    links[a.getAttribute('data-section')] = a;
+  });
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.legal-s'));
+  var ul = nav.querySelector('ul');
+  var current = null;
+  function set(id) {
+    if (id === current || !links[id]) return;
+    if (current && links[current]) links[current].removeAttribute('aria-current');
+    links[id].setAttribute('aria-current', 'true');
+    current = id;
+    if (ul.scrollWidth > ul.clientWidth) {
+      var a = links[id];
+      ul.scrollTo({ left: a.offsetLeft - (ul.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+    }
+  }
+  function update() {
+    // the last section whose top has passed the upper third of the screen
+    var line = window.innerHeight * 0.3;
+    var pick = secs[0];
+    secs.forEach(function (s) {
+      if (s.getBoundingClientRect().top <= line) pick = s;
+    });
+    set(pick.id);
+  }
+  var ticking = false;
+  window.addEventListener(
+    'scroll',
+    function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        update();
+      });
+    },
+    { passive: true },
+  );
+  update();
+})();

@@ -23,7 +23,7 @@ def resized(name, widths, prefix=None):
     for w in widths:
         out = os.path.join(P, 'assets/img/%s-%d.jpg' % (prefix, w))
         if not os.path.exists(out):
-            im0 = im0 or Image.open(os.path.join(P, 'assets/v2/%s.jpg' % name)).convert('RGB')
+            im0 = im0 or Image.open(os.path.join(S, '..', 'originals', '%s.jpg' % name)).convert('RGB')  # design photos (not deployed)
             im = im0.resize((w, round(im0.height * w / im0.width)), Image.LANCZOS)
             im.save(out, quality=78, optimize=True, progressive=True)
     return (', '.join('assets/img/%s-%d.jpg %dw' % (prefix, w, w) for w in widths),
@@ -341,3 +341,14 @@ for out, prod, title, img, alt, clinics in PRICING:
             '<section class="price-sec" aria-label="Pricing">\n  <div class="doc-wrap">\n' + (country_form() if clinics else '') +
             '    ' + note + '  </div>\n</section>\n' + CONTACT + '</main>\n')
     write(out, head(title, pre) + main + tail(prod, out, js=True))
+
+
+# ---------- PIF TICK + Legal ----------
+for out, prod, title in [('pils-piftick.html', 'pils', 'MINT PILs – PIF TICK'), ('consent-piftick.html', 'consent', 'MINT CONSENT – PIF TICK')]:
+    art = open(os.path.join(S, 'piftick_content.html'), encoding='utf-8').read()
+    write(out, head(title) + '<main class="doc" id="main" tabindex="-1">\n' + art + '</main>\n' + tail(prod, out))
+
+legal = open(os.path.join(S, 'legal_content.html'), encoding='utf-8').read().replace('{CHEV}', CHEV)
+pre, hero = doc_hero('pils', 'Legal', '7ab5234145', 'A clinician reviewing documents')
+write('pils-legal.html', head('MINT PILs – Legal', pre) + '<main class="doc" id="main" tabindex="-1">\n' + hero +
+      '<section class="legal-sec">\n<div class="doc-wrap">\n' + legal + '</div>\n</section>\n</main>\n' + tail('pils', 'pils-legal.html', js=True))
