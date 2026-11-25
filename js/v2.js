@@ -338,6 +338,15 @@ document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
     // every empty stretch (plain rows with no text, logo or picture on them) taller than 88 shrinks to 52
     var HH = num(fv, '--HH') || 0;   // the drawn header is hidden
     var busy = items.map(function (x) { return [x.top - 4, x.bot + 4]; });
+    // inner heroes: the wide photo under the navy block is cropped to 220 (top and bottom), and the space above the
+    // logo equals the space under the breadcrumb (36 each)
+    var photos = (fv.dataset.imgs || '').split(',').filter(Boolean).map(function (r) { return { f: /f$/.test(r), a: parseFloat(r), b: parseFloat(r.split('-')[1]) }; });
+    var ph = photos.filter(function (q) { return q.f && q.a > HH + 40 && q.a < HH + 800; })[0];
+    var T = 36;
+    if (ph && ph.b - ph.a > 230) {
+      var pc = (ph.b - ph.a) - 220, h1 = Math.round(pc / 2);
+      ops.push({ y: ph.a, cut: h1 }); ops.push({ y: ph.b - (pc - h1), cut: pc - h1 });
+    }
     runs.forEach(function (r) {
       var segs = [[Math.max(r[0], HH), r[1]]];
       busy.forEach(function (b) {
@@ -348,13 +357,14 @@ document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
         }, []);
       });
       segs.forEach(function (s_) {
-        var L = s_[1] - s_[0];
-        if (L <= 88) return;
-        var c = L - 52, y = s_[0] + 26;
+        var L = s_[1] - s_[0], keep = 52, lim = 88;
+        if (ph && (s_[0] <= HH + 2 || Math.abs(s_[1] - ph.a) < 4)) { keep = T; lim = T + 2; }   // inner hero padding, equal top and bottom
+        if (L <= lim) return;
+        var c = L - keep, y = s_[0] + keep / 2;
         if (!ops.some(function (o) { return o.y < y + c && y < o.y + (o.cut || 1); })) ops.push({ y: y, cut: c });
       });
     });
-    var imgR = (fv.dataset.imgs || '').split(',').filter(Boolean).map(function (r) { return r.split('-').map(Number); });
+    var imgR = (fv.dataset.imgs || '').split(',').filter(Boolean).map(function (r) { return r.replace('f', '').split('-').map(Number); });
     var svgUrl = fv.dataset.svg;
     function lightDecor(band) {   // a strip with no photo in it can use a plain <img> of the drawing (much lighter than <object>)
       var y0 = num(band, '--y0'), y1 = y0 + num(band, '--h'), d = band.firstElementChild.querySelector(':scope > .decor');
@@ -419,6 +429,9 @@ document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
     });
     var top = blocks[0].top, bot = y;   // relative to the frame (hero-c sits at the frame origin)
     var dy = (hy0 + hh / 2) - (top + bot) / 2;
+    // the hero is as tall as its content plus the same 44 above and below
+    var vis = Math.min(hh, (bot - top) + 88);
+    hb.style.setProperty('--vis', 'calc(' + vis.toFixed(1) + ' * var(--u))');
     hc.style.setProperty('--dy', dy.toFixed(1));
   }
   function run() { document.querySelectorAll('section.fv-m[data-runs]').forEach(fit); }

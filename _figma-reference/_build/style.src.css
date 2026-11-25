@@ -878,3 +878,18 @@ a { color: inherit; }
   .page .ab-global .t-mont45 { font-size: 30u; line-height: 1.2; padding: 0 24u 0 30u; }
   .page .ab-global .t-pop20 { margin-top: 22u; font-size: 17u; line-height: 1.65; }
 }
+
+@media (max-width: 767.98px) {
+  /* About: "Message from our CEO" on one line, everything under it follows */
+  .page .ab-ceo .t-pop56 { left: 24u; width: 382u; top: 52u; font-size: 30u; line-height: 40u; }
+  .page .ab-ceo-txt { top: 124u; }
+  .page .ab-ceo-img { top: 696u; }
+  .page .ab-ceo-name { top: 955u; }
+  .page .ab-ceo-links { top: 1094u; }
+  .page .ab-ceo .frame { height: 1150u; }
+  /* "We are proudly accredited by:" centred and balanced */
+  .page .ab-acc .t-mont45 { width: 382u; margin-left: -35u; font-size: 28u; line-height: 1.25; text-align: center; text-wrap: balance; }
+  /* heroes: equal, smaller padding */
+  .page .home-hero .frame { padding: 44u 24u 44u; }
+  .page .page-hero .frame { height: 300u; }
+}

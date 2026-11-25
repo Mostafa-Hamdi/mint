@@ -332,7 +332,7 @@ def frame(name, prod, bp):
 
     # ---------- accordions: cards (white -> #EAFAF5) holding a question and a #288C91 answer ----------
     imgs = [r for r in rects if (r[4] or '').startswith('url(#pattern')]
-    IMGRANGES[name] = ','.join(f'{r[1]:.0f}-{r[1] + r[3]:.0f}' for r in imgs)
+    IMGRANGES[name] = ','.join(f'{r[1]:.0f}-{r[1] + r[3]:.0f}' + ('f' if r[2] >= W * .95 else '') for r in imgs)
     ref = None
     try: ref = Image.open(os.path.join(PROJ, '_figma-reference', 'v2', name + '.png')).convert('RGB')
     except Exception: pass

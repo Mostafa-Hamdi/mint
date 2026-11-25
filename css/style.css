@@ -878,3 +878,18 @@ a { color: inherit; }
   .page .ab-global .t-mont45 { font-size: calc(var(--u) * 30); line-height: 1.2; padding: 0 calc(var(--u) * 24) 0 calc(var(--u) * 30); }
   .page .ab-global .t-pop20 { margin-top: calc(var(--u) * 22); font-size: calc(var(--u) * 17); line-height: 1.65; }
 }
+
+@media (max-width: 767.98px) {
+  /* About: "Message from our CEO" on one line, everything under it follows */
+  .page .ab-ceo .t-pop56 { left: calc(var(--u) * 24); width: calc(var(--u) * 382); top: calc(var(--u) * 52); font-size: calc(var(--u) * 30); line-height: calc(var(--u) * 40); }
+  .page .ab-ceo-txt { top: calc(var(--u) * 124); }
+  .page .ab-ceo-img { top: calc(var(--u) * 696); }
+  .page .ab-ceo-name { top: calc(var(--u) * 955); }
+  .page .ab-ceo-links { top: calc(var(--u) * 1094); }
+  .page .ab-ceo .frame { height: calc(var(--u) * 1150); }
+  /* "We are proudly accredited by:" centred and balanced */
+  .page .ab-acc .t-mont45 { width: calc(var(--u) * 382); margin-left: calc(var(--u) * -35); font-size: calc(var(--u) * 28); line-height: 1.25; text-align: center; text-wrap: balance; }
+  /* heroes: equal, smaller padding */
+  .page .home-hero .frame { padding: calc(var(--u) * 44) calc(var(--u) * 24) calc(var(--u) * 44); }
+  .page .page-hero .frame { height: calc(var(--u) * 300); }
+}
