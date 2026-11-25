@@ -24,7 +24,6 @@ assets/img/    logos, icons, web-sized photos      assets/v2/  two design images
 robots.txt  sitemap.xml  vercel.json (security + cache headers)
 
 handoff/partials/   the shared pieces, ready to turn into your templates (see §3)
-_figma-reference/   design sources + the generator scripts (not deployed)
 ```
 
 Fonts come from Google Fonts (Montserrat, Poppins). There are no other third-party scripts or styles.
@@ -119,7 +118,7 @@ Links like `<a href="pils-legal.html" data-section="refunds">` open that page sc
 ### 4.7 Domain / SEO
 Each page has a description, canonical URL, Open Graph/Twitter tags, and the home page has Organization JSON-LD.
 They point at `https://mint-rdwd.vercel.app`. For the real domain, search and replace that URL in the pages,
-`robots.txt` and `sitemap.xml`, or re-run the generator with `MINT_SITE=https://your-domain` (§6).
+`robots.txt` and `sitemap.xml`, in one go.
 
 ## 5. Server settings to copy (they live in `vercel.json` today)
 
@@ -144,16 +143,9 @@ Cross-Origin-Opener-Policy: same-origin
 
 ## 6. Changing content
 
-Pages can be edited directly; they are clean, readable HTML. They are also generated, so for larger changes:
-
-```
-python -I _figma-reference/_build/build.py .       # writes all 18 pages + handoff/partials (needs Pillow)
-python -I _figma-reference/_build/finalize.py .    # SEO block, robots.txt, sitemap.xml, skip link
-```
-
-The settings at the top of `build.py` are the ones you'll touch: `LOGIN_URL`, `CONTACT_ENDPOINT`, `DEMO_FORMS`, `GUIDE_VIDEO`.
-Long texts live in `_figma-reference/_build/cookies_content.html`, `legal_content.html` and `piftick_content.html`.
-**If you edit the pages by hand, don't re-run the generator afterwards**; it would overwrite your edits.
+Edit the pages directly: they are clean, readable HTML with no generated markup to work around.
+Shared parts (head, footers, header JSON, contact form) repeat on every page, so once they become your templates,
+change them in one place. Long texts (Cookies, Legal, PIF TICK) are ordinary paragraphs, lists and headings in the pages.
 
 ## 7. Checklist before launch
 
