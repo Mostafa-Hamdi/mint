@@ -568,7 +568,13 @@
 (function () {
   document.addEventListener('submit', function (e) {
     var f = e.target;
-    if (f && f.getAttribute('action') === '#') e.preventDefault();
+    if (!f || f.getAttribute('action') !== '#') return;
+    e.preventDefault();
+    var ok = f.querySelector('.cf-ok');
+    if (ok) {
+      f.reset();
+      ok.hidden = false;
+    }
   });
   var skip = document.querySelector('.skip');
   var main = document.getElementById('main');
