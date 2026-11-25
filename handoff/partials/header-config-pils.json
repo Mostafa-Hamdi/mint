@@ -1,0 +1,85 @@
+{
+  "name": "MINT PILs",
+  "logo": "assets/img/logo-pils.svg",
+  "home": "pils.html",
+  "links": [
+    {
+      "label": "Home",
+      "href": "pils.html"
+    },
+    {
+      "label": "About",
+      "href": "pils-about.html"
+    },
+    {
+      "label": "Guide",
+      "href": "pils-guide.html"
+    },
+    {
+      "label": "Pricing",
+      "href": "pils-pricing.html"
+    },
+    {
+      "label": "Contact Us",
+      "href": "pils.html",
+      "section": "contact"
+    }
+  ],
+  "tabs": [
+    {
+      "label": "Home",
+      "href": "pils.html",
+      "icon": "home"
+    },
+    {
+      "label": "Guide",
+      "href": "pils-guide.html",
+      "icon": "book"
+    },
+    {
+      "label": "Pricing",
+      "href": "pils-pricing.html",
+      "icon": "tag"
+    },
+    {
+      "label": "About",
+      "href": "pils-about.html",
+      "icon": "info"
+    },
+    {
+      "label": "Contact",
+      "href": "pils.html",
+      "section": "contact",
+      "icon": "mail"
+    }
+  ],
+  "family": [
+    {
+      "label": "MINTFORMED",
+      "href": "index.html",
+      "logo": "assets/img/logo.svg",
+      "note": "Back to the main site",
+      "main": true
+    },
+    {
+      "label": "MINT CONSENT",
+      "href": "consent.html",
+      "logo": "assets/img/logo-consent.svg",
+      "note": "Digital consent, explained clearly",
+      "current": false
+    },
+    {
+      "label": "MINT PILs",
+      "href": "pils.html",
+      "logo": "assets/img/logo-pils.svg",
+      "note": "Illustrated, interactive leaflets",
+      "current": true
+    },
+    {
+      "label": "MINT FAMILY",
+      "note": "The family health app",
+      "soon": true
+    }
+  ],
+  "login": "#"
+}

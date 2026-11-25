@@ -132,7 +132,7 @@
       '<nav class="fh-nav" aria-label="Main">' +
       links +
       '</nav>' +
-      '<a class="fh-login" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg><span>Log in</span></a>' +
+      '<a class="fh-login" href="' + (cfg.login || '#') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg><span>Log in</span></a>' +
       '<span class="fh-progress" aria-hidden="true"></span>' +
       '</div>';
     var skipEl = document.querySelector(".skip");
@@ -270,11 +270,10 @@
       .join('');
     tabbar.innerHTML =
       sheetHtml +
-      '<div class="tb-bar" style="--n:' +
-      cfg.tabs.length +
-      '"><span class="tb-ind" aria-hidden="true"></span>' +
+      '<div class="tb-bar"><span class="tb-ind" aria-hidden="true"></span>' +
       items +
       '</div>';
+    tabbar.querySelector('.tb-bar').style.setProperty('--n', cfg.tabs.length); // via CSSOM, so the CSP needs no 'unsafe-inline'
     document.body.appendChild(tabbar);
     document.body.classList.add('has-tb');
     var ind = tabbar.querySelector('.tb-ind');
@@ -572,13 +571,48 @@
 (function () {
   document.addEventListener('submit', function (e) {
     var f = e.target;
-    if (!f || f.getAttribute('action') !== '#') return;
+    if (!f) return;
+    var demo = f.hasAttribute('data-demo') || f.getAttribute('action') === '#';
+    if (!demo && !f.classList.contains('cf')) return; // other forms submit normally
     e.preventDefault();
     var ok = f.querySelector('.cf-ok');
-    if (ok) {
+    var err = f.querySelector('.cf-err');
+    var btn = f.querySelector('button[type="submit"]');
+    function done() {
       f.reset();
-      ok.hidden = false;
+      if (err) err.hidden = true;
+      if (ok) ok.hidden = false;
     }
+    function fail(msg) {
+      if (ok) ok.hidden = true;
+      if (err) {
+        err.textContent = msg || 'Sorry, your message could not be sent. Please try again or email info@ampmtraining.com.';
+        err.hidden = false;
+      }
+    }
+    // demo mode (no backend yet), or a bot filled the hidden field: show the thank-you and send nothing
+    var trap = f.querySelector('input[name="website"]');
+    if (demo || (trap && trap.value)) return done();
+    // contact forms: POST the fields to the form's action and expect JSON { ok: true } (or { ok: false, message })
+    if (btn) btn.disabled = true;
+    fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' }, credentials: 'same-origin' })
+      .then(function (r) {
+        return r
+          .json()
+          .catch(function () {
+            return {};
+          })
+          .then(function (j) {
+            if (r.ok && j.ok !== false) done();
+            else fail(j.message);
+          });
+      })
+      .catch(function () {
+        fail();
+      })
+      .then(function () {
+        if (btn) btn.disabled = false;
+      });
   });
   var skip = document.querySelector('.skip');
   var main = document.getElementById('main');

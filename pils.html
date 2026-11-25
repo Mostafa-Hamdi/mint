@@ -31,7 +31,7 @@
     <a class="skip" href="#main">Skip to content</a>
 <main class="doc" id="main" tabindex="-1">
 <section class="home-hero">
-  <img src="assets/img/8e6c824a8c-2400.jpg" srcset="assets/img/8e6c824a8c-960.jpg 960w, assets/img/8e6c824a8c-1600.jpg 1600w, assets/img/8e6c824a8c-2400.jpg 2400w" sizes="100vw" alt="A doctor talking a patient through her treatment" width="2400" height="1792" fetchpriority="high">
+  <img src="assets/img/8e6c824a8c-2400.jpg" srcset="assets/img/8e6c824a8c-960.jpg 960w, assets/img/8e6c824a8c-1600.jpg 1600w, assets/img/8e6c824a8c-2400.jpg 2400w" sizes="100vw" alt="A doctor talking a patient through her treatment" width="2400" height="1600" fetchpriority="high">
   <div>
     <h1><span>Medical Information</span><span>Notable and Trusted</span><span class="hl">MINT PILs</span></h1>
     <p>Our interactive MINT PILs were created with the idea of empowering patients with the knowledge they need to take control of their treatment. They discuss general issues in health as well as specific health problems in a simple, yet comprehensive manner, without losing touch with the culture and society the patient is in.</p>
@@ -40,13 +40,13 @@
 <section class="feat">
   <div class="doc-wrap">
     <div class="feat-card"><h2>MINT PILs</h2><p class="feat-sub">is one of the services provided by AMPM Training Ltd.</p><p>AMPM Training was established with a vision of improving healthcare provision through enhancing communication. It operates under a team with over 25 years of experience in healthcare delivery and training medical staff. We aspire to a healthcare culture based on transparency and communication that develops mutual trust and understanding.</p></div>
-    <img class="feat-img" src="assets/img/ece03e7fe6-1200.jpg" srcset="assets/img/ece03e7fe6-720.jpg 720w, assets/img/ece03e7fe6-1200.jpg 1200w" sizes="(max-width: 767px) 100vw, 56vw" alt="A tablet showing an interactive MINT PIL" width="1200" height="896" loading="lazy" decoding="async">
+    <img class="feat-img" src="assets/img/ece03e7fe6-1200.jpg" srcset="assets/img/ece03e7fe6-720.jpg 720w, assets/img/ece03e7fe6-1200.jpg 1200w" sizes="(max-width: 991px) 100vw, 56vw" alt="A tablet showing an interactive MINT PIL" width="1200" height="896" loading="lazy" decoding="async">
   </div>
 </section>
 <section class="feat feat-teal feat-rev">
   <div class="doc-wrap">
     <div class="feat-card"><h2>MINT PILs</h2><p>Our MINT PILs division is involved in patient edification, which we believe goes beyond patient education into a more spiritual level of enlightenment. This is important for a holistic form of healing. We have designed our MINT PILs to be visual to capture the social issues and feelings, as well as added interactivity to enhance the user experience. The acronym stands for Medical Information Notable and Trusted. Accordingly, our information is based on the requirements of the community and is based on the latest guidance and is all referenced. We are working with PIF Tick, “The UK’s quality mark for trusted health information”, to ensure our leaflets are produced using a professional and structured process.</p></div>
-    <img class="feat-img" src="assets/img/b3918e43d2-1200.jpg" srcset="assets/img/b3918e43d2-720.jpg 720w, assets/img/b3918e43d2-1200.jpg 1200w" sizes="(max-width: 767px) 100vw, 56vw" alt="A clinician reviewing patient information on a laptop" width="1200" height="896" loading="lazy" decoding="async">
+    <img class="feat-img" src="assets/img/b3918e43d2-1200.jpg" srcset="assets/img/b3918e43d2-720.jpg 720w, assets/img/b3918e43d2-1200.jpg 1200w" sizes="(max-width: 991px) 100vw, 56vw" alt="A clinician reviewing patient information on a laptop" width="1200" height="896" loading="lazy" decoding="async">
   </div>
 </section>
 <section class="contact" data-anchor="contact" aria-labelledby="contact-h">
@@ -55,14 +55,17 @@
       <div>
         <p class="contact-kicker">GET IN TOUCH</p>
         <h2 id="contact-h">Fill in the form to <span>Contact us directly</span></h2>
-        <form class="cf" action="#" method="post">
-          <label>First Name<input name="first" autocomplete="given-name" placeholder="First Name" required></label>
-          <label>Last Name<input name="last" autocomplete="family-name" placeholder="Last Name" required></label>
-          <label class="full">Email<input type="email" name="email" autocomplete="email" placeholder="Email" required></label>
-          <label class="full">Telephone<input type="tel" name="tel" autocomplete="tel" placeholder="Telephone"></label>
-          <label class="full">Your Message<textarea name="message" placeholder="Your Message" required></textarea></label>
+        <form class="cf" action="/api/contact" method="post" data-demo>
+          <input type="hidden" name="source" value="pils-home">
+          <label class="hp" aria-hidden="true">Leave empty<input name="website" tabindex="-1" autocomplete="off"></label>
+          <label>First Name<input name="first_name" autocomplete="given-name" placeholder="First Name" maxlength="80" required></label>
+          <label>Last Name<input name="last_name" autocomplete="family-name" placeholder="Last Name" maxlength="80" required></label>
+          <label class="full">Email<input type="email" name="email" autocomplete="email" placeholder="Email" maxlength="160" required></label>
+          <label class="full">Telephone<input type="tel" name="telephone" autocomplete="tel" placeholder="Telephone" maxlength="40"></label>
+          <label class="full">Your Message<textarea name="message" placeholder="Your Message" maxlength="4000" required></textarea></label>
           <button type="submit">Send</button>
           <p class="cf-ok" role="status" hidden>Thank you, we have your message and will get back to you soon.</p>
+          <p class="cf-err" role="alert" hidden></p>
         </form>
       </div>
       <div class="contact-loc">
@@ -91,7 +94,7 @@
     </div>
   </div>
 </footer>
-<script type="application/json" id="sticky-cfg">{"name": "MINT PILs", "logo": "assets/img/logo-pils.svg", "home": "pils.html", "links": [{"label": "Home", "href": "pils.html"}, {"label": "About", "href": "pils-about.html"}, {"label": "Guide", "href": "pils-guide.html"}, {"label": "Pricing", "href": "pils-pricing.html"}, {"label": "Contact Us", "href": "pils.html", "section": "contact"}], "tabs": [{"label": "Home", "href": "pils.html", "icon": "home"}, {"label": "Guide", "href": "pils-guide.html", "icon": "book"}, {"label": "Pricing", "href": "pils-pricing.html", "icon": "tag"}, {"label": "About", "href": "pils-about.html", "icon": "info"}, {"label": "Contact", "href": "pils.html", "section": "contact", "icon": "mail"}], "family": [{"label": "MINTFORMED", "href": "index.html", "logo": "assets/img/logo.svg", "note": "Back to the main site", "main": true}, {"label": "MINT CONSENT", "href": "consent.html", "logo": "assets/img/logo-consent.svg", "note": "Digital consent, explained clearly", "current": false}, {"label": "MINT PILs", "href": "pils.html", "logo": "assets/img/logo-pils.svg", "note": "Illustrated, interactive leaflets", "current": true}, {"label": "MINT FAMILY", "note": "The family health app", "soon": true}]}</script>
+<script type="application/json" id="sticky-cfg">{"name": "MINT PILs", "logo": "assets/img/logo-pils.svg", "home": "pils.html", "links": [{"label": "Home", "href": "pils.html"}, {"label": "About", "href": "pils-about.html"}, {"label": "Guide", "href": "pils-guide.html"}, {"label": "Pricing", "href": "pils-pricing.html"}, {"label": "Contact Us", "href": "pils.html", "section": "contact"}], "tabs": [{"label": "Home", "href": "pils.html", "icon": "home"}, {"label": "Guide", "href": "pils-guide.html", "icon": "book"}, {"label": "Pricing", "href": "pils-pricing.html", "icon": "tag"}, {"label": "About", "href": "pils-about.html", "icon": "info"}, {"label": "Contact", "href": "pils.html", "section": "contact", "icon": "mail"}], "family": [{"label": "MINTFORMED", "href": "index.html", "logo": "assets/img/logo.svg", "note": "Back to the main site", "main": true}, {"label": "MINT CONSENT", "href": "consent.html", "logo": "assets/img/logo-consent.svg", "note": "Digital consent, explained clearly", "current": false}, {"label": "MINT PILs", "href": "pils.html", "logo": "assets/img/logo-pils.svg", "note": "Illustrated, interactive leaflets", "current": true}, {"label": "MINT FAMILY", "note": "The family health app", "soon": true}], "login": "#"}</script>
 <script src="js/ui.js"></script>
 </body>
 </html>

@@ -1,0 +1,72 @@
+{
+  "name": "MINTFORMED",
+  "logo": "assets/img/logo.svg",
+  "home": "index.html",
+  "links": [
+    {
+      "label": "Home",
+      "href": "index.html"
+    },
+    {
+      "label": "Products",
+      "menu": [
+        {
+          "label": "MINT CONSENT",
+          "href": "consent.html",
+          "logo": "assets/img/logo-consent.svg",
+          "note": "Digital consent, explained in clear language."
+        },
+        {
+          "label": "MINT PILs",
+          "href": "pils.html",
+          "logo": "assets/img/logo-pils.svg",
+          "note": "Illustrated, interactive patient leaflets."
+        }
+      ]
+    },
+    {
+      "label": "About Us",
+      "href": "about.html"
+    },
+    {
+      "label": "Contact Us",
+      "href": "contact.html"
+    }
+  ],
+  "tabs": [
+    {
+      "label": "Home",
+      "href": "index.html",
+      "icon": "home"
+    },
+    {
+      "label": "Products",
+      "icon": "grid",
+      "sheet": [
+        {
+          "label": "MINT CONSENT",
+          "href": "consent.html",
+          "logo": "assets/img/logo-consent.svg",
+          "note": "Digital consent, explained clearly"
+        },
+        {
+          "label": "MINT PILs",
+          "href": "pils.html",
+          "logo": "assets/img/logo-pils.svg",
+          "note": "Illustrated, interactive leaflets"
+        }
+      ]
+    },
+    {
+      "label": "About",
+      "href": "about.html",
+      "icon": "info"
+    },
+    {
+      "label": "Contact",
+      "href": "contact.html",
+      "icon": "mail"
+    }
+  ],
+  "login": "#"
+}
