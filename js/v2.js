@@ -204,3 +204,45 @@ document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 });
+
+// Guide videos: the play badge opens a video in a glass lightbox. Until the real guide videos exist,
+// every thumbnail plays a short CC0 test clip (set data-video on a .az-media to use another file).
+(function () {
+  var TEST = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
+  var media = document.querySelectorAll('.az-media');
+  if (!media.length) return;
+  var box = document.createElement('div');
+  box.className = 'vlb'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Video');
+  box.innerHTML = '<div class="vlb-bg"></div><div class="vlb-card"><button type="button" class="vlb-x" aria-label="Close video"></button>' +
+    '<video class="vlb-v" controls playsinline preload="none"></video><p class="vlb-t"></p></div>';
+  document.body.appendChild(box);
+  var v = box.querySelector('video'), title = box.querySelector('.vlb-t'), last = null;
+  function close() {
+    box.classList.remove('show'); v.pause();
+    setTimeout(function () { if (!box.classList.contains('show')) { v.removeAttribute('src'); v.load(); } }, 400);
+    document.documentElement.classList.remove('vlb-lock');
+    if (last) last.focus();
+  }
+  function open(fig) {
+    last = fig.querySelector('.az-play');
+    var img = fig.querySelector('img');
+    v.poster = img ? img.currentSrc || img.src : '';
+    v.src = fig.dataset.video || TEST;
+    var q = fig.closest('.az-i'); q = q && q.querySelector('.az-q span');
+    title.textContent = q ? q.textContent : '';
+    box.classList.add('show'); document.documentElement.classList.add('vlb-lock');
+    box.querySelector('.vlb-x').focus();
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+  }
+  media.forEach(function (fig) {
+    var play = fig.querySelector('.az-play');
+    if (!play) return;
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'az-play'; b.setAttribute('aria-label', 'Play video');
+    play.replaceWith(b);
+    fig.addEventListener('click', function () { open(fig); });
+  });
+  box.querySelector('.vlb-x').addEventListener('click', close);
+  box.querySelector('.vlb-bg').addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && box.classList.contains('show')) close(); });
+})();
