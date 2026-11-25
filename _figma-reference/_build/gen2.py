@@ -13,9 +13,7 @@ N = '{%s}' % NS; XL = '{%s}href' % XLN
 IMGRANGES = {}
 PAGES = [
   # out, title, product, (desktop, tablet, phone)
-  ('consent-pricing.html', 'MINT CONSENT – Pricing', 'consent', ('MINTConsentPricing1440', 'MINTConsentPricing_991', 'MINTconsentPricing_430')),
   ('consent-piftick.html', 'MINT CONSENT – PIF TICK', 'consent', ('MINTconsentpiftick1440', 'MINTConsentpiftick991', 'MINTconsentpiftick430')),
-  ('pils-pricing.html', 'MINT PILs – Pricing', 'pils', ('MINTPILSPricing1440', 'MINTPILSPricing_991', 'MINTPILSPricing_430')),
   ('pils-piftick.html', 'MINT PILs – PIF TICK', 'pils', ('MINTPILPIFTICK1440', 'MINTPilspiftick991', 'MINTINPillspiftick430')),
   ('pils-legal.html', 'MINT PILs – Legal', 'pils', ('MINTPILSlegal1440', None, 'MINTPILsLegal_430')),
 ]

@@ -310,3 +310,34 @@ for out, prod, title, img, alt, items in GUIDES:
     main = ('<main class="doc" id="main" tabindex="-1">\n' + hero +
             '<section class="acc-sec" aria-label="Guides">\n<div class="doc-wrap">\n' + accordion(safe, prod + '-g') + '</div>\n</section>\n</main>\n')
     write(out, head(title, pre) + main + tail(prod, out, js=True))
+
+
+# ---------- pricing ----------
+CTY = [('uk', 'United Kingdom'), ('ksa', 'Saudi Arabia'), ('eg', 'Egypt')]
+
+
+def country_form():
+    opts = ''.join(f'<label class="cty-opt"><input type="radio" name="country" value="{v}"><span class="flag f-{v}" aria-hidden="true"></span>{n}</label>'
+                   for v, n in CTY)
+    return f'''    <p class="price-lead">For clinics, please select your country to continue to the relevant page.</p>
+    <form class="cty-form" action="contact.html" method="get">
+      <fieldset><legend>Select your country</legend><div class="cty-opts">{opts}</div></fieldset>
+      <p class="cty-msg" role="alert"></p>
+      <button class="cty-go" type="submit">Continue</button>
+    </form>
+'''
+
+
+PRICING = [
+    ('pils-pricing.html', 'pils', 'MINT PILs – Pricing', '407c55b7b4', 'A clinician with a patient in a modern clinic', True),
+    ('consent-pricing.html', 'consent', 'MINT CONSENT – Pricing', '2a2e37ab46', 'A doctor in a modern clinic', False),
+]
+for out, prod, title, img, alt, clinics in PRICING:
+    pre, hero = doc_hero(prod, 'Pricing', img, alt)
+    note = (f'<p class="price-note">For hospitals and medical institutes, please contact us on our email '
+            f'<a href="mailto:info@ampmtraining.com">info@ampmtraining.com</a> or use the '
+            f'<a href="{out}" data-section="contact">form below</a>. We will tailor a quote based on your needs.</p>\n')
+    main = ('<main class="doc" id="main" tabindex="-1">\n' + hero +
+            '<section class="price-sec" aria-label="Pricing">\n  <div class="doc-wrap">\n' + (country_form() if clinics else '') +
+            '    ' + note + '  </div>\n</section>\n' + CONTACT + '</main>\n')
+    write(out, head(title, pre) + main + tail(prod, out, js=True))

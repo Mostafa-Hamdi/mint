@@ -55,3 +55,30 @@
     });
   });
 })();
+
+// Pricing: pick a country, then continue to that office on the Contact page
+(function () {
+  var f = document.querySelector('.cty-form');
+  if (!f) return;
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var c = f.querySelector('input[name="country"]:checked');
+    var msg = f.querySelector('.cty-msg');
+    if (!c) {
+      msg.textContent = 'Please choose your country first.';
+      f.classList.remove('need');
+      void f.offsetWidth;
+      f.classList.add('need');
+      f.querySelector('input[name="country"]').focus();
+      return;
+    }
+    msg.textContent = '';
+    try {
+      sessionStorage.setItem('mint-section', c.value);
+    } catch (err) {}
+    location.href = 'contact.html';
+  });
+  f.addEventListener('change', function () {
+    f.querySelector('.cty-msg').textContent = '';
+  });
+})();

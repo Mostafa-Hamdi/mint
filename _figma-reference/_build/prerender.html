@@ -3,8 +3,8 @@
 <script>
 // Loads each product page in an iframe at the width of each layout (1440 / 991 / 430), lets js/v2.js
 // re-flow the paragraphs with the real fonts, then hands back the finished <section> markup.
-const PAGES = ['consent-pricing.html', 'consent-piftick.html',
-  'pils-pricing.html', 'pils-piftick.html', 'pils-legal.html'];
+const PAGES = ['consent-piftick.html',
+  'pils-piftick.html', 'pils-legal.html'];
 const WIDTH = { d: 1440, t: 991, m: 430 };
 async function grab(page, bp) {
   const f = document.createElement('iframe');
