@@ -28,4 +28,5 @@ and all text, links, form fields and buttons are real HTML on top (`css/v2.css`,
 3. `python bake.py <project> dump.html` — writes the re-flowed text into the pages, so they open already laid out.
    (`js/v2.js` only re-flows text that was not baked.)
 4. `python make_about.py <project>` — builds `consent-about.html` / `pils-about.html` (About inside each product site)
+5. `python -I finalize.py <project>` — last step, safe to re-run: SEO tags (description, canonical, Open Graph, JSON-LD), `robots.txt` + `sitemap.xml` (domain from `MINT_SITE`, default `https://mint-rdwd.vercel.app`), skip link + `main` landmark, one `h1` per layout, no Bootstrap JS / inline handlers, lazy decor images. Security and cache headers live in `vercel.json`.
    and points the product pages' About links to them.

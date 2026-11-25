@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /_figma-reference/
+
+Sitemap: https://mint-rdwd.vercel.app/sitemap.xml

@@ -27,7 +27,7 @@ def header(active, h92):
     def a(key):
         return ' class="active"' if key == active else ''
     return f'''
-  <!-- ============================== HEADER ============================== -->
+  <!--   HEADER   -->
   <header class="site-header{' h92' if h92 else ''}">
     <div class="frame">
       <a class="hdr-logo abs" href="index.html" aria-label="MINTFORMED home"><img src="assets/img/logo.svg" alt="MINTFORMED"></a>
@@ -66,7 +66,7 @@ def header(active, h92):
 '''
 
 FOOTER = '''
-  <!-- ============================== FOOTER ============================== -->
+  <!--   FOOTER   -->
   <footer class="site-footer{fcls}">
     <div class="frame">
       <a class="ft-logo abs" href="index.html"><img src="assets/img/logo-white.svg" alt="MINTFORMED"></a>
