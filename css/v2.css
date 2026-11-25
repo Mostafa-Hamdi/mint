@@ -1317,3 +1317,15 @@ html.vlb-lock {
   position: relative;
   z-index: 0;
 }
+
+/* phone fit: a block of the flat colour over joins between strips (under the text) */
+.fv .bd > .seam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 1;
+  pointer-events: none;
+}
+.fv .bd > .seam-t { top: -3px; }
+.fv .bd > .seam-b { bottom: -3px; }

@@ -933,21 +933,47 @@ document.querySelectorAll('.az-q[aria-controls]').forEach(function (btn) {
       fv.insertBefore(nb, after);
     });
     plain().forEach(lightDecor);
-    // strips whose edge sits on a flat colour get that colour behind them, so sub-pixel edges never show a light seam
-    // strip edges that sit on plain rows overlap their neighbour by 6px, so sub-pixel edges never show a light seam
     function plainRow(y) {
       return runs.some(function (q) {
         return q[0] <= y && y < q[1];
       });
     }
-    plain().forEach(function (b) {
+    hero(fv, U);
+    // joins inside one flat colour get a 6px block of that colour on top (under the text), so no hairline can show
+    function edgeColor(b, top) {
+      if (b.classList.contains('st')) return b.classList.contains('flat') ? b.style.backgroundColor : '';
       var y0 = num(b, '--y0'),
         y1 = y0 + num(b, '--h');
-      if (plainRow(y0) && plainRow(y0 - 3)) b.style.setProperty('--ct', '6px');
-      if (plainRow(y1 - 1) && plainRow(y1 + 3))
-        b.style.setProperty('--cb', '6px');
+      return top
+        ? plainRow(y0 + 3) && runColor(y0)
+        : plainRow(y1 - 4) && runColor(y1 - 1);
+    }
+    function norm(c) {
+      var d = document.createElement('i');
+      d.style.color = c;
+      return d.style.color;
+    }
+    var bands = Array.prototype.filter.call(fv.children, function (e) {
+      return e.classList.contains('bd') && !e.classList.contains('hero');
     });
-    hero(fv, U);
+    // the block lives in the lower strip (top edge) or, when that one clips, the upper strip (bottom edge), so it moves with them
+    function clips(b) {
+      return b.classList.contains('st') || getComputedStyle(b).overflow !== 'visible';
+    }
+    for (var i = 1; i < bands.length; i++) {
+      var up = bands[i - 1],
+        dn = bands[i],
+        ca = edgeColor(up, false),
+        cb = edgeColor(dn, true);
+      if (!ca || !cb || norm(ca) !== norm(cb)) continue;
+      var host = !clips(dn) ? dn : !clips(up) ? up : null;
+      if (!host) continue;
+      var p = document.createElement('i');
+      p.className = 'seam ' + (host === dn ? 'seam-t' : 'seam-b');
+      p.setAttribute('aria-hidden', 'true');
+      p.style.background = cb;
+      host.appendChild(p);
+    }
   }
   // phone heroes: restack the title / subtitle / text with steady spacing and keep the block centred
   function hero(fv, U) {
