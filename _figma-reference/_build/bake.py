@@ -15,7 +15,12 @@ for key, inner in data.items():
     pat = re.compile(r'(<section class="fv fv-' + bp + r'\b[^>]*>)(.*?)(</section>)', re.S)
     if not pat.search(s):
         print('missing section', key); continue
-    s = pat.sub(lambda mm: mm.group(1) + '\n' + inner.strip() + '\n' + mm.group(3), s, count=1)
+    def _open(tag):   # the phone fit already happened: drop its inputs so it never runs twice
+        tag = re.sub(r' data-(runs|imgs|svg)="[^"]*"', '', tag)
+        if ' banded' not in tag and 'class="bd' in inner:
+            tag = re.sub(r'class="(fv fv-\w[^"]*)"', lambda m_: 'class="' + m_.group(1) + ' banded"', tag, count=1)
+        return tag
+    s = pat.sub(lambda mm: _open(mm.group(1)) + '\n' + inner.strip() + '\n' + mm.group(3), s, count=1)
     open(path, 'w', encoding='utf-8').write(s)
     done += 1
 print('baked', done, 'sections')

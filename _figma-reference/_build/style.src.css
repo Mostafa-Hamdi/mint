@@ -845,3 +845,36 @@ a { color: inherit; }
   .home-hero { --V: max(650u, min(1024u, calc(100svh - var(--fh-h, 84px)))); height: var(--V); overflow: hidden; }
   .home-hero .frame { top: calc(-1 * clamp(0px, 571u - var(--V) / 2, 1024u - var(--V))); }
 }
+
+/* ==========================================================================
+   Phones (beyond the Figma frames): compact heroes, content in a steady flow
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  /* home hero: title, text and the two product cards stacked with even spacing */
+  .page .home-hero .frame { width: 430u; height: auto; display: flex; flex-direction: column; align-items: center; padding: 64u 24u 52u; box-sizing: border-box; }
+  .page .home-hero .frame > .abs, .page .home-hero .prod-cards .abs { position: relative; left: auto !important; top: auto !important; }
+  .page .hh-title { width: auto; margin: 0; font-size: 40u; line-height: 1.15; text-align: center; }
+  .page .hh-lead { width: auto; max-width: 350u; margin: 18u 0 0; font-size: 16u; line-height: 1.6; }
+  .page .hh-sub { width: auto; max-width: 330u; margin: 22u 0 0; font-size: 17u; line-height: 1.5; }
+  .page .prod-cards { width: 100%; display: grid; justify-items: center; gap: 16u; margin-top: 26u; }
+  .page .prod-card { position: relative; }
+
+  /* About / Cookies heroes: shorter, title centred */
+  .page .page-hero .frame { width: 430u; height: 360u; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 24u; box-sizing: border-box; }
+  .page .page-hero .page-hero-title, .page .page-hero .ck-sub { position: static; left: auto; top: auto; width: auto; text-align: center; }
+  .page .page-hero .page-hero-title { font-size: 40u; line-height: 1.15; }
+  .page .page-hero .ck-sub { margin-top: 12u; }
+  .pg-about .page-hero { margin-bottom: 0; }
+}
+
+@media (max-width: 767.98px) {
+  /* About on phones: section titles on one steady scale, sections as tall as their content */
+  .page .ab-intro .frame, .page .ab-commit .frame, .page .ab-global .frame { height: auto; padding-bottom: 52u; }
+  .page .ab-intro .t-mont45 { width: auto; margin: 0 24u; font-size: 32u; line-height: 1.2; text-align: center; }
+  .page .ab-intro .t-pop20 { width: auto; margin: 18u 32u 0; font-size: 17u; line-height: 1.65; }
+  .page .ab-commit .t-pop56 { font-size: 32u; line-height: 1.2; }
+  .page .ab-commit .lead-txt { margin-top: 20u; font-size: 17u; line-height: 1.6; }
+  .page .ab-cols { margin-top: 36u; }
+  .page .ab-global .t-mont45 { font-size: 30u; line-height: 1.2; padding: 0 24u 0 30u; }
+  .page .ab-global .t-pop20 { margin-top: 22u; font-size: 17u; line-height: 1.65; }
+}

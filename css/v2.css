@@ -273,3 +273,17 @@ button.az-play:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 html.vlb-lock { overflow: hidden; }
 @media (max-width: 767.98px) { .vlb-v { border-radius: 14px; } .vlb-x { top: -50px; right: 0; } }
 @media (prefers-reduced-motion: reduce) { button.az-play::after { animation: none; } .vlb, .vlb-card { transition: none; } }
+
+/* phone spacing fit (js/v2.js): bands show their slice of the drawing via clip-path so text may run past a band edge */
+.fv-m .bd:not(.hero):not(.st) { overflow: visible; }
+.fv-m .bd:not(.hero):not(.st) > .bd-in > .decor { clip-path: inset(calc(var(--y0) * var(--u)) 0 calc((var(--H) - var(--y0) - var(--h)) * var(--u)) 0); }
+.fv .bd.st { height: calc(var(--k) * var(--u)); overflow: hidden; }
+.fv .bd.st > .bd-in { top: calc(var(--y0) * var(--u) * var(--k) * -1); transform: scaleY(var(--k)); transform-origin: 0 0; }
+.fv .tx .ln, .fv .tx .fl, .fv a.tx .ln { z-index: 2; }
+
+/* links inside re-flowed text keep the colour the design gives them */
+.fv .tx a, .fv .fl a { color: inherit; text-decoration: underline; text-decoration-color: rgba(106, 206, 42, .45); text-underline-offset: .18em; }
+.fv .tx a:hover, .fv .fl a:hover { text-decoration-color: currentColor; }
+
+/* phones: photo heroes stay well under the screen height (content stays centred) */
+@media (max-width: 767.98px) { .bd.hero { --vis: clamp(calc(var(--full) * .45), calc(78svh - var(--fh-h, 64px)), var(--full)); } }

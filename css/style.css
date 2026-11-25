@@ -845,3 +845,36 @@ a { color: inherit; }
   .home-hero { --V: max(calc(var(--u) * 650), min(calc(var(--u) * 1024), calc(100svh - var(--fh-h, 84px)))); height: var(--V); overflow: hidden; }
   .home-hero .frame { top: calc(-1 * clamp(0px, calc(var(--u) * 571) - var(--V) / 2, calc(var(--u) * 1024) - var(--V))); }
 }
+
+/* ==========================================================================
+   Phones (beyond the Figma frames): compact heroes, content in a steady flow
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  /* home hero: title, text and the two product cards stacked with even spacing */
+  .page .home-hero .frame { width: calc(var(--u) * 430); height: auto; display: flex; flex-direction: column; align-items: center; padding: calc(var(--u) * 64) calc(var(--u) * 24) calc(var(--u) * 52); box-sizing: border-box; }
+  .page .home-hero .frame > .abs, .page .home-hero .prod-cards .abs { position: relative; left: auto !important; top: auto !important; }
+  .page .hh-title { width: auto; margin: 0; font-size: calc(var(--u) * 40); line-height: 1.15; text-align: center; }
+  .page .hh-lead { width: auto; max-width: calc(var(--u) * 350); margin: calc(var(--u) * 18) 0 0; font-size: calc(var(--u) * 16); line-height: 1.6; }
+  .page .hh-sub { width: auto; max-width: calc(var(--u) * 330); margin: calc(var(--u) * 22) 0 0; font-size: calc(var(--u) * 17); line-height: 1.5; }
+  .page .prod-cards { width: 100%; display: grid; justify-items: center; gap: calc(var(--u) * 16); margin-top: calc(var(--u) * 26); }
+  .page .prod-card { position: relative; }
+
+  /* About / Cookies heroes: shorter, title centred */
+  .page .page-hero .frame { width: calc(var(--u) * 430); height: calc(var(--u) * 360); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 calc(var(--u) * 24); box-sizing: border-box; }
+  .page .page-hero .page-hero-title, .page .page-hero .ck-sub { position: static; left: auto; top: auto; width: auto; text-align: center; }
+  .page .page-hero .page-hero-title { font-size: calc(var(--u) * 40); line-height: 1.15; }
+  .page .page-hero .ck-sub { margin-top: calc(var(--u) * 12); }
+  .pg-about .page-hero { margin-bottom: 0; }
+}
+
+@media (max-width: 767.98px) {
+  /* About on phones: section titles on one steady scale, sections as tall as their content */
+  .page .ab-intro .frame, .page .ab-commit .frame, .page .ab-global .frame { height: auto; padding-bottom: calc(var(--u) * 52); }
+  .page .ab-intro .t-mont45 { width: auto; margin: 0 calc(var(--u) * 24); font-size: calc(var(--u) * 32); line-height: 1.2; text-align: center; }
+  .page .ab-intro .t-pop20 { width: auto; margin: calc(var(--u) * 18) calc(var(--u) * 32) 0; font-size: calc(var(--u) * 17); line-height: 1.65; }
+  .page .ab-commit .t-pop56 { font-size: calc(var(--u) * 32); line-height: 1.2; }
+  .page .ab-commit .lead-txt { margin-top: calc(var(--u) * 20); font-size: calc(var(--u) * 17); line-height: 1.6; }
+  .page .ab-cols { margin-top: calc(var(--u) * 36); }
+  .page .ab-global .t-mont45 { font-size: calc(var(--u) * 30); line-height: 1.2; padding: 0 calc(var(--u) * 24) 0 calc(var(--u) * 30); }
+  .page .ab-global .t-pop20 { margin-top: calc(var(--u) * 22); font-size: calc(var(--u) * 17); line-height: 1.65; }
+}

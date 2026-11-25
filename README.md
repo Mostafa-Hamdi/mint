@@ -20,6 +20,8 @@ each page holds the 1440 / 991 / 430 layouts; shapes and photos come from `asset
 and all text, links, form fields and buttons are real HTML on top (`css/v2.css`, `js/v2.js`).
 
 ### Rebuilding the product pages
+0. Phones: render each 430 frame's text-free SVG (`assets/svg/<frame>.svg`) to PNG and run `python runs.py <png> runs/<frame>.txt`
+   (the plain rows the phone spacing fit may repeat or remove; the current ones are in `_figma-reference/_build/runs/`).
 1. `python gen2.py <svg dir> <project>` — writes the 11 pages from the Figma SVG exports.
 2. Serve the project (e.g. `python -m http.server 5500`), copy `_figma-reference/_build/prerender.html` into the project root,
    and run `msedge --headless=new --virtual-time-budget=300000 --dump-dom http://localhost:5500/prerender.html > dump.html`.

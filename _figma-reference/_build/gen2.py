@@ -10,6 +10,7 @@ NS = 'http://www.w3.org/2000/svg'; XLN = 'http://www.w3.org/1999/xlink'
 ET.register_namespace('', NS); ET.register_namespace('xlink', XLN)
 N = '{%s}' % NS; XL = '{%s}href' % XLN
 
+IMGRANGES = {}
 PAGES = [
   # out, title, product, (desktop, tablet, phone)
   ('consent.html', 'MINT CONSENT', 'consent', ('MintCONSENT1440', 'MintCONSENT991', 'MintCONSENT430')),
@@ -111,7 +112,7 @@ def frame(name, prod, bp):
             elif tr: continue
             rects.append((x, y, num(r.get('width')), num(r.get('height')), r.get('fill'), r.get('stroke'), num(r.get('rx', '0'))))
     # a thin white gap between the drawn header and the first full-width block is hidden along with the header
-    nxt = [r[1] for r in rects if r[2] >= W * .95 and r[3] > 150 and hh < r[1] <= hh + 50 and (r[4] or '').lower() not in ('white', '#ffffff', '#fff')]
+    nxt = [r[1] for r in rects if r[2] >= W * .95 and r[3] > 150 and hh < r[1] <= hh + 80 and (r[4] or '').lower() not in ('white', '#ffffff', '#fff')]
     if nxt: hh = min(nxt)
     # small teal stroke paths = the accordion chevrons/arrows drawn in the design
     chevs = []
@@ -152,10 +153,14 @@ def frame(name, prod, bp):
             if B.get('font-family') != T.get('font-family') or B.get('font-size') != T.get('font-size'): continue
             bs = _sp(B)
             if not bs or not ({round(num(q.get('y')), 1) for q in bs} & tys): continue
-            if fx(''.join(q.text or '' for q in bs)).strip(' :') in LK: continue      # links stay links
+            lk_txt = fx(''.join(q.text or '' for q in bs)).strip(' :')
+            lk_href = LK.get(lk_txt)
+            if isinstance(lk_href, tuple): lk_href = None
+            if lk_txt in LK and not (lk_href and '@' in lk_txt): continue      # links stay links (an e-mail inside a sentence joins it)
             for q in bs:
                 nq = ET.Element(N + 'tspan', {'x': q.get('x'), 'y': q.get('y')})
                 nq.text = q.text
+                if lk_txt in LK and lk_href: nq.set('data-href', lk_href)
                 for k in ('font-weight', 'fill', 'font-size'):
                     val = q.get(k) or B.get(k)
                     if val and val != T.get(k): nq.set(k, val)
@@ -245,6 +250,7 @@ def frame(name, prod, bp):
                 if s.get('fill'): sst.append('color:' + (paint_color(s.get('fill'), defs) or fill))
                 if s.get('font-size'): sst.append(f"font-size:calc({num(s.get('font-size')):g}*var(--u))")
                 st = (';' + ';'.join(sst)) if sst else ''
+                if s.get('data-href'): txt = f'<a href="{s.get("data-href")}">{txt}</a>'
                 hard = ' data-br' if fx(s.text or '').rstrip('  ').endswith(('\n', '\r')) else ''
                 line_html.append(f'<span class="ln"{hard} style="--x:{num(s.get("x")):.2f};--y:{y - asc * fs:.2f}{st}">{txt}</span>')
         body = ''.join(line_html)
@@ -306,7 +312,9 @@ def frame(name, prod, bp):
         # Figma's manual line breaks go, real paragraph breaks stay, line height is evened out
         firsts = [num(v[0].get('x')) for v in lines.values()]
         flow = ''
-        if tag == 'p' and fs < 30 and max(firsts) - min(firsts) < 1.5:
+        left_ = max(firsts) - min(firsts) < 1.5
+        # phones: every text block (headings too, left or centred) is re-flowed with the mobile type scale
+        if (tag == 'p' and fs < 30 and left_) or (bp == 'm' and fs < 90):
             box = [r for r in rects if r[0] - 1 <= fx0 <= r[0] + r[2] and r[1] - 1 <= ty + 2 <= r[1] + r[3]
                    and r[2] < W * .98 and r[3] > 40 and (fx0 - r[0]) < r[2] / 3]
             cw = ''
@@ -316,7 +324,7 @@ def frame(name, prod, bp):
             ys_ = sorted(lines)
             gap = sorted(b - a for a, b in zip(ys_, ys_[1:]))[len(ys_) // 2 - 1] if len(ys_) > 1 else fs * 1.5
             flow = f' data-flow data-fs="{fs:g}" data-gap="{gap:.2f}" data-x="{fx0:.2f}" data-asc="{asc}"{cw}'
-        out.append((ty, f'<{tag} class="tx"{flow} style="{style}">{body}</{tag}>'))
+        out.append((ty, f'<{tag} class="tx"{flow} data-yb="{tbot:.1f}" style="{style}">{body}</{tag}>'))
     if _prev[1]: FOOTIDX.update(range(_prev[0], len(out)))
     if inputs:
         out = [(y, o.replace('<button class="hit"', '<button form="f-' + bp + '" class="hit"')) for y, o in out]
@@ -324,6 +332,7 @@ def frame(name, prod, bp):
 
     # ---------- accordions: cards (white -> #EAFAF5) holding a question and a #288C91 answer ----------
     imgs = [r for r in rects if (r[4] or '').startswith('url(#pattern')]
+    IMGRANGES[name] = ','.join(f'{r[1]:.0f}-{r[1] + r[3]:.0f}' for r in imgs)
     ref = None
     try: ref = Image.open(os.path.join(PROJ, '_figma-reference', 'v2', name + '.png')).convert('RGB')
     except Exception: pass
@@ -658,7 +667,10 @@ for out, title, prod, names in PAGES:
             print('missing', name, file=sys.stderr); continue
         W, H, HH, body, banded = frame(name, prod, bp)
         extra = (' fv-td' if (bp == 't' and names[0] is None) else '') + (' banded' if banded else '')
-        parts.append(f'<section class="fv fv-{bp}{extra}" style="--W:{W:g};--H:{H:g};--HH:{HH:g}" aria-label="{html.escape(title)}">\n{body}\n</section>\n')
+        rf = os.path.join(os.path.dirname(SVGDIR), 'runs', name + '.txt')
+        runs_attr = f' data-runs="{open(rf).read().strip()}"' if bp == 'm' and os.path.exists(rf) else ''
+        if runs_attr and IMGRANGES.get(name): runs_attr += f' data-imgs="{IMGRANGES[name]}" data-svg="assets/svg/{name}.svg"'
+        parts.append(f'<section class="fv fv-{bp}{extra}"{runs_attr} style="--W:{W:g};--H:{H:g};--HH:{HH:g}" aria-label="{html.escape(title)}">\n{body}\n</section>\n')
     p_ = 'consent' if prod == 'consent' else 'pils'
     cfg = {'name': 'MINT CONSENT' if prod == 'consent' else 'MINT PILs', 'logo': f'assets/img/logo-{p_}.svg', 'home': p_ + '.html',
            'links': [{'label': 'Home', 'href': p_ + '.html'}, {'label': 'About', 'href': p_ + '-about.html'}, {'label': 'Guide', 'href': p_ + '-guide.html'},
