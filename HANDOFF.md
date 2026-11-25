@@ -21,7 +21,7 @@ css/doc.css    page sections: heroes, cards, accordions, tables, forms, footer (
 js/ui.js       header, tab bar, product switcher, in-page section links, cookie banner, forms (every page)
 js/doc.js      accordions, video player, pricing country choice, Legal section nav (only pages that need them)
 assets/img/    logos, icons, web-sized photos      assets/v2/  two design images still in use
-robots.txt  sitemap.xml  vercel.json (security + cache headers)
+robots.txt  sitemap.xml
 
 handoff/partials/   the shared pieces, ready to turn into your templates (see §3)
 ```
@@ -120,7 +120,7 @@ Each page has a description, canonical URL, Open Graph/Twitter tags, and the hom
 They point at `https://mint-rdwd.vercel.app`. For the real domain, search and replace that URL in the pages,
 `robots.txt` and `sitemap.xml`, in one go.
 
-## 5. Server settings to copy (they live in `vercel.json` today)
+## 5. Server settings to set on your server
 
 Send these headers on every response (adjust the CSP when you add domains):
 
