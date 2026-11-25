@@ -104,13 +104,54 @@ def head(title, preload=''):
 '''
 
 
-def tail(prod, out):
+def tail(prod, out, js=False):
+    extra = '\n<script src="js/doc.js"></script>' if js else ''
     return f'''{footer(prod, out)}
 <script type="application/json" id="sticky-cfg">{cfg(prod)}</script>
-<script src="js/ui.js"></script>
+<script src="js/ui.js"></script>{extra}
 </body>
 </html>
 '''
+
+
+def doc_hero(prod, h1, img_name, alt, sub=''):
+    """navy page hero: product logo, title, optional subtitle, breadcrumb, photo. Returns (preload, html)."""
+    srcset, big = resized(img_name, (720, 1280), 'hero-' + img_name) if img_name != 'b939e3018b' else resized(img_name, (720, 1280), 'hero-doc')
+    pre = f'<link rel="preload" as="image" href="{big}" imagesrcset="{srcset}" imagesizes="(max-width: 767px) 100vw, 50vw">'
+    sub_html = f'\n        <p class="doc-hero-sub">{esc(sub)}</p>' if sub else ''
+    return pre, f'''  <section class="doc-hero">
+    <div class="doc-wrap">
+      <div>
+        <img class="doc-hero-logo" src="assets/img/logo-{prod}-white.svg" alt="{NAME[prod]}" width="186" height="82">
+        <h1>{esc(h1)}</h1>{sub_html}
+        <nav class="doc-crumb" aria-label="Breadcrumb"><ol><li><a href="{prod}.html">Home</a></li><li><span aria-current="page">{esc(h1)}</span></li></ol></nav>
+      </div>
+      <img class="doc-hero-img" src="{big}" srcset="{srcset}" sizes="(max-width: 767px) 100vw, 50vw" alt="{esc(alt)}" width="1280" height="956" fetchpriority="high">
+    </div>
+  </section>
+'''
+
+
+CHEV = '<span class="acc-c" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>'
+PLAY = '<span class="vid-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></span>'
+TEST_VIDEO = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4'
+
+
+def accordion(items, uid, open_first=True):
+    """items: (question, answer_html, video_thumb or None)"""
+    out = []
+    for i, (q, a, thumb) in enumerate(items):
+        is_open = open_first and i == 0
+        vid = ''
+        if thumb:
+            vid = (f'<button type="button" class="vid" data-video="{TEST_VIDEO}" data-title="{esc(q)}" aria-label="Play video: {esc(q)}">'
+                   f'<img src="{thumb}" alt="" width="1200" height="675" loading="lazy" decoding="async">{PLAY}<span class="vid-cap">Watch the video</span></button>')
+        out.append(f'''    <div class="acc-i{' open' if is_open else ''}">
+      <h2><button class="acc-q" type="button" id="{uid}-{i}-q" aria-expanded="{'true' if is_open else 'false'}" aria-controls="{uid}-{i}-a"><span>{esc(q)}</span>{CHEV}</button></h2>
+      <div class="acc-a" id="{uid}-{i}-a" role="region" aria-labelledby="{uid}-{i}-q"><div class="acc-in"><div class="acc-body"><p>{a}</p>{vid}</div></div></div>
+    </div>
+''')
+    return '  <div class="acc">\n' + ''.join(out) + '  </div>\n'
 
 
 def write(out, text):
@@ -237,3 +278,35 @@ for out, prod, title, hero, feats in HOMES:
 ''')
     parts.append(CONTACT + '</main>\n')
     write(out, head(title, pre) + ''.join(parts) + tail(prod, out))
+
+
+# ---------- guides ----------
+THUMB = 'assets/v2/crop-9fc5176411.jpg'
+GUIDES = [
+    ('pils-guide.html', 'pils', 'MINT PILs – Guides', 'b09a4483d0', 'A clinician using the MINT platform', [
+        ('How to register for a clinic account?',
+         'You can now register individual clinic accounts as opposed to a full institute account. These accounts allow you to send '
+         'educational content to your patients, unrelated to institutional accounts.', THUMB),
+        ('How to use your clinic or professional account on MINT PILs?',
+         'The MINT Platform allows you to access MINT Patient Information Leaflets in your clinic and send them to your patients. '
+         'The following video shows how to use your account to educate patients, set your favourites and send MINT PILs to your patients.', THUMB),
+        ('How to add a Brand Engagement Message to your account?',
+         'When you use the MINT Platform to send patient information material, you can send a small reminder to your patients with your name, '
+         'qualifications and contact details. Patients will know and remember the doctor that cares. The following video will show you how to '
+         'create a Brand Engagement Message with the MINT Team.', THUMB),
+    ]),
+    ('consent-guide.html', 'consent', 'MINT CONSENT – Guides', 'da7ded2ff4', 'A clinician using MINT CONSENT', [
+        ('Why choose MINT CONSENT?',
+         'You can now register individual clinic accounts as opposed to a full institute account. These accounts allow you to send '
+         'educational content to your patients, unrelated to institutional accounts. The following video shows how to register.', THUMB),
+        ('How do I register on MINT CONSENT?',
+         'Contact us by using the <a href="consent.html" data-section="contact">contact form</a> or by email on '
+         '<a href="mailto:info@ampmtraining.com">info@ampmtraining.com</a>.', None),
+    ]),
+]
+for out, prod, title, img, alt, items in GUIDES:
+    safe = [(q, a if '<a ' in a else esc(a), t) for q, a, t in items]
+    pre, hero = doc_hero(prod, 'Guides', img, alt)
+    main = ('<main class="doc" id="main" tabindex="-1">\n' + hero +
+            '<section class="acc-sec" aria-label="Guides">\n<div class="doc-wrap">\n' + accordion(safe, prod + '-g') + '</div>\n</section>\n</main>\n')
+    write(out, head(title, pre) + main + tail(prod, out, js=True))
