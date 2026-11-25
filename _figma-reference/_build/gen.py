@@ -125,5 +125,7 @@ for fn, (title, active, h92, body) in PAGES.items():
     p = os.path.join(S, body)
     if not os.path.exists(p): continue
     html = HEAD.format(title=title, pg=fn.split('.')[0]) + header(active, h92) + open(p, encoding='utf-8').read() + FOOTER.replace('{fcls}', ' ft-c' if fn == 'contact.html' else '')
+    if 'class="doc"' in html:   # coded document pages share css/doc.css
+        html = html.replace('<link href="css/ui.css" rel="stylesheet">', '<link href="css/ui.css" rel="stylesheet">\n  <link href="css/doc.css" rel="stylesheet">', 1)
     open(os.path.join(OUT, fn), 'w', encoding='utf-8').write(html)
     print('wrote', fn)

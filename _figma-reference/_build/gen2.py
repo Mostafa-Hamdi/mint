@@ -17,12 +17,10 @@ PAGES = [
   ('consent-guide.html', 'MINT CONSENT – Guides', 'consent', ('MINTconsentGuide1440', 'MINTConsentGuide_991', 'MINTConsentGuide_430')),
   ('consent-pricing.html', 'MINT CONSENT – Pricing', 'consent', ('MINTConsentPricing1440', 'MINTConsentPricing_991', 'MINTconsentPricing_430')),
   ('consent-piftick.html', 'MINT CONSENT – PIF TICK', 'consent', ('MINTconsentpiftick1440', 'MINTConsentpiftick991', 'MINTconsentpiftick430')),
-  ('consent-cookies.html', 'MINT CONSENT – Cookies', 'consent', ('MINTconsentcookie1440', 'MINTconsentcookies991', 'MINTconsentcookies430')),
   ('pils.html', 'MINT PILs', 'pils', ('MintPILS_1440', 'MintPILS_991', 'MintPILS_430')),
   ('pils-guide.html', 'MINT PILs – Guides', 'pils', ('MINTPILSGuide1440', 'MINTPILSGuide_991', 'MINTPILSGuide_430')),
   ('pils-pricing.html', 'MINT PILs – Pricing', 'pils', ('MINTPILSPricing1440', 'MINTPILSPricing_991', 'MINTPILSPricing_430')),
   ('pils-piftick.html', 'MINT PILs – PIF TICK', 'pils', ('MINTPILPIFTICK1440', 'MINTPilspiftick991', 'MINTINPillspiftick430')),
-  ('pils-cookies.html', 'MINT PILs – Cookies', 'pils', ('MINTPILCookies1440', 'MINTPilscookies991', 'MINTPilscookies430')),
   ('pils-legal.html', 'MINT PILs – Legal', 'pils', ('MINTPILSlegal1440', None, 'MINTPILsLegal_430')),
 ]
 

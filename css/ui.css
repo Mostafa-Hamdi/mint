@@ -1478,3 +1478,31 @@ a.fh-eco-i:hover .fh-eco-l {
   outline: 3px solid #2fbf71;
   outline-offset: 2px;
 }
+
+/* small tablets: the full nav, the family switcher and Log in did not fit in one row */
+@media (min-width: 768px) and (max-width: 1099.98px) {
+  .fh-pill {
+    gap: 8px;
+  }
+  .fh-nav > a,
+  .fh-ddt {
+    padding: 8px 9px;
+    font-size: 14px;
+  }
+  .fh-eco-by {
+    display: none;
+  }
+  .fh-login {
+    width: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+  .fh-login span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
